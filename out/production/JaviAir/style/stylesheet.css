@@ -1,0 +1,7 @@
+.root{
+    -fx-font-size: 12px;
+}
+
+.comboOrigin{
+    -fx-border-color: red;
+}
