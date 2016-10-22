@@ -5,3 +5,11 @@
 .comboOrigin{
     -fx-border-color: red;
 }
+
+.grid{
+    -fx-hgap: 100;
+    -fx-vgap: 10;
+}
+
+
+.imageView{ -fx-border-color: red; }
