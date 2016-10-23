@@ -1,4 +1,6 @@
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -18,9 +20,9 @@ public class MainScene extends Application {
     private RadioButton radioBtnReturn;
 	private ComboBox<String> comboOrigin;
 	private ComboBox<String> comboDestination;
-	private Label labelOrigin, labelDestination, labelDateDeparture, labelDateArrival;
+	private Label labelOrigin, labelDestination, labelDateDeparture, labelDateReturn;
     private DatePicker datePickerDeparture;
-    private DatePicker datePickerArrival;
+    private DatePicker datePickerReturn;
     private GridPane gridPane, gridPaneMiddle;
     private final ToggleGroup toggleGroup = new ToggleGroup();
     private ImageView imageView;
@@ -38,16 +40,11 @@ public class MainScene extends Application {
 
         airportList.addAll("ORK","MAD","SBK","JER","CDG","STN","AGP");
 
-        Label lb = new Label("this here is text");
-
-        VBox topVBox = new VBox();
-        topVBox.getChildren().addAll(
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(
                 createTopGridPane(), createMiddleGridPane());
 
-        HBox middleHBox = new HBox();
-        middleHBox.getChildren().add(lb);
-
-        Scene scene = new Scene(topVBox, 900, 650);
+        Scene scene = new Scene(vBox, 900, 650);
         scene.getStylesheets().add("/style/stylesheet.css");
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("JaviAir App");
@@ -67,34 +64,48 @@ public class MainScene extends Application {
         radioBtnReturn.setToggleGroup(toggleGroup);
         radioBtnReturn.fire(); // return btn on by default
 
-
-        labelOrigin = new Label("Origin: ");
+        labelOrigin = new Label("From: ");
         comboOrigin = new ComboBox<>();
         comboOrigin.setEditable(true);
         comboOrigin.getItems().addAll(airportList);
         comboOrigin.getStyleClass().add("comboOrigin"); // add css class
 
-        labelDestination = new Label("Destination: ");
+        labelDestination = new Label("To: ");
         comboDestination = new ComboBox<>();
         comboDestination.getItems().addAll(airportList);
         comboDestination.setEditable(true);
 
-        labelDateArrival = new Label("Arriving");
-        datePickerArrival = new DatePicker();
-        datePickerArrival.setPromptText("pick a date");
-        datePickerArrival.setEditable(true);
+        labelDateReturn = new Label("Return");
+        datePickerReturn = new DatePicker();
+        datePickerReturn.setPromptText("pick a date");
+        datePickerReturn.setEditable(true);
 
-        labelDateDeparture = new Label("Departing");
+        labelDateDeparture = new Label("Depart");
         datePickerDeparture = new DatePicker();
         datePickerDeparture.setPromptText("pick a date");
         datePickerDeparture.setEditable(true);
+
+        // add listener to combo which inserts the flight selection, into TextView
+        comboOrigin.setOnAction(event -> selectedFlight());
+
+
+        comboOrigin.getEditor().textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(newValue.length() > 3){
+                    comboOrigin.setId("error");
+                } else {
+                    comboOrigin.setId("default");
+                }
+            }
+        });
 
 
         gridPane.add(radioBtnOneWay, 0, 0); gridPane.add(radioBtnReturn, 2, 0);
         gridPane.add(labelOrigin, 0, 1); gridPane.add(labelDestination, 2, 1);
         gridPane.add(comboOrigin, 0, 2); gridPane.add(insertIcon(), 1, 2); gridPane.add(comboDestination, 2, 2);
-        gridPane.add(labelDateArrival, 0, 3); gridPane.add(labelDateDeparture, 2, 3);
-        gridPane.add(datePickerArrival, 0, 4); gridPane.add(insertIcon(), 1, 4); gridPane.add(datePickerDeparture, 2, 4);
+        gridPane.add(labelDateDeparture, 0, 3); gridPane.add(labelDateReturn, 2, 3);
+        gridPane.add(datePickerDeparture, 0, 4); gridPane.add(insertIcon(), 1, 4); gridPane.add(datePickerReturn, 2, 4);
 
 
         // gridPane.add(Node, colIndex, rowIndex, colSpan, rowSpan):
@@ -104,7 +115,12 @@ public class MainScene extends Application {
 
     }
 
-    // insert the airplane icons between flight destinations and flight times
+    // method from the listener for comboOrigin
+    private void selectedFlight() {
+        textArea.setText(comboOrigin.getSelectionModel().getSelectedItem());
+    }
+
+    // insert the airplane icons between the flight destinations, and the flight times
     public Node insertIcon(){
         image = new Image("resources/airplane.png");
         imageView = new ImageView(image);
@@ -129,9 +145,9 @@ public class MainScene extends Application {
         gridPaneMiddle.getStyleClass().add("grid");
 
         textArea = new TextArea();
-        textArea.setText(airportList.toString());
         textArea.setPrefColumnCount(3);
         textArea.setPrefRowCount(3);
+        textArea.setEditable(false);
         GridPane.setColumnSpan(textArea, 3);
         GridPane.setRowSpan(textArea, 2);
 
