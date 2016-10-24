@@ -3,6 +3,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -28,8 +29,7 @@ public class MainScene extends Application {
     private ImageView imageView;
     private Image image;
     private HBox hBoxImage;
-    private TextArea textArea;
-    private ListView listView;
+    private TextArea textAreaDepart, textAreaReturn;
 
     public static final ObservableList airportList =
             FXCollections.observableArrayList();
@@ -67,26 +67,29 @@ public class MainScene extends Application {
         labelOrigin = new Label("From: ");
         comboOrigin = new ComboBox<>();
         comboOrigin.setEditable(true);
+        comboOrigin.setPromptText("select airport");
         comboOrigin.getItems().addAll(airportList);
         comboOrigin.getStyleClass().add("comboOrigin"); // add css class
+        comboOrigin.setOnAction(event -> selectedFlight(event));
 
         labelDestination = new Label("To: ");
         comboDestination = new ComboBox<>();
+        comboDestination.setPromptText("select airport");
         comboDestination.getItems().addAll(airportList);
         comboDestination.setEditable(true);
+        comboDestination.setOnAction(event -> selectedFlight(event));
 
         labelDateReturn = new Label("Return");
         datePickerReturn = new DatePicker();
         datePickerReturn.setPromptText("pick a date");
         datePickerReturn.setEditable(true);
+        datePickerReturn.setOnAction(event -> selectDate(event));
 
         labelDateDeparture = new Label("Depart");
         datePickerDeparture = new DatePicker();
         datePickerDeparture.setPromptText("pick a date");
         datePickerDeparture.setEditable(true);
-
-        // add listener to combo which inserts the flight selection, into TextView
-        comboOrigin.setOnAction(event -> selectedFlight());
+        datePickerDeparture.setOnAction(event -> selectDate(event));
 
 
         comboOrigin.getEditor().textProperty().addListener(new ChangeListener<String>() {
@@ -115,10 +118,44 @@ public class MainScene extends Application {
 
     }
 
-    // method from the listener for comboOrigin
-    private void selectedFlight() {
-        textArea.setText(comboOrigin.getSelectionModel().getSelectedItem());
+    private void selectedFlight(ActionEvent event) {
+        if(event.getSource() == comboOrigin){
+            if(!comboOrigin.getItems().contains(comboOrigin.getValue())) {
+                errorMessage();
+            }else{
+                String theFlightOrigin = comboOrigin.getValue();
+                textAreaDepart.setText(theFlightOrigin + " ");
+            }
+        }
+        else if(event.getSource() == comboDestination){
+            if(!comboDestination.getItems().contains(comboDestination.getValue())) {
+                errorMessage();
+            }else{
+                String theFlightOrigin = comboDestination.getValue();
+                textAreaReturn.setText(theFlightOrigin + " ");
+            }
+        }
     }
+
+
+    public void errorMessage(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Input Error");
+        alert.setContentText("The text you entered does not match a flight");
+        alert.showAndWait();
+    }
+
+
+    private void selectDate(ActionEvent event){
+        if(event.getSource() == datePickerDeparture) {
+            String departDate = datePickerDeparture.getValue().toString();
+            textAreaDepart.appendText(departDate);
+        }else if(event.getSource() == datePickerReturn) {
+            String returnDate = datePickerReturn.getValue().toString();
+            textAreaReturn.appendText(returnDate);
+        }
+    }
+
 
     // insert the airplane icons between the flight destinations, and the flight times
     public Node insertIcon(){
@@ -144,19 +181,22 @@ public class MainScene extends Application {
         gridPaneMiddle.setPadding(new Insets(5, 10, 5, 100));
         gridPaneMiddle.getStyleClass().add("grid");
 
-        textArea = new TextArea();
-        textArea.setPrefColumnCount(3);
-        textArea.setPrefRowCount(3);
-        textArea.setEditable(false);
-        GridPane.setColumnSpan(textArea, 3);
-        GridPane.setRowSpan(textArea, 2);
+        textAreaDepart = new TextArea();
+        textAreaDepart.setPrefColumnCount(3);
+        textAreaDepart.setPrefRowCount(3);
+        textAreaDepart.setEditable(false);
+        GridPane.setColumnSpan(textAreaDepart, 3);
+        GridPane.setRowSpan(textAreaDepart, 2);
 
-        listView = new ListView(airportList);
-        listView.setPrefHeight(100);
-        listView.setPrefWidth(150);
+        textAreaReturn = new TextArea();
+        textAreaReturn.setPrefColumnCount(3);
+        textAreaReturn.setPrefRowCount(3);
+        textAreaReturn.setEditable(false);
+        GridPane.setColumnSpan(textAreaReturn, 3);
+        GridPane.setRowSpan(textAreaReturn, 2);
 
-        gridPaneMiddle.add(textArea, 0, 0);
-        gridPaneMiddle.add(listView, 4, 0);
+        gridPaneMiddle.add(textAreaDepart, 0, 0);
+        gridPaneMiddle.add(textAreaReturn, 4, 0);
 
         return gridPaneMiddle;
     }
