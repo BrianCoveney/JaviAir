@@ -1,10 +1,11 @@
+import controller.FlightController;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,10 +16,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+
 public class MainScene extends Application {
 
     private RadioButton radioBtnOneWay;
     private RadioButton radioBtnReturn;
+    private Button buttonFlightSelect;
 	private ComboBox<String> comboOrigin;
 	private ComboBox<String> comboDestination;
 	private Label labelOrigin, labelDestination, labelDateDeparture, labelDateReturn;
@@ -55,7 +58,7 @@ public class MainScene extends Application {
 	public Node createTopGridPane(){
 
         gridPane = new GridPane();
-        gridPane.setPadding(new Insets(5, 10, 5, 100));
+        gridPane.setAlignment(Pos.CENTER);
         gridPane.getStyleClass().add("grid");
 
         radioBtnOneWay = new RadioButton("One Way");
@@ -177,8 +180,12 @@ public class MainScene extends Application {
 
     public Node createMiddleGridPane(){
 
+        buttonFlightSelect = new Button("Select model.Flight");
+        buttonFlightSelect.setOnAction(event -> addFlightsToList());
+
+
         gridPaneMiddle = new GridPane();
-        gridPaneMiddle.setPadding(new Insets(5, 10, 5, 100));
+        gridPaneMiddle.setAlignment(Pos.CENTER);
         gridPaneMiddle.getStyleClass().add("grid");
 
         textAreaDepart = new TextArea();
@@ -197,10 +204,27 @@ public class MainScene extends Application {
 
         gridPaneMiddle.add(textAreaDepart, 0, 0);
         gridPaneMiddle.add(textAreaReturn, 4, 0);
+        gridPaneMiddle.add(buttonFlightSelect, 3, 1);
+
 
         return gridPaneMiddle;
     }
 
+
+    private void addFlightsToList(){
+
+        String flyOut = comboOrigin.getValue();
+        String flyBack = comboDestination.getValue();
+
+        // simple factory method implementation
+//        Flight mFlight = Flight.createFlight(flyOut, flyBack);
+//        System.out.println(mFlight);
+
+        // singleton implementation
+        FlightController.getInstance().addFlight(flyOut, flyBack);
+        System.out.println(FlightController.getInstance().getFlights());
+
+    }
 
 
 	public static void main(String[] args) {
