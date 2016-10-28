@@ -14,3 +14,27 @@
 
 
 .imageView{ -fx-border-color: red; }
+
+.stackPaneLeft{
+    -fx-background-color: #f7f7f7;
+}
+
+.stackPaneRight{
+    -fx-background-color: #f7f7f7;
+    -fx-border-color: #dddddd;
+    -fx-border-width: 1;
+    -fx-border-insets: 10;
+}
+
+
+.border-title {
+    -fx-translate-y: -8;
+    -fx-background-color: #f7f7f7;
+}
+
+.gridPaneLeft{
+    -fx-translate-y: 20;
+    -fx-translate-x: 10;
+}
+
+

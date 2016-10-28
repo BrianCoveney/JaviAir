@@ -23,6 +23,9 @@ public class FlightController {
 
     public void addFlight(String flightOrigin, String flightDestination){
 
+//        Flight f = new Flight(flightOrigin, flightDestination);
+//        this.flightList.add(f);
+
         Flight flight = Flight.createFlight(flightOrigin, flightDestination);
         this.flightList.add(flight);
 
