@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,12 +16,14 @@ import model.Flight;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 public class MainScene extends Application {
 
     private RadioButton radioBtnReturn;
-    private Button buttonFlightSelect, buttonCancel, buttonContinue;
+    private Button buttonCancel;
+    private Button buttonContinue;
 	private ComboBox<String> comboOrigin;
 	private ComboBox<String> comboDestination;
     private DatePicker datePickerDeparture;
@@ -50,14 +53,19 @@ public class MainScene extends Application {
         VBox vBox = new VBox();
         vBox.getChildren().addAll(
                 createTopGridPane(), createMiddleGridPane(), createBottomPane(), createAnchorPane());
-
         Scene scene = new Scene(vBox, 800, 700);
 
         scene.getStylesheets().add("/style/stylesheet.css");
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("JaviAir App");
+        primaryStage.setOnCloseRequest(event -> {
+            event.consume();
+            confirmBoxCloseApp();
+        });
 		primaryStage.show();
-	}
+
+
+    }
 
 
 	private GridPane createTopGridPane(){
@@ -186,7 +194,7 @@ public class MainScene extends Application {
 
     private GridPane createMiddleGridPane(){
 
-        buttonFlightSelect = new Button("Select Flight");
+        Button buttonFlightSelect = new Button("Select Flight");
         buttonFlightSelect.setOnAction(event -> addFlightsToList());
 
         gridPaneMiddle = new GridPane();
@@ -217,7 +225,6 @@ public class MainScene extends Application {
 
 
     private HBox createBottomPane(){
-
 
         // LHS Pane
         StackPane stackPaneLeft = new StackPane();
@@ -287,6 +294,20 @@ public class MainScene extends Application {
         return hBox;
     }
 
+    public void confirmBoxCloseApp(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Close Program");
+        alert.setContentText("Do you want to close the program?");
+
+        Optional<ButtonType> choice = alert.showAndWait();
+
+        if (choice.isPresent() && choice.get() == ButtonType.APPLY.OK) {
+            Platform.exit();
+        } else if (choice.isPresent() && choice.get() == ButtonType.CANCEL) {
+            alert.close();
+        }
+
+    }
 
     private AnchorPane createAnchorPane(){
 
@@ -295,7 +316,7 @@ public class MainScene extends Application {
         buttonContinue = new Button("Continue");
 
         buttonCancel.setOnAction(event -> {
-            System.exit(0);
+            confirmBoxCloseApp();
         });
 
         HBox hBox = new HBox();
@@ -326,16 +347,12 @@ public class MainScene extends Application {
             flyBack = comboDestination.getValue();
         }
 
-
         // simple factory method implementation
         Flight mFlight = Flight.createFlight(flyOut, flyBack);
         System.out.println(mFlight);
 
-        // singleton implementation
-//        FlightController.getInstance().addFlight(flyOut, flyBack);
-//        System.out.println(FlightController.getInstance().getFlights());
-
     }
+
 
 
 	public static void main(String[] args) {
