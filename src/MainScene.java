@@ -34,13 +34,11 @@ public class MainScene extends Application {
     private Image image;
     private HBox hBoxImage;
     private TextArea textAreaDepart, textAreaReturn;
-    private Label labelOrigin, labelDestination, labelDateDeparture, labelDateReturn,
-            labelFName1, labelLName1, labelDOB1, labelFName2, labelLName2, labelDOB2,
-            labelFName3, labelLName3, labelDOB3, labelFName4, labelLName4, labelDOB4,
-            labelFName5, labelLName5, labelDOB5, labelFName6, labelLName6, labelDOB6,
-            labelFName7, labelLName7, labelDOB7, labelFName8, labelLName8, labelDOB8;
+    private Label labelOrigin, labelDestination, labelDateDeparture, labelDateReturn;
 
 
+
+    private static final int MAX_PASSENGER_NO = 8;
     public static final ObservableList airportList =
             FXCollections.observableArrayList();
 
@@ -58,10 +56,10 @@ public class MainScene extends Application {
         scene.getStylesheets().add("/style/stylesheet.css");
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("JaviAir App");
-        primaryStage.setOnCloseRequest(event -> {
-            event.consume();
-            confirmBoxCloseApp();
-        });
+//        primaryStage.setOnCloseRequest(event -> {
+//            event.consume();
+//            confirmBoxCloseApp();
+//        });
 		primaryStage.show();
 
 
@@ -228,23 +226,59 @@ public class MainScene extends Application {
 
         // LHS Pane
         StackPane stackPaneLeft = new StackPane();
-        stackPaneLeft.setPrefHeight(275);
-        stackPaneLeft.setMaxWidth(300);
+        stackPaneLeft.setPrefHeight(300);
+        stackPaneLeft.setMaxWidth(200);
         stackPaneLeft.getStyleClass().add("stackPaneLeft");
 
         Label label = new Label("Number of passengers:");
         List<Integer> list = new ArrayList<>();
-        for(int i = 0; i <= 8; i++ ){
+        for(int i = 0; i <= MAX_PASSENGER_NO; i++ ) {
             list.add(i);
         }
+
         ObservableList numPass = FXCollections.observableList(list);
-        ComboBox comboBags = new ComboBox<>();
-        comboBags.getItems().addAll(numPass);
+        ComboBox<Integer> comboPassengerNo = new ComboBox<>();
+        comboPassengerNo.getItems().addAll(numPass);
+
+
+//        comboPassengerNo.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                MainScene.setReturnedValue(comboPassengerNo.getValue());
+//            }
+//        });
+
+
+
+//        comboPassengerNo.setOnAction(event -> {
+//            TextField textField[];
+//            Integer selectedPassengerNum = comboPassengerNo.getValue();
+//
+//            try {
+//                if (selectedPassengerNum != null) {
+//
+//                    textField = new TextField[selectedPassengerNum];
+//
+//                    for (int i = 0; i < selectedPassengerNum; i++) {
+//                        textField[i] = new TextField();
+//
+//                    }
+//
+//                }
+//            }catch (Exception ex){
+//               ex.printStackTrace();
+//            }
+//
+//        });
+
+
+
 
         GridPane gridPaneLeft = new GridPane();
         gridPaneLeft.getStyleClass().add("gridPaneLeft");
         gridPaneLeft.add(label, 1, 2);
-        gridPaneLeft.add(comboBags, 2, 4);
+        gridPaneLeft.add(comboPassengerNo, 1, 3);
+        gridPaneLeft.setMargin(comboPassengerNo, new Insets(10, 0, 0, 100));
 
         stackPaneLeft.setAlignment(gridPaneLeft, Pos.TOP_LEFT);
         stackPaneLeft.getChildren().addAll(gridPaneLeft);
@@ -252,8 +286,8 @@ public class MainScene extends Application {
 
         // RHS Pane
         StackPane stackPaneRight = new StackPane();
-        stackPaneRight.setPrefHeight(275);
-        stackPaneRight.setMaxWidth(300);
+        stackPaneRight.setPrefHeight(310);
+        stackPaneRight.setMaxWidth(465);
         stackPaneRight.getStyleClass().add("stackPaneRight");
 
         Label labelBorder = new Label("Passenger Details");
@@ -261,24 +295,52 @@ public class MainScene extends Application {
         stackPaneRight.setAlignment(labelBorder, Pos.TOP_CENTER);
         stackPaneRight.getChildren().addAll(labelBorder);
 
-        // dummy text hard coded in, for now
-        Label fName = new Label("Brian");
-        Label lName = new Label("Coveney");
-        Label dob= new Label("17/09/77");
-        Label fName2 = new Label("Marie");
-        Label lName2 = new Label("Coveney");
-        Label dob2= new Label("17/09/55");
+        TextField fName = new TextField();
+        fName.setPromptText("enter first name");
+        TextField lName = new TextField();
+        lName.setPromptText("enter last name");
+        TextField fName2 = new TextField(); TextField lName2 = new TextField();
+        TextField fName3 = new TextField();TextField lName3 = new TextField();
+        TextField fName4 = new TextField(); TextField lName4 = new TextField();
+        TextField fName5 = new TextField(); TextField lName5 = new TextField();
+        TextField fName6 = new TextField(); TextField lName6 = new TextField();
+        TextField fName7 = new TextField(); TextField lName7 = new TextField();
+        TextField fName8 = new TextField(); TextField lName8 = new TextField();
+        TextField dob = new TextField(); dob.setPromptText("17/09/77"); dob.getStyleClass().add("dobField");
+        TextField dob2= new TextField(); dob2.getStyleClass().add("dobField");
+        TextField dob3 = new TextField(); dob3.getStyleClass().add("dobField");
+        TextField dob4 = new TextField(); dob4.getStyleClass().add("dobField");
+        TextField dob5 = new TextField(); dob5.getStyleClass().add("dobField");
+        TextField dob6 = new TextField(); dob6.getStyleClass().add("dobField");
+        TextField dob7 = new TextField(); dob7.getStyleClass().add("dobField");
+        TextField dob8 = new TextField(); dob8.getStyleClass().add("dobField");
+
 
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(20, 0, 0, 0));
-        gridPane.add(fName, 1, 0);
-        gridPane.add(lName, 2, 0);
-        gridPane.add(dob, 3, 0);
-        gridPane.add(fName2, 1, 1);
-        gridPane.add(lName2, 2, 1);
-        gridPane.add(dob2, 3, 1);
+        gridPane.add(fName , 1, 0); gridPane.add(lName, 2, 0); gridPane.add(dob, 3, 0);
+        gridPane.add(fName2, 1, 1); gridPane.add(lName2, 2, 1); gridPane.add(dob2, 3, 1);
+        gridPane.add(fName3 , 1, 2); gridPane.add(lName3, 2, 2); gridPane.add(dob3, 3, 2);
+        gridPane.add(fName4, 1, 3); gridPane.add(lName4, 2, 3); gridPane.add(dob4, 3, 3);
+        gridPane.add(fName5, 1, 4); gridPane.add(lName5, 2, 4); gridPane.add(dob5, 3, 4);
+        gridPane.add(fName6, 1, 5); gridPane.add(lName6, 2, 5); gridPane.add(dob6, 3, 5);
+        gridPane.add(fName7, 1, 6); gridPane.add(lName7, 2, 6); gridPane.add(dob7, 3, 6);
+        gridPane.add(fName8, 1, 7); gridPane.add(lName8, 2, 7); gridPane.add(dob8, 3, 7);
+
+//        int maxTextFieldNum = 8;
+//        TextField textFieldFName[] = new TextField[maxTextFieldNum];
+//        GridPane mGridPane = new GridPane();
+//        VBox vBoxFNames = new VBox();
+//        for (int i = 0; i < maxTextFieldNum; i++){
+//            textFieldFName[i] = new TextField();
+//            textFieldFName[i].getStyleClass().add("text-field");
+//
+//        }
+//
+//        vBoxFNames.getChildren().addAll(textFieldFName);
+//        mGridPane.add(vBoxFNames, maxTextFieldNum, 0);
 
 
         stackPaneRight.setAlignment(gridPane, Pos.TOP_LEFT);
@@ -293,6 +355,9 @@ public class MainScene extends Application {
 
         return hBox;
     }
+
+
+
 
     public void confirmBoxCloseApp(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -352,6 +417,11 @@ public class MainScene extends Application {
         System.out.println(mFlight);
 
     }
+
+
+//    public static int setReturnedValue(int result){
+//        return result;
+//    }
 
 
 
