@@ -21,12 +21,9 @@ public class FlightController {
      return instance;
     }
 
-    public void addFlight(String flightOrigin, String flightDestination){
+    public void addFlight(String flightOrigin, String flightDestination, String flightCost){
 
-//        Flight f = new Flight(flightOrigin, flightDestination);
-//        this.flightList.add(f);
-
-        Flight flight = Flight.createFlight(flightOrigin, flightDestination);
+        Flight flight = Flight.createFlight(flightOrigin, flightDestination, flightCost);
         this.flightList.add(flight);
 
     }
