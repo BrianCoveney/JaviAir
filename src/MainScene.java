@@ -14,6 +14,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import model.Flight;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,11 +36,19 @@ public class MainScene extends Application {
     private HBox hBoxImage;
     private TextArea textAreaDepart, textAreaReturn;
     private Label labelOrigin, labelDestination, labelDateDeparture, labelDateReturn;
+    private ComboBox<Integer> comboPassengerNo;
 
+    private double departPrice;
+    private double returnPrice;
+    private double flightPrice;
+    private double currentPrice;
+    private double price;
 
 
     private static final int MAX_PASSENGER_NO = 8;
-    public static final ObservableList airportList =
+
+
+    private static final ObservableList airportList =
             FXCollections.observableArrayList();
 
 
@@ -56,14 +65,9 @@ public class MainScene extends Application {
         scene.getStylesheets().add("/style/stylesheet.css");
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("JaviAir App");
-//        primaryStage.setOnCloseRequest(event -> {
-//            event.consume();
-//            confirmBoxCloseApp();
-//        });
 		primaryStage.show();
-
-
     }
+
 
 
 	private GridPane createTopGridPane(){
@@ -84,27 +88,51 @@ public class MainScene extends Application {
         comboOrigin.setPromptText("select airport");
         comboOrigin.getItems().addAll(airportList);
         comboOrigin.getStyleClass().add("comboOrigin"); // add css class
-        comboOrigin.setOnAction(event -> checkTypedFlightMatchesList(event));
+        comboOrigin.setOnAction(event -> {
+            if(comboOrigin.getItems().contains(comboOrigin.getValue()))
+            {
+                textAreaDepart.setText(comboOrigin.getValue().toString());
+                getSelectedFlight();
+            }
+            else{
+                errorMessage();
+            }
+        });
 
         labelDestination = new Label("To: ");
         comboDestination = new ComboBox<>();
         comboDestination.setPromptText("select airport");
         comboDestination.getItems().addAll(airportList);
         comboDestination.setEditable(true);
-        comboDestination.setOnAction(event -> checkTypedFlightMatchesList(event));
+
+
+        comboDestination.setOnAction(event -> {
+            if(comboDestination.getItems().contains(comboDestination.getValue()))  {
+                textAreaReturn.setText(comboDestination.getValue().toString());
+                getSelectedFlight();
+            }
+            else{
+                errorMessage();
+            }
+        });
 
         labelDateReturn = new Label("Return");
         datePickerReturn = new DatePicker();
         datePickerReturn.setPromptText("pick a date");
         datePickerReturn.setEditable(true);
-        datePickerReturn.setOnAction(event -> selectDate(event));
+        datePickerReturn.setOnAction(event -> {
+            textAreaReturn.appendText(" | " + datePickerReturn.getValue().toString());
+            getSelectDate(event);
+        });
 
         labelDateDeparture = new Label("Depart");
         datePickerDeparture = new DatePicker();
         datePickerDeparture.setPromptText("pick a date");
         datePickerDeparture.setEditable(true);
-        datePickerDeparture.setOnAction(event -> selectDate(event));
-
+        datePickerDeparture.setOnAction(event -> {
+            textAreaDepart.appendText(" | " + datePickerDeparture.getValue().toString());
+            getSelectDate(event);
+        });
 
         comboOrigin.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue.length() > 3){
@@ -130,27 +158,46 @@ public class MainScene extends Application {
 
     }
 
-    private void checkTypedFlightMatchesList(ActionEvent event) {
 
-        if(event.getSource() == comboOrigin){
-            if(comboOrigin.getItems().contains(comboOrigin.getValue())) {
-                String theFlightOrigin = comboOrigin.getValue();
-                textAreaDepart.setText(theFlightOrigin + " ");
-            }
-            else{
-                errorMessage();
+    private Double getSelectedFlight()
+    {
+        if(comboOrigin.getSelectionModel().getSelectedItem() ==
+                "STN" && comboDestination.getValue() == "AGP") { flightPrice = flightPrice + 200; }
+
+        else if(comboOrigin.getSelectionModel().getSelectedItem() ==
+                "ORK" && comboDestination.getValue() == "MAD"){ flightPrice = flightPrice + 100; }
+
+        return flightPrice;
+    }
+
+
+    // take the returned flightPrice from getSelectedFlight() and add 20% if day is Fri - Sun
+    private void getSelectDate(ActionEvent event)
+    {
+        if (event.getSource() == datePickerDeparture)
+        {
+            LocalDate departDate = datePickerDeparture.getValue();
+            String theDepartDay = departDate.getDayOfWeek().name();
+            if (theDepartDay == "FRIDAY" || theDepartDay == "SATURDAY" || theDepartDay == "SUNDAY")
+            {
+                departPrice = flightPrice + flightPrice * 0.2;
+                System.out.println(departPrice);
             }
         }
-        else if(event.getSource() == comboDestination){
-            if(comboDestination.getItems().contains(comboDestination.getValue())) {
-                String theFlightOrigin = comboDestination.getValue();
-                textAreaReturn.setText(theFlightOrigin + " ");
-            }
-            else{
-                errorMessage();
+        else if(event.getSource() == datePickerReturn)
+        {
+            LocalDate returnDate = datePickerReturn.getValue();
+            String theReturnDay = returnDate.getDayOfWeek().name();
+            if(theReturnDay == "FRIDAY" || theReturnDay == "SATURDAY" || theReturnDay == "SUNDAY")
+            {
+                returnPrice = flightPrice + flightPrice * 0.2;
+                currentPrice = departPrice + returnPrice;
+                System.out.println(currentPrice);
             }
         }
     }
+
+
 
 
     private void errorMessage(){
@@ -160,16 +207,6 @@ public class MainScene extends Application {
         alert.showAndWait();
     }
 
-
-    private void selectDate(ActionEvent event){
-        if(event.getSource() == datePickerDeparture) {
-            String departDate = datePickerDeparture.getValue().toString();
-            textAreaDepart.appendText(departDate);
-        }else if(event.getSource() == datePickerReturn) {
-            String returnDate = datePickerReturn.getValue().toString();
-            textAreaReturn.appendText(returnDate);
-        }
-    }
 
 
     // insert the airplane icons between the flight destinations, and the flight times
@@ -198,8 +235,8 @@ public class MainScene extends Application {
         gridPaneMiddle = new GridPane();
         gridPaneMiddle.setAlignment(Pos.CENTER);
         gridPaneMiddle.getStyleClass().add("grid");
-        gridPaneMiddle.setHalignment(buttonFlightSelect, HPos.CENTER);
-        gridPaneMiddle.setColumnSpan(buttonFlightSelect, 3);
+        GridPane.setHalignment(buttonFlightSelect, HPos.CENTER);
+        GridPane.setColumnSpan(buttonFlightSelect, 3);
 
         textAreaDepart = new TextArea();
         textAreaDepart.setPrefRowCount(3);
@@ -237,50 +274,19 @@ public class MainScene extends Application {
         }
 
         ObservableList numPass = FXCollections.observableList(list);
-        ComboBox<Integer> comboPassengerNo = new ComboBox<>();
+        comboPassengerNo = new ComboBox<>();
         comboPassengerNo.getItems().addAll(numPass);
 
-
-//        comboPassengerNo.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                MainScene.setReturnedValue(comboPassengerNo.getValue());
-//            }
-//        });
-
-
-
-//        comboPassengerNo.setOnAction(event -> {
-//            TextField textField[];
-//            Integer selectedPassengerNum = comboPassengerNo.getValue();
-//
-//            try {
-//                if (selectedPassengerNum != null) {
-//
-//                    textField = new TextField[selectedPassengerNum];
-//
-//                    for (int i = 0; i < selectedPassengerNum; i++) {
-//                        textField[i] = new TextField();
-//
-//                    }
-//
-//                }
-//            }catch (Exception ex){
-//               ex.printStackTrace();
-//            }
-//
-//        });
-
-
+        comboPassengerNo.setOnAction(event -> setReturnedValue());
 
 
         GridPane gridPaneLeft = new GridPane();
         gridPaneLeft.getStyleClass().add("gridPaneLeft");
         gridPaneLeft.add(label, 1, 2);
         gridPaneLeft.add(comboPassengerNo, 1, 3);
-        gridPaneLeft.setMargin(comboPassengerNo, new Insets(10, 0, 0, 100));
+        GridPane.setMargin(comboPassengerNo, new Insets(10, 0, 0, 100));
 
-        stackPaneLeft.setAlignment(gridPaneLeft, Pos.TOP_LEFT);
+        StackPane.setAlignment(gridPaneLeft, Pos.TOP_LEFT);
         stackPaneLeft.getChildren().addAll(gridPaneLeft);
 
 
@@ -292,7 +298,7 @@ public class MainScene extends Application {
 
         Label labelBorder = new Label("Passenger Details");
         labelBorder.getStyleClass().add("border-title");
-        stackPaneRight.setAlignment(labelBorder, Pos.TOP_CENTER);
+        StackPane.setAlignment(labelBorder, Pos.TOP_CENTER);
         stackPaneRight.getChildren().addAll(labelBorder);
 
         TextField fName = new TextField();
@@ -329,26 +335,13 @@ public class MainScene extends Application {
         gridPane.add(fName7, 1, 6); gridPane.add(lName7, 2, 6); gridPane.add(dob7, 3, 6);
         gridPane.add(fName8, 1, 7); gridPane.add(lName8, 2, 7); gridPane.add(dob8, 3, 7);
 
-//        int maxTextFieldNum = 8;
-//        TextField textFieldFName[] = new TextField[maxTextFieldNum];
-//        GridPane mGridPane = new GridPane();
-//        VBox vBoxFNames = new VBox();
-//        for (int i = 0; i < maxTextFieldNum; i++){
-//            textFieldFName[i] = new TextField();
-//            textFieldFName[i].getStyleClass().add("text-field");
-//
-//        }
-//
-//        vBoxFNames.getChildren().addAll(textFieldFName);
-//        mGridPane.add(vBoxFNames, maxTextFieldNum, 0);
 
-
-        stackPaneRight.setAlignment(gridPane, Pos.TOP_LEFT);
+        StackPane.setAlignment(gridPane, Pos.TOP_LEFT);
         stackPaneRight.getChildren().addAll(gridPane);
 
         HBox hBox = new HBox();
-        hBox.setHgrow(stackPaneLeft, Priority.ALWAYS);
-        hBox.setHgrow(stackPaneRight, Priority.ALWAYS);
+        HBox.setHgrow(stackPaneLeft, Priority.ALWAYS);
+        HBox.setHgrow(stackPaneRight, Priority.ALWAYS);
         hBox.setPadding(new Insets(10));
         hBox.setAlignment(Pos.CENTER);
         hBox.getChildren().addAll(stackPaneLeft, stackPaneRight);
@@ -356,17 +349,21 @@ public class MainScene extends Application {
         return hBox;
     }
 
+    private int setReturnedValue() {
+        int result = comboPassengerNo.getValue();
+        System.out.println(result);
+        return result;
+    }
 
 
-
-    public void confirmBoxCloseApp(){
+    private void confirmBoxCloseApp(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Close Program");
         alert.setContentText("Do you want to close the program?");
 
         Optional<ButtonType> choice = alert.showAndWait();
 
-        if (choice.isPresent() && choice.get() == ButtonType.APPLY.OK) {
+        if (choice.isPresent() && choice.get() == ButtonType.OK) {
             Platform.exit();
         } else if (choice.isPresent() && choice.get() == ButtonType.CANCEL) {
             alert.close();
@@ -380,9 +377,7 @@ public class MainScene extends Application {
         buttonCancel = new Button("Cancel");
         buttonContinue = new Button("Continue");
 
-        buttonCancel.setOnAction(event -> {
-            confirmBoxCloseApp();
-        });
+        buttonCancel.setOnAction(event -> confirmBoxCloseApp());
 
         HBox hBox = new HBox();
         hBox.setSpacing(20);
@@ -417,12 +412,6 @@ public class MainScene extends Application {
         System.out.println(mFlight);
 
     }
-
-
-//    public static int setReturnedValue(int result){
-//        return result;
-//    }
-
 
 
 	public static void main(String[] args) {
