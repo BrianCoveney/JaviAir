@@ -1,3 +1,4 @@
+import controller.FlightController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -12,19 +13,20 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import model.Flight;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
-
 
 
 public class MainScene extends Application {
 
     private ObservableList<Flight> observableList;
-
     private RadioButton radioBtnReturn;
     private Button buttonCancel;
     private Button buttonContinue;
@@ -33,39 +35,32 @@ public class MainScene extends Application {
     private DatePicker datePickerDeparture;
     private DatePicker datePickerReturn;
     private GridPane gridPaneMiddle;
-    private final ToggleGroup toggleGroup = new ToggleGroup();
     private ImageView imageView;
     private Image image;
     private HBox hBoxImage;
     private TextArea textAreaDepart, textAreaReturn;
     private Label labelOrigin, labelDestination, labelDateDeparture, labelDateReturn;
     private ComboBox<Integer> comboPassengerNo;
-
+    private String dptFlight, rtnFlight;
     private double departPrice;
     private double returnPrice;
     private double flightPrice;
     private double currentPrice;
-    private double price;
-
-
+    private final Calendar calendar = Calendar.getInstance();
     private static final int MAX_PASSENGER_NO = 8;
-
-
-    private static final ObservableList airportList =
-            FXCollections.observableArrayList();
+    private static final ObservableList airportList = FXCollections.observableArrayList();
+    private final ToggleGroup toggleGroup = new ToggleGroup();
 
 
 	@Override
-	public void start(Stage primaryStage) throws Exception{
-
+	public void start(Stage primaryStage) throws Exception
+    {
         airportList.addAll("ORK","MAD","SBK","JER","CDG","STN","AGP");
 
         VBox vBox = new VBox();
         vBox.getChildren().addAll(
                 createTopGridPane(), createMiddleGridPane(), createBottomPane(), createAnchorPane());
         Scene scene = new Scene(vBox, 800, 700);
-
-
 
         scene.getStylesheets().add("/style/stylesheet.css");
 		primaryStage.setScene(scene);
@@ -75,7 +70,8 @@ public class MainScene extends Application {
 
 
 
-	private GridPane createTopGridPane(){
+	private GridPane createTopGridPane()
+    {
 
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
@@ -120,6 +116,8 @@ public class MainScene extends Application {
             }
         });
 
+
+
         labelDateReturn = new Label("Return");
         datePickerReturn = new DatePicker();
         datePickerReturn.setPromptText("pick a date");
@@ -135,6 +133,10 @@ public class MainScene extends Application {
         datePickerDeparture.setOnAction(event -> {
             getSelectDate(event);
         });
+
+
+
+
 
         comboOrigin.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue.length() > 3){
@@ -163,8 +165,8 @@ public class MainScene extends Application {
 
     private Double getSelectedFlight()
     {
-        String dptFlight = comboOrigin.getSelectionModel().getSelectedItem();
-        String rtnFlight = comboDestination.getSelectionModel().getSelectedItem();
+        dptFlight = comboOrigin.getSelectionModel().getSelectedItem();
+        rtnFlight = comboDestination.getSelectionModel().getSelectedItem();
 
         if( dptFlight == "ORK" && rtnFlight == "MAD" || dptFlight == "MAD" && rtnFlight == "ORK" ){ flightPrice =  100; }
         else if( dptFlight == "ORK" && rtnFlight == "SBK" || dptFlight == "SBK" && rtnFlight == "ORK" ){ flightPrice = 100; }
@@ -173,34 +175,95 @@ public class MainScene extends Application {
         else if( dptFlight == "ORK" && rtnFlight == "STN" || dptFlight == "STN" && rtnFlight == "ORK" ){ flightPrice = 40; }
         else if( dptFlight == "ORK" && rtnFlight == "AGP" || dptFlight == "AGP" && rtnFlight == "ORK" ){ flightPrice = 240; }
 
-        if( dptFlight == "MAD" && rtnFlight == "SBK" || dptFlight == "SBK" && rtnFlight == "MAD" ){ flightPrice =  200; }
+        else if( dptFlight == "MAD" && rtnFlight == "SBK" || dptFlight == "SBK" && rtnFlight == "MAD" ){ flightPrice =  200; }
         else if( dptFlight == "MAD" && rtnFlight == "JER" || dptFlight == "JER" && rtnFlight == "MAD" ){ flightPrice = 200; }
         else if( dptFlight == "MAD" && rtnFlight == "CDG" || dptFlight == "CDG" && rtnFlight == "MAD" ){ flightPrice = 60; }
         else if( dptFlight == "MAD" && rtnFlight == "STN" || dptFlight == "STN" && rtnFlight == "MAD" ){ flightPrice = 60; }
         else if( dptFlight == "MAD" && rtnFlight == "AGP" || dptFlight == "AGP" && rtnFlight == "MAD" ){ flightPrice = 60; }
 
-        if( dptFlight == "SBK" && rtnFlight == "JER" ){ flightPrice =  0; }
+        else if( dptFlight == "SBK" && rtnFlight == "JER" ){ flightPrice =  0; }
         else if( dptFlight == "SBK" && rtnFlight == "CDG" || dptFlight == "CDG" && rtnFlight == "SBK" ){ flightPrice = 150; }
-        else if( dptFlight == "SBK" && rtnFlight == "STN" || dptFlight == "STN" && rtnFlight == "SBK" ){ flightPrice = 80; }
         else if( dptFlight == "SBK" && rtnFlight == "AGP" || dptFlight == "AGP" && rtnFlight == "SBK" ){ flightPrice = 140; }
 
-        if( dptFlight == "JER" && rtnFlight == "CDG" || dptFlight == "CDG" && rtnFlight == "JER" ){ flightPrice =  250; }
+        else if( dptFlight == "JER" && rtnFlight == "CDG" || dptFlight == "CDG" && rtnFlight == "JER" ){ flightPrice =  250; }
         else if( dptFlight == "JER" && rtnFlight == "STN" || dptFlight == "STN" && rtnFlight == "JER" ){ flightPrice = 250; }
         else if( dptFlight == "JER" && rtnFlight == "AGP" || dptFlight == "AGP" && rtnFlight == "JER" ){ flightPrice = 280; }
 
-        if( dptFlight == "CDG" && rtnFlight == "STN" || dptFlight == "STN" && rtnFlight == "CDG" ){ flightPrice =  60; }
         else if( dptFlight == "CDG" && rtnFlight == "AGP" || dptFlight == "AGP" && rtnFlight == "CDG" ){ flightPrice = 100; }
+        else if( dptFlight == "STN" && rtnFlight == "AGP" || dptFlight == "AGP" && rtnFlight == "STN" ){ flightPrice =  120; }
 
-        if( dptFlight == "STN" && rtnFlight == "AGP" || dptFlight == "AGP" && rtnFlight == "STN" ){ flightPrice =  120; }
 
+        else if( dptFlight == "CDG" && rtnFlight == "STN" || dptFlight == "STN" && rtnFlight == "CDG" )
+        {
+            // Factory to create Cell of DatePicker
+            Callback<DatePicker, DateCell> monthCellFactory = this.getMonthCellFactory();
+            datePickerDeparture.setDayCellFactory(monthCellFactory);
+            datePickerReturn.setDayCellFactory(monthCellFactory);
+            flightPrice =  60;
+        }
+
+
+        else if( dptFlight == "SBK" && rtnFlight == "STN" || dptFlight == "STN" && rtnFlight == "SBK" )
+        {
+
+            Callback<DatePicker, DateCell> monthCellFactory = this.getMonthCellFactory();
+            datePickerDeparture.setDayCellFactory(monthCellFactory);
+            datePickerReturn.setDayCellFactory(monthCellFactory);
+
+            flightPrice = 80;
+        }
 
         return flightPrice;
     }
 
 
+    // Disable month of April
+    Callback<DatePicker, DateCell> getMonthCellFactory (){
+
+        final Callback<DatePicker, DateCell> monthCellFactory = new Callback<DatePicker, DateCell>() {
+
+            @Override
+            public DateCell call(final DatePicker datePicker) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if( dptFlight == "SBK" && rtnFlight == "STN" || dptFlight == "STN" && rtnFlight == "SBK" )
+                        {
+                            // Disable March and April
+                            if ( item.getMonth() == Month.APRIL || item.getMonth() == Month.MARCH )
+                            {
+                                setDisable(true);
+                                setStyle("-fx-background-color: #ffc0cb;");
+                            }
+                        }
+                        else if ( dptFlight == "CDG" && rtnFlight == "STN" || dptFlight == "STN" && rtnFlight == "CDG" )
+                        {
+                            // Disable April
+                            if ( item.getMonth() == Month.APRIL )
+                            {
+                                setDisable(true);
+                                setStyle("-fx-background-color: #ffc0cb;");
+                            }
+                        }
+                    }
+                };
+            }
+        };
+        return monthCellFactory;
+    }
+
+
+
+
+
     // take the returned flightPrice from getSelectedFlight() and add 20% if day is Fri - Sun
     private Double getSelectDate(ActionEvent event)
     {
+
+//        calendar.set(Calendar.MONTH, Calendar.APRIL);
+
         if (event.getSource() == datePickerDeparture)
         {
             LocalDate departDate = datePickerDeparture.getValue();
@@ -218,24 +281,23 @@ public class MainScene extends Application {
         {
             LocalDate returnDate = datePickerReturn.getValue();
             String theReturnDay = returnDate.getDayOfWeek().name();
-            if(theReturnDay == "FRIDAY" || theReturnDay == "SATURDAY" || theReturnDay == "SUNDAY") {
+            if(theReturnDay == "FRIDAY" || theReturnDay == "SATURDAY" || theReturnDay == "SUNDAY")
+            {
                 returnPrice = flightPrice + flightPrice * 0.2;
                 currentPrice = departPrice + returnPrice;
                 System.out.println(currentPrice);
-
             }
             else{
                 errorMessage();
             }
         }
-
         return currentPrice;
     }
 
 
 
-
-    private void errorMessage(){
+    private void errorMessage()
+    {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Input Error");
         alert.setContentText("The text you entered does not match a flight");
@@ -245,7 +307,8 @@ public class MainScene extends Application {
 
 
     // insert the airplane icons between the flight destinations, and the flight times
-    private HBox insertIcon(){
+    private HBox insertIcon()
+    {
         image = new Image("resources/airplane.png");
         imageView = new ImageView(image);
         imageView.setImage(image);
@@ -262,7 +325,8 @@ public class MainScene extends Application {
     }
 
 
-    private GridPane createMiddleGridPane(){
+    private GridPane createMiddleGridPane()
+    {
 
         Button buttonFlightSelect = new Button("Select Flight");
         buttonFlightSelect.setOnAction(event -> addFlightsToList());
@@ -294,7 +358,8 @@ public class MainScene extends Application {
     }
 
 
-    private HBox createBottomPane(){
+    private HBox createBottomPane()
+    {
 
         // LHS Pane
         StackPane stackPaneLeft = new StackPane();
@@ -384,30 +449,35 @@ public class MainScene extends Application {
         return hBox;
     }
 
-    private int setReturnedValue() {
+    private int setReturnedValue()
+    {
         int result = comboPassengerNo.getValue();
         System.out.println(result);
         return result;
     }
 
 
-    private void confirmBoxCloseApp(){
+    private void confirmBoxCloseApp()
+    {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Close Program");
         alert.setContentText("Do you want to close the program?");
 
         Optional<ButtonType> choice = alert.showAndWait();
 
-        if (choice.isPresent() && choice.get() == ButtonType.OK) {
+        if (choice.isPresent() && choice.get() == ButtonType.OK)
+        {
             Platform.exit();
-        } else if (choice.isPresent() && choice.get() == ButtonType.CANCEL) {
+        }
+        else if (choice.isPresent() && choice.get() == ButtonType.CANCEL)
+        {
             alert.close();
         }
 
     }
 
-    private AnchorPane createAnchorPane(){
-
+    private AnchorPane createAnchorPane()
+    {
         AnchorPane anchorPane = new AnchorPane();
         buttonCancel = new Button("Cancel");
         buttonContinue = new Button("Continue");
@@ -432,24 +502,15 @@ public class MainScene extends Application {
 
 
 
-    private void addFlightsToList(){
-        String flyOut = null;
-        String flyBack = null;
-        String finalPrice = null;
+    private void addFlightsToList()
+    {
+        String flyOut = comboOrigin.getSelectionModel().getSelectedItem();
+        String flyBack = comboOrigin.getSelectionModel().getSelectedItem();
+        String finalPrice = String.valueOf(currentPrice);
 
-        if(comboOrigin.getSelectionModel().getSelectedItem() == null ||
-                comboDestination.getSelectionModel().getSelectedItem() == null) {
-            errorMessage();
-        }else{
-            flyOut = comboOrigin.getValue();
-            flyBack = comboDestination.getValue();
-            finalPrice = String.valueOf(currentPrice);
-        }
+        Flight mFlight = new Flight(flyOut, flyBack, finalPrice);
 
-        // simple factory method implementation
-        Flight mFlight = Flight.createFlight(flyOut, flyBack, finalPrice);
-        System.out.println(mFlight);
-
+        FlightController.getInstance().addFlight(mFlight);
     }
 
 
