@@ -15,6 +15,11 @@ public class Flight {
         this.cost = flightCost;
     }
 
+    public Flight (String flightOrigin, String flightDestination){
+        this.origin = flightOrigin;
+        this.destination = flightDestination;
+
+    }
 
 
     public String getFlightOrigin() {
@@ -43,6 +48,9 @@ public class Flight {
 
     @Override
     public String toString() {
-        return this.origin +" | "+ this.destination +" | "+ this.cost;
+
+        return this.origin +" > "+ this.destination +"\t = €"+ this.cost;
     }
+
+    public String toStringReturn()  { return this.destination +" > "+ this.origin +"\t = €"+ this.cost; }
 }
