@@ -7,17 +7,17 @@ public class Flight {
 
     private String origin;
     private String destination;
-    private String cost;
+    private Double price;
 
-    public Flight (String flightOrigin, String flightDestination, String flightCost){
-        this.origin = flightOrigin;
-        this.destination = flightDestination;
-        this.cost = flightCost;
+    public Flight (String origin, String destination, Double price){
+        this.origin = origin;
+        this.destination = destination;
+        this.price = price;
     }
 
-    public Flight (String flightOrigin, String flightDestination){
-        this.origin = flightOrigin;
-        this.destination = flightDestination;
+    public Flight (String origin, String destination){
+        this.origin = origin;
+        this.destination = destination;
 
     }
 
@@ -38,19 +38,15 @@ public class Flight {
         this.destination = flightDestination;
     }
 
-    public String getCost() {
-        return cost;
-    }
+    public Double getPrice() { return price; }
 
-    public void setCost(String cost) {
-        this.cost = cost;
-    }
+    public Double setPrice(Double price) { return price; }
 
     @Override
     public String toString() {
 
-        return this.origin +" > "+ this.destination +"\t = €"+ this.cost;
+        return this.origin +" > "+ this.destination +"\t = €"+ this.price;
     }
 
-    public String toStringReturn()  { return this.destination +" > "+ this.origin +"\t = €"+ this.cost; }
+    public String toStringReturn()  { return this.destination +" > "+ this.origin +"\t = €"+ this.price; }
 }

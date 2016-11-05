@@ -28,12 +28,12 @@ public class MainScene extends Application {
     private ObservableList<Flight> observableList;
     private RadioButton radioBtnReturn;
     private Button buttonCancel;
-    private Button buttonContinue;
+    protected Button buttonContinue;
 	private ComboBox<String> comboOrigin;
 	private ComboBox<String> comboDestination;
     private DatePicker datePickerDeparture;
     private DatePicker datePickerReturn;
-    private GridPane gridPaneMiddle;
+  GridPane gridPaneMiddle;
     private ImageView imageView;
     private Image image;
     private HBox hBoxImage;
@@ -48,13 +48,26 @@ public class MainScene extends Application {
     private static final int MAX_PASSENGER_NO = 8;
     private static final ObservableList airportList = FXCollections.observableArrayList();
     private final ToggleGroup toggleGroup = new ToggleGroup();
+
+    public static final String CORK = "ORK";
+    public static final String MADRID = "MAD";
+    public static final String ST_BRIEUC = "SBK";
+    public static final String JERSEY = "JER";
+    public static final String PARIS = "CDG";
+    public static final String STANSTED = "STN";
+    public static final String MALAGA = "AGP";
+    public static final String FRI = "FRIDAY";
+    public static final String SAT = "SATURDAY";
+    public static final String SUN = "SUNDAY";
+
+    // reference to the Flight object
     Flight mFlight;
 
 
 	@Override
 	public void start(Stage primaryStage) throws Exception
     {
-        airportList.addAll("ORK","MAD","SBK","JER","CDG","STN","AGP");
+        airportList.addAll(CORK, MADRID, ST_BRIEUC, JERSEY, PARIS, STANSTED, MALAGA);
 
         VBox vBox = new VBox();
         vBox.getChildren().addAll(
@@ -91,7 +104,6 @@ public class MainScene extends Application {
         comboOrigin.setOnAction(event -> {
             if(comboOrigin.getItems().contains(comboOrigin.getValue()))
             {
-//                textAreaDepart.setText(comboOrigin.getValue().toString());
                 getSelectedFlightPrice();
             }
             else{
@@ -109,7 +121,6 @@ public class MainScene extends Application {
 
             if(comboDestination.getItems().contains(comboDestination.getValue()))
             {
-//                textAreaReturn.setText(comboDestination.getValue().toString());
                 getSelectedFlightPrice();
             }
             else{
@@ -175,52 +186,63 @@ public class MainScene extends Application {
         Callback<DatePicker, DateCell> monthCellFactory = this.getMonthCellFactory();
 
 
-        if( dptFlight == "ORK" && rtnFlight == "MAD" || dptFlight == "MAD" && rtnFlight == "ORK" ){
-            flightPrice =  100;
-        }
-        else if( dptFlight == "ORK" && rtnFlight == "SBK" || dptFlight == "SBK" && rtnFlight == "ORK" ){ flightPrice = 100; }
-        else if( dptFlight == "ORK" && rtnFlight == "JER" || dptFlight == "JER" && rtnFlight == "ORK" ){ flightPrice = 120; }
-        else if( dptFlight == "ORK" && rtnFlight == "CDG" || dptFlight == "CDG" && rtnFlight == "ORK" ){ flightPrice = 80; }
-        else if( dptFlight == "ORK" && rtnFlight == "STN" || dptFlight == "STN" && rtnFlight == "ORK" ){ flightPrice = 40; }
-        else if( dptFlight == "ORK" && rtnFlight == "AGP" || dptFlight == "AGP" && rtnFlight == "ORK" ){ flightPrice = 240; }
+        try {
 
-        else if( dptFlight == "MAD" && rtnFlight == "SBK" || dptFlight == "SBK" && rtnFlight == "MAD" ){ flightPrice =  200; }
-        else if( dptFlight == "MAD" && rtnFlight == "JER" || dptFlight == "JER" && rtnFlight == "MAD" ){ flightPrice = 200; }
-        else if( dptFlight == "MAD" && rtnFlight == "CDG" || dptFlight == "CDG" && rtnFlight == "MAD" ){ flightPrice = 60; }
-        else if( dptFlight == "MAD" && rtnFlight == "STN" || dptFlight == "STN" && rtnFlight == "MAD" ){ flightPrice = 60; }
-        else if( dptFlight == "MAD" && rtnFlight == "AGP" || dptFlight == "AGP" && rtnFlight == "MAD" ){ flightPrice = 60; }
+            if(dptFlight != null && rtnFlight != null) 
+            {
+                if (dptFlight.equals(CORK) && rtnFlight.equals((MADRID)) || dptFlight.equals(MADRID) && rtnFlight.equals(CORK)) {
+                    flightPrice = 100;
+                } else if (dptFlight.equals(CORK) && rtnFlight.equals(ST_BRIEUC) || dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(CORK)) {
+                    flightPrice = 100;
+                } else if (dptFlight.equals(CORK) && rtnFlight.equals(JERSEY) || dptFlight.equals(JERSEY) && rtnFlight.equals(CORK)) {
+                    flightPrice = 120;
+                } else if (dptFlight.equals(CORK) && rtnFlight.equals(PARIS) || dptFlight.equals(PARIS) && rtnFlight.equals(CORK)) {
+                    flightPrice = 80;
+                } else if (dptFlight.equals(CORK) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(CORK)) {
+                    flightPrice = 40;
+                } else if (dptFlight.equals(CORK) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(CORK)) {
+                    flightPrice = 240;
+                } else if (dptFlight.equals(MADRID) && rtnFlight.equals(ST_BRIEUC) || dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(MADRID)) {
+                    flightPrice = 200;
+                } else if (dptFlight.equals(MADRID) && rtnFlight.equals(JERSEY) || dptFlight.equals(JERSEY) && rtnFlight.equals(MADRID)) {
+                    flightPrice = 200;
+                } else if (dptFlight.equals(MADRID) && rtnFlight.equals(PARIS) || dptFlight.equals(PARIS) && rtnFlight.equals(MADRID)) {
+                    flightPrice = 60;
+                } else if (dptFlight.equals(MADRID) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(MADRID)) {
+                    flightPrice = 60;
+                } else if (dptFlight.equals(MADRID) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(MADRID)) {
+                    flightPrice = 60;
+                } else if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(JERSEY)) {
+                    flightPrice = 0;
+                } else if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(PARIS) || dptFlight.equals(PARIS) && rtnFlight.equals(ST_BRIEUC)) {
+                    flightPrice = 150;
+                } else if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(ST_BRIEUC)) {
+                    flightPrice = 140;
+                } else if (dptFlight.equals(JERSEY) && rtnFlight.equals(PARIS) || dptFlight.equals(PARIS) && rtnFlight.equals(JERSEY)) {
+                    flightPrice = 250;
+                } else if (dptFlight.equals(JERSEY) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(JERSEY)) {
+                    flightPrice = 250;
+                } else if (dptFlight.equals(JERSEY) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(JERSEY)) {
+                    flightPrice = 280;
+                } else if (dptFlight.equals(PARIS) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(PARIS)) {
+                    flightPrice = 100;
+                } else if (dptFlight.equals(STANSTED) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(STANSTED)) {
+                    flightPrice = 120;
+                } else if (dptFlight.equals(PARIS) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(PARIS)) {
+                    // Disable April
+                    datePickerDeparture.setDayCellFactory(monthCellFactory);
+                    datePickerReturn.setDayCellFactory(monthCellFactory);
+                    flightPrice = 60;
+                } else if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(ST_BRIEUC)) {
+                    // Disable March and April
+                    datePickerDeparture.setDayCellFactory(monthCellFactory);
+                    datePickerReturn.setDayCellFactory(monthCellFactory);
+                    flightPrice = 80;
+                }
+            }
 
-        else if( dptFlight == "SBK" && rtnFlight == "JER" ){ flightPrice =  0; }
-        else if( dptFlight == "SBK" && rtnFlight == "CDG" || dptFlight == "CDG" && rtnFlight == "SBK" ){ flightPrice = 150; }
-        else if( dptFlight == "SBK" && rtnFlight == "AGP" || dptFlight == "AGP" && rtnFlight == "SBK" ){ flightPrice = 140; }
-
-        else if( dptFlight == "JER" && rtnFlight == "CDG" || dptFlight == "CDG" && rtnFlight == "JER" ){ flightPrice =  250; }
-        else if( dptFlight == "JER" && rtnFlight == "STN" || dptFlight == "STN" && rtnFlight == "JER" ){ flightPrice = 250; }
-        else if( dptFlight == "JER" && rtnFlight == "AGP" || dptFlight == "AGP" && rtnFlight == "JER" ){ flightPrice = 280; }
-
-        else if( dptFlight == "CDG" && rtnFlight == "AGP" || dptFlight == "AGP" && rtnFlight == "CDG" ){ flightPrice = 100; }
-        else if( dptFlight == "STN" && rtnFlight == "AGP" || dptFlight == "AGP" && rtnFlight == "STN" ){ flightPrice =  120; }
-
-
-        else if( dptFlight == "CDG" && rtnFlight == "STN" || dptFlight == "STN" && rtnFlight == "CDG" )
-        {
-            // Disable April
-            datePickerDeparture.setDayCellFactory(monthCellFactory);
-            datePickerReturn.setDayCellFactory(monthCellFactory);
-
-            textAreaDepart.setText(mFlight.toString());
-
-            flightPrice =  60;
-        }
-
-
-        else if( dptFlight == "SBK" && rtnFlight == "STN" || dptFlight == "STN" && rtnFlight == "SBK" )
-        {
-            // Disable March and April
-            datePickerDeparture.setDayCellFactory(monthCellFactory);
-            datePickerReturn.setDayCellFactory(monthCellFactory);
-
-            flightPrice = 80;
+        }catch (NullPointerException e){
+            System.out.println(e.getMessage());
         }
 
         return flightPrice;
@@ -239,22 +261,20 @@ public class MainScene extends Application {
                     public void updateItem(LocalDate item, boolean empty) {
                         super.updateItem(item, empty);
 
-                        if( dptFlight == "SBK" && rtnFlight == "STN" || dptFlight == "STN" && rtnFlight == "SBK" )
+                        if(item != null)
                         {
-                            // Disable March and April
-                            if ( item.getMonth() == Month.APRIL || item.getMonth() == Month.MARCH )
-                            {
-                                setDisable(true);
-                                setStyle("-fx-background-color: #ffc0cb;");
-                            }
-                        }
-                        else if ( dptFlight == "CDG" && rtnFlight == "STN" || dptFlight == "STN" && rtnFlight == "CDG" )
-                        {
-                            // Disable April
-                            if ( item.getMonth() == Month.APRIL )
-                            {
-                                setDisable(true);
-                                setStyle("-fx-background-color: #ffc0cb;");
+                            if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(ST_BRIEUC)) {
+                                // Disable March and April
+                                if (item.getMonth().equals(Month.APRIL) || item.getMonth().equals(Month.MARCH)) {
+                                    setDisable(true);
+                                    setStyle("-fx-background-color: #ffc0cb;");
+                                }
+                            } else if (dptFlight.equals(PARIS) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(PARIS)) {
+                                // Disable April
+                                if (item.getMonth().equals(Month.APRIL)) {
+                                    setDisable(true);
+                                    setStyle("-fx-background-color: #ffc0cb;");
+                                }
                             }
                         }
                     }
@@ -265,43 +285,36 @@ public class MainScene extends Application {
     }
 
 
-
-
-
-
+    
 
     // take the returned flightPrice from getSelectedFlight() and add 20% if day is Fri - Sun
     private Double getSelectDate(ActionEvent event)
     {
-        if (event.getSource() == datePickerDeparture)
-        {
-            LocalDate departDate = datePickerDeparture.getValue();
-            String theDepartDay = departDate.getDayOfWeek().name();
-            if (theDepartDay.equals("FRIDAY") || theDepartDay.equals("SATURDAY") || theDepartDay.equals("SUNDAY"))
-            {
-                departPrice = flightPrice + flightPrice * 0.2;
-            }
-            else
-            {
-                departPrice = flightPrice;
+        try {
+            if (event.getSource().equals(datePickerDeparture)) {
+                LocalDate departDate = datePickerDeparture.getValue();
+                String theDepartDay = departDate.getDayOfWeek().name();
+                if (theDepartDay.equals(FRI) || theDepartDay.equals(SAT) || theDepartDay.equals(SUN)) {
+                    departPrice = flightPrice + flightPrice * 0.2;
+                } else {
+                    departPrice = flightPrice;
+                }
+
+            } else if (event.getSource().equals(datePickerReturn)) {
+                LocalDate returnDate = datePickerReturn.getValue();
+                String theReturnDay = returnDate.getDayOfWeek().name();
+                if (theReturnDay.equals(FRI) || theReturnDay.equals(SAT) || theReturnDay.equals(SUN)) {
+                    returnPrice = flightPrice + flightPrice * 0.2;
+                } else {
+                    returnPrice = flightPrice;
+                }
             }
 
-        }
-        else if(event.getSource() == datePickerReturn)
-        {
-            LocalDate returnDate = datePickerReturn.getValue();
-            String theReturnDay = returnDate.getDayOfWeek().name();
-            if(theReturnDay.equals("FRIDAY") || theReturnDay.equals("SATURDAY") || theReturnDay.equals("SUNDAY"))
-            {
-                returnPrice = flightPrice + flightPrice * 0.2;
-            }
-            else
-            {
-                returnPrice = flightPrice;
-            }
+            currentPrice = departPrice + returnPrice;
+        }catch (NullPointerException e){
+            System.out.println(e.getMessage());
         }
 
-        currentPrice = departPrice + returnPrice;
 
         return currentPrice;
     }
@@ -311,20 +324,19 @@ public class MainScene extends Application {
     {
         String flyOut = comboOrigin.getSelectionModel().getSelectedItem();
         String flyBack = comboDestination.getSelectionModel().getSelectedItem();
-        String finalPrice = String.valueOf(currentPrice);
+        Double finalCost = currentPrice; // returned from getSelectedDate()
 
-        Flight mFlight = new Flight(flyOut, flyBack, finalPrice);
+
         FlightController.getInstance().addFlight(mFlight);
 
         textAreaDepart.setText( flyOut +" > " +  flyBack + "\t€" + departPrice );
         textAreaReturn.setText( flyOut +" > " +  flyBack + "\t€" + returnPrice );
-        textAreaReturn.appendText("\n\nTotal: " + currentPrice);
+        textAreaReturn.appendText("\n\nTotal: " + finalCost);
 
-
-        if(flyOut == "ORK" && flyBack == "MAD"){ textAreaDepart.appendText("\n0920-1300");}
-        else if( flyOut == "ORK" && flyBack == "SBK"){ textAreaDepart.appendText("\n1030-1400"); }
-        else if( flyOut == "ORK" && flyBack == "SBK"){ textAreaDepart.appendText("\n1030-1400"); }
-        else if( flyOut == "ORK" && flyBack == "CDG"){ textAreaDepart.appendText("\n0920-1215"); textAreaReturn.appendText("\n1820-2105"); }
+        if(flyOut.equals(CORK) && flyBack.equals(MADRID)){ textAreaDepart.appendText("\n0920-1300");}
+        else if( flyOut.equals(CORK) && flyBack.equals(ST_BRIEUC)){ textAreaDepart.appendText("\n1030-1400"); }
+        else if( flyOut.equals(CORK) && flyBack.equals(ST_BRIEUC)){ textAreaDepart.appendText("\n1030-1400"); }
+        else if( flyOut.equals(CORK) && flyBack.equals(PARIS)){ textAreaDepart.appendText("\n0920-1215"); textAreaReturn.appendText("\n1820-2105"); }
     }
 
 
@@ -497,11 +509,11 @@ public class MainScene extends Application {
 
         Optional<ButtonType> choice = alert.showAndWait();
 
-        if (choice.isPresent() && choice.get() == ButtonType.OK)
+        if (choice.isPresent() && choice.get().equals(ButtonType.OK))
         {
             Platform.exit();
         }
-        else if (choice.isPresent() && choice.get() == ButtonType.CANCEL)
+        else if (choice.isPresent() && choice.get().equals(ButtonType.CANCEL))
         {
             alert.close();
         }
