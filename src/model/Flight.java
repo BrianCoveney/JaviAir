@@ -3,11 +3,13 @@ package model;
 /**
  * Created by brian on 22/10/16.
  */
-public class Flight {
+public class Flight{
 
     private String origin;
     private String destination;
     private Double price;
+    private Double deapartPrice;
+    private Double returnPice;
 
     public Flight (String origin, String destination, Double price){
         this.origin = origin;
@@ -15,10 +17,12 @@ public class Flight {
         this.price = price;
     }
 
-    public Flight (String origin, String destination){
+    public Flight (String origin, String destination, Double deapartPrice, Double returnPice, Double price) {
         this.origin = origin;
         this.destination = destination;
-
+        this.deapartPrice = deapartPrice;
+        this.returnPice = returnPice;
+        this.price = price;
     }
 
 
@@ -45,8 +49,10 @@ public class Flight {
     @Override
     public String toString() {
 
-        return this.origin +" > "+ this.destination +"\t = €"+ this.price;
+        return getPrice().toString();
     }
 
-    public String toStringReturn()  { return this.destination +" > "+ this.origin +"\t = €"+ this.price; }
+    public String toStringDept()  { return this.origin +" > "+ this.destination +"\t = €"+ this.deapartPrice; }
+
+    public String toStringReturn()  { return this.destination +" > "+ this.origin +"\t = €"+ this.returnPice; }
 }
