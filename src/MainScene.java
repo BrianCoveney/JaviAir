@@ -1,4 +1,3 @@
-import controller.FlightController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -14,7 +13,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import model.Flight;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -41,8 +39,8 @@ public class MainScene extends Application {
     private Label labelOrigin, labelDestination, labelDateDeparture, labelDateReturn;
     private ComboBox<Integer> comboPassengerNo;
     private String dptFlight, rtnFlight;
-    private double departPrice;
-    private double returnPrice;
+    private double dateDepartPrice;
+    private double dateReturnPrice;
     private double flightPrice;
     private double currentPrice;
     private static final int MAX_PASSENGER_NO = 8;
@@ -61,7 +59,7 @@ public class MainScene extends Application {
     public static final String SAT = "SATURDAY";
     public static final String SUN = "SUNDAY";
 
-    // reference to the model.Flight object
+    // reference to the Flight object
     Flight mFlight;
 
 
@@ -76,7 +74,7 @@ public class MainScene extends Application {
                 createTopGridPane(), createMiddleGridPane(), createBottomPane(), createAnchorPane());
         Scene scene = new Scene(vBox, 800, 700);
 
-        scene.getStylesheets().add("/style/stylesheet.css");
+        scene.getStylesheets().add("/stylesheet.css");
         primaryStage.setScene(scene);
         primaryStage.setTitle("JaviAir App");
         primaryStage.show();
@@ -141,11 +139,20 @@ public class MainScene extends Application {
 
         });
 
-        Button btnFlightSelect = new Button("Select model.Flight");
+        Button btnFlightSelect = new Button("Select Flight");
         btnFlightSelect.setOnAction(event -> displaySelectedFlights());
 
 
         comboOrigin.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > 3) {
+                comboDestination.setId("error");
+            } else {
+                comboDestination.setId("default");
+            }
+        });
+
+
+        comboDestination.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.length() > 3) {
                 comboOrigin.setId("error");
             } else {
@@ -179,8 +186,6 @@ public class MainScene extends Application {
     private Double getSelectedFlightPrice() {
         dptFlight = comboOrigin.getSelectionModel().getSelectedItem();
         rtnFlight = comboDestination.getSelectionModel().getSelectedItem();
-        Callback<DatePicker, DateCell> monthCellFactory = this.getMonthCell();
-
 
         try {
 
@@ -224,14 +229,8 @@ public class MainScene extends Application {
                 } else if (dptFlight.equals(STANSTED) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(STANSTED)) {
                     flightPrice = 120;
                 } else if (dptFlight.equals(PARIS) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(PARIS)) {
-                    // Disable April
-                    datePickerDeparture.setDayCellFactory(monthCellFactory);
-                    datePickerReturn.setDayCellFactory(monthCellFactory);
                     flightPrice = 60;
                 } else if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(ST_BRIEUC)) {
-                    // Disable March and April
-                    datePickerDeparture.setDayCellFactory(monthCellFactory);
-                    datePickerReturn.setDayCellFactory(monthCellFactory);
                     flightPrice = 80;
                 }
             }
@@ -240,12 +239,20 @@ public class MainScene extends Application {
             System.out.println(e.getMessage());
         }
 
+        // Disable March and/or April in the DatePicker.
+        // Also disable date before current time and after 6 months from now.
+        // JavaFX DatePicker Tutorial - 07planning.org
+        Callback<DatePicker, DateCell> monthCellFactory = this.getMonthCellFactory();
+        datePickerDeparture.setDayCellFactory(monthCellFactory);
+        datePickerReturn.setDayCellFactory(monthCellFactory);
+
         return flightPrice;
     }
 
 
     // Disable March and/or April in the DatePicker
-    Callback<DatePicker, DateCell> getMonthCell() {
+    // JavaFX DatePicker Tutorial - 07planning.org
+    Callback<DatePicker, DateCell> getMonthCellFactory() {
 
         final Callback<DatePicker, DateCell> monthCellFactory = new Callback<DatePicker, DateCell>() {
 
@@ -256,7 +263,18 @@ public class MainScene extends Application {
                     public void updateItem(LocalDate item, boolean empty) {
                         super.updateItem(item, empty);
 
+                        LocalDate currentDate = LocalDate.now();
+                        LocalDate nowPlusSixMonth = currentDate.plusMonths(6);
+
+
+                        if(item.isBefore(currentDate) || item.isAfter(nowPlusSixMonth)) {
+                                setDisable(true);
+                                setStyle("-fx-background-color: #ffc0cb;");
+                        }
+
                         if (item != null) {
+
+
                             if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(ST_BRIEUC)) {
                                 // Disable March and April
                                 if (item.getMonth().equals(Month.APRIL) || item.getMonth().equals(Month.MARCH)) {
@@ -279,33 +297,35 @@ public class MainScene extends Application {
     }
 
 
-    // take the returned flightPrice from getSelectedFlight() and add 20% if day is Fri - Sun
+    // take the returned 'flightPrice' from getSelectedFlight() and add 20% if day is Fri - Sun
     private Double getSelectDate(ActionEvent event) {
         try {
             if (event.getSource().equals(datePickerDeparture)) {
-                LocalDate departDate = datePickerDeparture.getValue();
-                String theDepartDay = departDate.getDayOfWeek().name();
-                if (theDepartDay.equals(FRI) || theDepartDay.equals(SAT) || theDepartDay.equals(SUN)) {
-                    departPrice = flightPrice + flightPrice * 0.2;
+                LocalDate ldDepartDate = datePickerDeparture.getValue();
+
+                // set variable to the day of the week, from the selected date
+                String dayOfWeek = ldDepartDate.getDayOfWeek().name();
+
+                if (dayOfWeek.equals(FRI) || dayOfWeek.equals(SAT) || dayOfWeek.equals(SUN)) {
+                    dateDepartPrice = flightPrice + flightPrice * 0.2;
                 } else {
-                    departPrice = flightPrice;
+                    dateDepartPrice = flightPrice;
                 }
 
             } else if (event.getSource().equals(datePickerReturn)) {
-                LocalDate returnDate = datePickerReturn.getValue();
-                String theReturnDay = returnDate.getDayOfWeek().name();
-                if (theReturnDay.equals(FRI) || theReturnDay.equals(SAT) || theReturnDay.equals(SUN)) {
-                    returnPrice = flightPrice + flightPrice * 0.2;
+                LocalDate ldReturnDate = datePickerReturn.getValue();
+                String dayOfWeek = ldReturnDate.getDayOfWeek().name();
+                if (dayOfWeek.equals(FRI) || dayOfWeek.equals(SAT) || dayOfWeek.equals(SUN)) {
+                    dateReturnPrice = flightPrice + flightPrice * 0.2;
                 } else {
-                    returnPrice = flightPrice;
+                    dateReturnPrice = flightPrice;
                 }
             }
+            currentPrice = dateDepartPrice + dateReturnPrice;
 
-            currentPrice = departPrice + returnPrice;
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }
-
 
         return currentPrice;
     }
@@ -314,11 +334,23 @@ public class MainScene extends Application {
     private void displaySelectedFlights() {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
         String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
-        //Double priceFromDatePicker = currentPrice; // returned from getSelectedDate()
-
 
         try {
-            Flight flight = new Flight(flightDepart, flightReturn, departPrice, returnPrice, currentPrice);
+
+            Flight flight = new Flight(
+                    flightDepart,       // setOrigin() from variable in this method
+                    flightReturn,       // setDestination() from variable in this method
+                    dateDepartPrice,    // setDeapartPrice() from the return of getSelectDate()
+                    dateReturnPrice,    // setReturnPice() from the return of getSelectDate()
+                    currentPrice);      // setPrice() from the return of getSelectedFlightPrice()
+
+//            Flight flight = new Flight();
+//            flight.setOrigin(flightDepart);
+//            flight.setDestination(flightReturn);
+//            flight.setDeapartPrice(dateDepartPrice);
+//            flight.setReturnPice(dateReturnPrice);
+//            flight.setPrice(currentPrice);
+
             FlightController.getInstance().addFlight(flight);
 
             if (flight != null) {
@@ -371,7 +403,7 @@ public class MainScene extends Application {
 
     private GridPane createMiddleGridPane() {
 
-        Button buttonFlightSelect = new Button("Select model.Flight");
+        Button buttonFlightSelect = new Button("Select Flight");
         buttonFlightSelect.setOnAction(event -> displaySelectedFlights());
 
         gridPaneMiddle = new GridPane();

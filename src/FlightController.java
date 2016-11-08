@@ -1,8 +1,5 @@
-package controller;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Flight;
 
 /**
  * Created by brian on 26/10/16.
