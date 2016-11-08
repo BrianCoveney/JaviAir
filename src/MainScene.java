@@ -23,10 +23,8 @@ import java.util.Optional;
 
 public class MainScene extends Application {
 
-    private ObservableList<Flight> observableList;
-    private RadioButton radioBtnReturn;
     private Button buttonCancel;
-    protected Button buttonContinue;
+    private Button buttonContinue;
     private ComboBox<String> comboOrigin;
     private ComboBox<String> comboDestination;
     private DatePicker datePickerDeparture;
@@ -43,29 +41,44 @@ public class MainScene extends Application {
     private double dateReturnPrice;
     private double flightPrice;
     private double currentPrice;
+    private final ToggleGroup toggleGroup = new ToggleGroup();
+    private List<TextField> tfFirstNamesList;
+    private List<TextField> tfLastNamesList;
+    private List<TextField> tfDateOfBirthList;
+
+    // constants - flight airports
+    private static final String CORK            = "ORK";
+    private static final String MADRID          = "MAD";
+    private static final String ST_BRIEUC       = "SBK";
+    private static final String JERSEY          = "JER";
+    private static final String PARIS           = "CDG";
+    private static final String STANSTED        = "STN";
+    private static final String MALAGA          = "AGP";
+    private static final String FRI             = "FRIDAY";
+    private static final String SAT             = "SATURDAY";
+    private static final String SUN             = "SUNDAY";
+
+    // constants - flight prices
+    private static final int TWO_HND_EIGHTY     = 280;
+    private static final int TWO_HND_FIFTY      = 250;
+    private static final int TWO_HND_FORTY      = 240;
+    private static final int TWO_HND            = 200;
+    private static final int ONE_HND_FIFTY      = 150;
+    private static final int ONE_HND_FORTY      = 140;
+    private static final int ONE_HND_TWENTY     = 120;
+    private static final int ONE_HND            = 100;
+    private static final int EIGHTY             = 80;
+    private static final int SIXTY              = 60;
+    private static final int FORTY              = 40;
+    private static final int ZERO               = 0;
+
+    // constants - misc
     private static final int MAX_PASSENGER_NO = 8;
     private static final ObservableList airportList = FXCollections.observableArrayList();
-    private final ToggleGroup toggleGroup = new ToggleGroup();
-
-    // constants
-    public static final String CORK = "ORK";
-    public static final String MADRID = "MAD";
-    public static final String ST_BRIEUC = "SBK";
-    public static final String JERSEY = "JER";
-    public static final String PARIS = "CDG";
-    public static final String STANSTED = "STN";
-    public static final String MALAGA = "AGP";
-    public static final String FRI = "FRIDAY";
-    public static final String SAT = "SATURDAY";
-    public static final String SUN = "SUNDAY";
-
-    // reference to the Flight object
-    Flight mFlight;
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         // add Constants to the ObservableList
         airportList.addAll(CORK, MADRID, ST_BRIEUC, JERSEY, PARIS, STANSTED, MALAGA);
 
@@ -88,7 +101,7 @@ public class MainScene extends Application {
 
         RadioButton radioBtnOneWay = new RadioButton("One Way");
         radioBtnOneWay.setToggleGroup(toggleGroup);
-        radioBtnReturn = new RadioButton("Return");
+        RadioButton radioBtnReturn = new RadioButton("Return");
         radioBtnReturn.setToggleGroup(toggleGroup);
         radioBtnReturn.fire(); // return btn on by default
 
@@ -102,7 +115,7 @@ public class MainScene extends Application {
             if (comboOrigin.getItems().contains(comboOrigin.getValue())) {
                 getSelectedFlightPrice();
             } else {
-                errorMessage();
+                UtilityClass.errorMessageInput();
             }
         });
 
@@ -117,7 +130,7 @@ public class MainScene extends Application {
             if (comboDestination.getItems().contains(comboDestination.getValue())) {
                 getSelectedFlightPrice();
             } else {
-                errorMessage();
+                UtilityClass.errorMessageInput();
             }
         });
 
@@ -143,6 +156,7 @@ public class MainScene extends Application {
         btnFlightSelect.setOnAction(event -> displaySelectedFlights());
 
 
+
         comboOrigin.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.length() > 3) {
                 comboDestination.setId("error");
@@ -159,7 +173,6 @@ public class MainScene extends Application {
                 comboOrigin.setId("default");
             }
         });
-
 
         gridPane.add(radioBtnOneWay, 0, 1);
         gridPane.add(radioBtnReturn, 2, 1);
@@ -179,7 +192,6 @@ public class MainScene extends Application {
         gridPane.add(new Separator(), 0, 8, 3, 1);
 
         return gridPane;
-
     }
 
 
@@ -191,50 +203,49 @@ public class MainScene extends Application {
 
             if (dptFlight != null && rtnFlight != null) {
                 if (dptFlight.equals(CORK) && rtnFlight.equals((MADRID)) || dptFlight.equals(MADRID) && rtnFlight.equals(CORK)) {
-                    flightPrice = 100;
+                    flightPrice = ONE_HND;
                 } else if (dptFlight.equals(CORK) && rtnFlight.equals(ST_BRIEUC) || dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(CORK)) {
-                    flightPrice = 100;
+                    flightPrice = ONE_HND;
                 } else if (dptFlight.equals(CORK) && rtnFlight.equals(JERSEY) || dptFlight.equals(JERSEY) && rtnFlight.equals(CORK)) {
-                    flightPrice = 120;
+                    flightPrice = ONE_HND_TWENTY;
                 } else if (dptFlight.equals(CORK) && rtnFlight.equals(PARIS) || dptFlight.equals(PARIS) && rtnFlight.equals(CORK)) {
-                    flightPrice = 80;
+                    flightPrice = EIGHTY;
                 } else if (dptFlight.equals(CORK) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(CORK)) {
-                    flightPrice = 40;
+                    flightPrice = FORTY;
                 } else if (dptFlight.equals(CORK) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(CORK)) {
-                    flightPrice = 240;
+                    flightPrice = TWO_HND_FORTY;
                 } else if (dptFlight.equals(MADRID) && rtnFlight.equals(ST_BRIEUC) || dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(MADRID)) {
-                    flightPrice = 200;
+                    flightPrice = TWO_HND;
                 } else if (dptFlight.equals(MADRID) && rtnFlight.equals(JERSEY) || dptFlight.equals(JERSEY) && rtnFlight.equals(MADRID)) {
-                    flightPrice = 200;
+                    flightPrice = TWO_HND;
                 } else if (dptFlight.equals(MADRID) && rtnFlight.equals(PARIS) || dptFlight.equals(PARIS) && rtnFlight.equals(MADRID)) {
-                    flightPrice = 60;
+                    flightPrice = SIXTY;
                 } else if (dptFlight.equals(MADRID) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(MADRID)) {
-                    flightPrice = 60;
+                    flightPrice = SIXTY;
                 } else if (dptFlight.equals(MADRID) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(MADRID)) {
-                    flightPrice = 60;
+                    flightPrice = SIXTY;
                 } else if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(JERSEY)) {
-                    flightPrice = 0;
+                    flightPrice = ZERO;
                 } else if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(PARIS) || dptFlight.equals(PARIS) && rtnFlight.equals(ST_BRIEUC)) {
-                    flightPrice = 150;
+                    flightPrice = ONE_HND_FIFTY;
                 } else if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(ST_BRIEUC)) {
-                    flightPrice = 140;
+                    flightPrice = ONE_HND_FORTY;
                 } else if (dptFlight.equals(JERSEY) && rtnFlight.equals(PARIS) || dptFlight.equals(PARIS) && rtnFlight.equals(JERSEY)) {
-                    flightPrice = 250;
+                    flightPrice = TWO_HND_FIFTY;
                 } else if (dptFlight.equals(JERSEY) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(JERSEY)) {
-                    flightPrice = 250;
+                    flightPrice = TWO_HND_FIFTY;
                 } else if (dptFlight.equals(JERSEY) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(JERSEY)) {
-                    flightPrice = 280;
+                    flightPrice = TWO_HND_EIGHTY;
                 } else if (dptFlight.equals(PARIS) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(PARIS)) {
-                    flightPrice = 100;
+                    flightPrice = ONE_HND;
                 } else if (dptFlight.equals(STANSTED) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(STANSTED)) {
-                    flightPrice = 120;
+                    flightPrice = ONE_HND_TWENTY;
                 } else if (dptFlight.equals(PARIS) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(PARIS)) {
-                    flightPrice = 60;
+                    flightPrice = SIXTY;
                 } else if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(ST_BRIEUC)) {
-                    flightPrice = 80;
+                    flightPrice = EIGHTY;
                 }
             }
-
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }
@@ -264,17 +275,14 @@ public class MainScene extends Application {
                         super.updateItem(item, empty);
 
                         LocalDate currentDate = LocalDate.now();
-                        LocalDate nowPlusSixMonth = currentDate.plusMonths(6);
+                        LocalDate nowPlusSixMonths = currentDate.plusMonths(6);
 
-
-                        if(item.isBefore(currentDate) || item.isAfter(nowPlusSixMonth)) {
+                        if(item.isBefore(currentDate) || item.isAfter(nowPlusSixMonths)) {
                                 setDisable(true);
                                 setStyle("-fx-background-color: #ffc0cb;");
                         }
 
                         if (item != null) {
-
-
                             if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(ST_BRIEUC)) {
                                 // Disable March and April
                                 if (item.getMonth().equals(Month.APRIL) || item.getMonth().equals(Month.MARCH)) {
@@ -326,7 +334,6 @@ public class MainScene extends Application {
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }
-
         return currentPrice;
     }
 
@@ -334,40 +341,44 @@ public class MainScene extends Application {
     private void displaySelectedFlights() {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
         String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
+        LocalDate dateDept = datePickerDeparture.getValue();
+        LocalDate dateRetn= datePickerReturn.getValue();
+
 
         try {
 
-            Flight flight = new Flight(
-                    flightDepart,       // setOrigin() from variable in this method
-                    flightReturn,       // setDestination() from variable in this method
-                    dateDepartPrice,    // setDeapartPrice() from the return of getSelectDate()
-                    dateReturnPrice,    // setReturnPice() from the return of getSelectDate()
-                    currentPrice);      // setPrice() from the return of getSelectedFlightPrice()
-
-//            Flight flight = new Flight();
-//            flight.setOrigin(flightDepart);
-//            flight.setDestination(flightReturn);
-//            flight.setDeapartPrice(dateDepartPrice);
-//            flight.setReturnPice(dateReturnPrice);
-//            flight.setPrice(currentPrice);
-
-            FlightController.getInstance().addFlight(flight);
-
-            if (flight != null) {
-                textAreaDepart.setText(flight.toStringDept());
-                textAreaReturn.setText(flight.toStringReturn());
-                textAreaReturn.appendText("\n\nTotal: " + flight.toString());
+            if(flightDepart == null || flightReturn == null) {
+                UtilityClass.errorMessageFlight();
             }
+            else if (dateDept == null || dateRetn == null) {
+                UtilityClass.errorMessageDate();
+            }
+            else {
+                Flight flight = new Flight(
+                        flightDepart,       // setOrigin() from variable in this method
+                        flightReturn,       // setDestination() from variable in this method
+                        dateDepartPrice,    // setDepartPrice() from the return of getSelectDate()
+                        dateReturnPrice,    // setReturnPrice() from the return of getSelectDate()
+                        currentPrice);      // setPrice() from the return of getSelectedFlightPrice()
 
-            if (flightDepart.equals(CORK) && flightReturn.equals(MADRID)) {
-                textAreaDepart.appendText("\n0920-1300");
-            } else if (flightDepart.equals(CORK) && flightReturn.equals(ST_BRIEUC)) {
-                textAreaDepart.appendText("\n1030-1400");
-            } else if (flightDepart.equals(CORK) && flightReturn.equals(ST_BRIEUC)) {
-                textAreaDepart.appendText("\n1030-1400");
-            } else if (flightDepart.equals(CORK) && flightReturn.equals(PARIS)) {
-                textAreaDepart.appendText("\n0920-1215");
-                textAreaReturn.appendText("\n1820-2105");
+                FlightController.getInstance().addFlight(flight);
+
+                if (flight != null) {
+                    textAreaDepart.setText(flight.toStringDept());
+                    textAreaReturn.setText(flight.toStringReturn());
+                    textAreaReturn.appendText("\n\nTotal: " + flight.toString());
+                }
+
+                if (flightDepart.equals(CORK) && flightReturn.equals(MADRID)) {
+                    textAreaDepart.appendText("\n0920-1300");
+                } else if (flightDepart.equals(CORK) && flightReturn.equals(ST_BRIEUC)) {
+                    textAreaDepart.appendText("\n1030-1400");
+                } else if (flightDepart.equals(CORK) && flightReturn.equals(ST_BRIEUC)) {
+                    textAreaDepart.appendText("\n1030-1400");
+                } else if (flightDepart.equals(CORK) && flightReturn.equals(PARIS)) {
+                    textAreaDepart.appendText("\n0920-1215");
+                    textAreaReturn.appendText("\n1820-2105");
+                }
             }
         }catch (Exception e) {
             System.out.println(e.getMessage());
@@ -375,12 +386,6 @@ public class MainScene extends Application {
     }
 
 
-    private void errorMessage() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Input Error");
-        alert.setContentText("The text you entered does not match a flight");
-        alert.showAndWait();
-    }
 
 
     // insert the airplane icons between the flight destinations, and the flight times
@@ -402,7 +407,6 @@ public class MainScene extends Application {
 
 
     private GridPane createMiddleGridPane() {
-
         Button buttonFlightSelect = new Button("Select Flight");
         buttonFlightSelect.setOnAction(event -> displaySelectedFlights());
 
@@ -475,71 +479,37 @@ public class MainScene extends Application {
         StackPane.setAlignment(labelBorder, Pos.TOP_CENTER);
         stackPaneRight.getChildren().addAll(labelBorder);
 
-        TextField fName = new TextField();
-        fName.setPromptText("enter first name");
-        TextField lName = new TextField();
-        lName.setPromptText("enter last name");
-        TextField fName2 = new TextField();
-        TextField lName2 = new TextField();
-        TextField fName3 = new TextField();
-        TextField lName3 = new TextField();
-        TextField fName4 = new TextField();
-        TextField lName4 = new TextField();
-        TextField fName5 = new TextField();
-        TextField lName5 = new TextField();
-        TextField fName6 = new TextField();
-        TextField lName6 = new TextField();
-        TextField fName7 = new TextField();
-        TextField lName7 = new TextField();
-        TextField fName8 = new TextField();
-        TextField lName8 = new TextField();
-        TextField dob = new TextField();
-        dob.setPromptText("17/09/77");
-        dob.getStyleClass().add("dobField");
-        TextField dob2 = new TextField();
-        dob2.getStyleClass().add("dobField");
-        TextField dob3 = new TextField();
-        dob3.getStyleClass().add("dobField");
-        TextField dob4 = new TextField();
-        dob4.getStyleClass().add("dobField");
-        TextField dob5 = new TextField();
-        dob5.getStyleClass().add("dobField");
-        TextField dob6 = new TextField();
-        dob6.getStyleClass().add("dobField");
-        TextField dob7 = new TextField();
-        dob7.getStyleClass().add("dobField");
-        TextField dob8 = new TextField();
-        dob8.getStyleClass().add("dobField");
-
-
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(20, 0, 0, 0));
-        gridPane.add(fName, 1, 0);
-        gridPane.add(lName, 2, 0);
-        gridPane.add(dob, 3, 0);
-        gridPane.add(fName2, 1, 1);
-        gridPane.add(lName2, 2, 1);
-        gridPane.add(dob2, 3, 1);
-        gridPane.add(fName3, 1, 2);
-        gridPane.add(lName3, 2, 2);
-        gridPane.add(dob3, 3, 2);
-        gridPane.add(fName4, 1, 3);
-        gridPane.add(lName4, 2, 3);
-        gridPane.add(dob4, 3, 3);
-        gridPane.add(fName5, 1, 4);
-        gridPane.add(lName5, 2, 4);
-        gridPane.add(dob5, 3, 4);
-        gridPane.add(fName6, 1, 5);
-        gridPane.add(lName6, 2, 5);
-        gridPane.add(dob6, 3, 5);
-        gridPane.add(fName7, 1, 6);
-        gridPane.add(lName7, 2, 6);
-        gridPane.add(dob7, 3, 6);
-        gridPane.add(fName8, 1, 7);
-        gridPane.add(lName8, 2, 7);
-        gridPane.add(dob8, 3, 7);
+
+
+
+        // create TextFields and add to them to the GridPane
+        tfFirstNamesList = new ArrayList<>();
+        for (int i = 1; i <= MAX_PASSENGER_NO; i++) {
+            TextField tfFirstName = new TextField("First " + i);
+            tfFirstNamesList.add(tfFirstName);
+            gridPane.add(tfFirstName, 1 , i-1);
+            tfFirstName.setOnAction(event -> firstNameListener(event)); //TODO
+        }
+
+        tfLastNamesList = new ArrayList<>();
+        for (int i = 1; i <= MAX_PASSENGER_NO; i++) {
+            TextField tfLastName = new TextField("Last " + i);
+            tfLastNamesList.add(tfLastName);
+            gridPane.add(tfLastName, 2 , i-1);
+            tfLastName.setOnAction(event -> lastNameListener(event)); //TODO
+        }
+
+        tfDateOfBirthList = new ArrayList<>();
+        for (int i = 1; i <= MAX_PASSENGER_NO; i++) {
+            TextField tfDateOfBirth = new TextField("DOB " + i);
+            tfDateOfBirthList.add(tfDateOfBirth);
+            gridPane.add(tfDateOfBirth, 3 , i-1);
+            tfDateOfBirth.getStyleClass().add("dobField");
+        }
 
 
         StackPane.setAlignment(gridPane, Pos.TOP_LEFT);
@@ -554,6 +524,25 @@ public class MainScene extends Application {
 
         return hBox;
     }
+
+
+    private void firstNameListener(ActionEvent event) {
+        if(event.getSource() == tfFirstNamesList.get(0)) {
+            System.out.println(" 1");
+        } else if(event.getSource() == tfFirstNamesList.get(1)) {
+            System.out.println(" 2");
+        }
+    }
+
+
+    private void lastNameListener(ActionEvent event) {
+        if(event.getSource() == tfLastNamesList.get(0)) {
+            System.out.println("1");
+        } else if(event.getSource() == tfLastNamesList.get(1)) {
+            System.out.println("2");
+        }
+    }
+
 
     private int setReturnedValue() {
         int result = comboPassengerNo.getValue();
@@ -604,27 +593,4 @@ public class MainScene extends Application {
         launch(args);
     }
 
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
