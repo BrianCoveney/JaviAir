@@ -41,5 +41,8 @@
     -fx-max-width: 85;
 }
 
+.hide{
+    -fx-display-caret: false;
+}
 
 
