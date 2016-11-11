@@ -28,6 +28,11 @@ public class MainScene extends Application {
     private GridPane gridPaneMiddle;
     private TextArea textAreaDepart, textAreaReturn;
     private Label labelOrigin, labelDestination, labelDateDeparture, labelDateReturn;
+    private TextField   fName, fName2, fName3, fName4, fName5, fName6, fName7, fName8,
+                        lName, lName2, lName3, lName4, lName5, lName6, lName7, lName8,
+                        tf;
+
+    private DatePicker dateoFBirth1, dateoFBirth2, dateoFBirth3, dateoFBirth4, dateoFBirth5, dateoFBirth6, dateoFBirth7, dateoFBirth8;
 
     private String dptFlight, rtnFlight;
     private double dateDepartPrice;
@@ -36,15 +41,14 @@ public class MainScene extends Application {
     private double currentPrice;
     private final ToggleGroup toggleRadioButtonGroup = new ToggleGroup();
 
-    private GridPane gridPaneRight;
     private GridPane gridPaneLeft;
-    private TextField tfFirstName;
-    private TextField tfLastName;
-    private DatePicker dpDateOfBirth;
     private Spinner<Integer> spinnerPassengerNo;
-    private ObservableList<TextField> tfFirstNamesList = FXCollections.observableArrayList();
-    private ObservableList<TextField> tfLastNamesList = FXCollections.observableArrayList();
-    private ObservableList<DatePicker> dpDateOfBirthList = FXCollections.observableArrayList();
+
+    private Stage window;
+    private Scene scene1, scene2;
+    private FlowPane pane1, pane2;
+    private Pane pane;
+
 
     // constants - flight airports
     private static final String CORK            = "ORK";
@@ -73,22 +77,31 @@ public class MainScene extends Application {
     private static final int ZERO               = 0;
 
     // constants - misc
-    private static final int MAX_PASSENGER_NO = 8;
+    private static final int MAX_PASSENGER_NO   = 8;
     private static final ObservableList airportList = FXCollections.observableArrayList();
+
+    Passenger passenger;
+    Passenger passenger2;
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        window = primaryStage;
+
         // add Constants to the ObservableList
         airportList.addAll(CORK, MADRID, ST_BRIEUC, JERSEY, PARIS, STANSTED, MALAGA);
 
         VBox vBox = new VBox();
         vBox.getChildren().addAll(
                 createTopGridPane(), createMiddleGridPane(), createBottomPane(), createAnchorPane());
-        Scene scene = new Scene(vBox, 800, 750);
+        scene1 = new Scene(vBox, 800, 750);
 
-        scene.getStylesheets().add("/stylesheet.css");
-        primaryStage.setScene(scene);
+        pane2 = new FlowPane();
+        scene2 = new Scene(pane2, 700, 650);
+
+        scene1.getStylesheets().add("/stylesheet.css");
+        primaryStage.setScene(scene1);
         primaryStage.setTitle("JaviAir App");
         primaryStage.show();
 
@@ -472,7 +485,7 @@ public class MainScene extends Application {
 
         gridPaneLeft.add(label, 1, 2);
         gridPaneLeft.add(spinnerPassengerNo, 1, 3);
-        GridPane.setMargin(spinnerPassengerNo, new Insets(10, 0, 50, 100));
+        GridPane.setMargin(spinnerPassengerNo, new Insets(10, 0, 50, 50));
 
         // RHS Pane
         StackPane stackPaneRight = new StackPane();
@@ -485,21 +498,70 @@ public class MainScene extends Application {
         StackPane.setAlignment(labelBorder, Pos.TOP_CENTER);
         stackPaneRight.getChildren().addAll(labelBorder);
 
-        gridPaneRight = new GridPane();
-        gridPaneRight.setHgap(10);
-        gridPaneRight.setVgap(10);
-        gridPaneRight.setPadding(new Insets(20, 0, 0, 0));
+        fName = new TextField();
+        lName = new TextField();
+        fName2 = new TextField();
+        lName2 = new TextField();
+        fName3 = new TextField();
+        lName3 = new TextField();
+        fName4 = new TextField();
+        lName4 = new TextField();
+        fName5 = new TextField();
+        lName5 = new TextField();
+        fName6 = new TextField();
+        lName6 = new TextField();
+        fName7 = new TextField();
+        lName7 = new TextField();
+        fName8 = new TextField();
+        lName8 = new TextField();
+        dateoFBirth1 = new DatePicker();
+        dateoFBirth1.getStyleClass().add("smallerField");
+        dateoFBirth2 = new DatePicker();
+        dateoFBirth2.getStyleClass().add("smallerField");
+        dateoFBirth3 = new DatePicker();
+        dateoFBirth3.getStyleClass().add("smallerField");
+        dateoFBirth4 = new DatePicker();
+        dateoFBirth4.getStyleClass().add("smallerField");
+        dateoFBirth5 = new DatePicker();
+        dateoFBirth5.getStyleClass().add("smallerField");
+        dateoFBirth6 = new DatePicker();
+        dateoFBirth6.getStyleClass().add("smallerField");
+        dateoFBirth7 = new DatePicker();
+        dateoFBirth7.getStyleClass().add("smallerField");
+        dateoFBirth8 = new DatePicker();
+        dateoFBirth8.getStyleClass().add("smallerField");
 
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(20, 0, 0, 0));
+        gridPane.add(fName, 1, 0);
+        gridPane.add(lName, 2, 0);
+        gridPane.add(dateoFBirth1, 3, 0);
+        gridPane.add(fName2, 1, 1);
+        gridPane.add(lName2, 2, 1);
+        gridPane.add(dateoFBirth2, 3, 1);
+        gridPane.add(fName3, 1, 2);
+        gridPane.add(lName3, 2, 2);
+        gridPane.add(dateoFBirth3, 3, 2);
+        gridPane.add(fName4, 1, 3);
+        gridPane.add(lName4, 2, 3);
+        gridPane.add(dateoFBirth4, 3, 3);
+        gridPane.add(fName5, 1, 4);
+        gridPane.add(lName5, 2, 4);
+        gridPane.add(dateoFBirth5, 3, 4);
+        gridPane.add(fName6, 1, 5);
+        gridPane.add(lName6, 2, 5);
+        gridPane.add(dateoFBirth6, 3, 5);
+        gridPane.add(fName7, 1, 6);
+        gridPane.add(lName7, 2, 6);
+        gridPane.add(dateoFBirth7, 3, 6);
+        gridPane.add(fName8, 1, 7);
+        gridPane.add(lName8, 2, 7);
+        gridPane.add(dateoFBirth8, 3, 7);
 
-        // add fields dynamically based on combo selection
-        spinnerPassengerNo.valueProperty().addListener(observable -> {
-            editPassengerDetailsFields();
-            addPassengerDetailsFields();
-
-        });
-
-        StackPane.setAlignment(gridPaneRight, Pos.TOP_LEFT);
-        stackPaneRight.getChildren().addAll(gridPaneRight);
+        StackPane.setAlignment(gridPane, Pos.TOP_LEFT);
+        stackPaneRight.getChildren().addAll(gridPane);
 
         HBox hBox = new HBox();
         HBox.setHgrow(stackPaneLeft, Priority.ALWAYS);
@@ -512,65 +574,40 @@ public class MainScene extends Application {
     }
 
 
-    private void editPassengerDetailsFields() {
-        int choice = spinnerPassengerNo.getValue();
 
-        try {
-            for (int i = 0; i <= MAX_PASSENGER_NO; i++) {
-                gridPaneRight.getChildren().remove(choice);
-                tfFirstNamesList.remove(choice);
-                System.out.println(tfFirstNamesList.size());
+    private void getDetails() {
+
+        if (!(fName.getText().isEmpty() || lName.getText().isEmpty()  || dateoFBirth1.getValue() == null)) {
+            passenger = new Passenger(fName.getText(), lName.getText(), dateoFBirth1.getValue().toString());
+        }
+        else {
+            UtilityClass.errorMessageAddCustomer();
+        }
+
+        if(spinnerPassengerNo.getValue() == 2) {
+            if (!(fName2.getText().isEmpty() || lName2.getText().isEmpty() || dateoFBirth2.getValue() == null)) {
+                passenger2 = new Passenger(fName2.getText(), lName2.getText(), dateoFBirth2.getValue().toString());
+
             }
-
-        }catch (Exception e){
-            e.getMessage();
-        }
-    }
-
-
-    private void addPassengerDetailsFields() {
-        int numCustomersSelected = spinnerPassengerNo.valueProperty().getValue();
-
-        for (int i = 1; i <= numCustomersSelected; i++) {
-            tfFirstName = new TextField();
-            tfFirstName.setPromptText("Passenger " + i + " first name");
-            tfFirstNamesList.add(tfFirstName);
-//            gridPaneRight.add(tfFirstName, 1, i - 1);
-
-            tfLastName = new TextField();
-            tfLastName.setPromptText("Passenger " + i + " last name");
-            tfLastNamesList.add(tfLastName);
-            tfLastName.setOnAction(e -> lastNameListener(e)); //TODO
-//            gridPaneRight.add(tfLastName, 2, i - 1);
-
-            dpDateOfBirth = new DatePicker();
-            dpDateOfBirth.setPromptText("DOB");
-            dpDateOfBirthList.add(dpDateOfBirth);
-//            gridPaneRight.add(dpDateOfBirth, 3, i - 1);
-            dpDateOfBirth.getStyleClass().add("smallerField");
-
-            HBox hBox = new HBox(8);
-            hBox.getChildren().addAll(tfFirstName, tfLastName, dpDateOfBirth);
-            gridPaneRight.add(hBox, 1, i - 1);
+            else {
+                UtilityClass.errorMessageAddCustomer();
+            }
         }
 
-    }
+        tf = new TextField();
+        tf.setText(passenger2.toString());
 
+        pane = new Pane();
+        pane.setPrefSize(200,200);
+        pane.getChildren().add(tf);
 
-    private void firstNameListener(ActionEvent event) {
-        if(event.getSource() == tfFirstNamesList.get(0)) {
-            System.out.println(" 1");
-        } else if(event.getSource() == tfFirstNamesList.get(1)) {
-            System.out.println(" 2");
-        }
-    }
+        pane2.getChildren().addAll(pane);
 
+        window.setScene(scene2);
 
-    private void lastNameListener(ActionEvent event) {
-        if(event.getSource() == tfLastName ) {
-            System.out.println("****");
-        } else if(event.getSource() == tfLastNamesList.get(1)) {
-        }
+        System.out.println(passenger);
+        System.out.println(passenger2);
+
     }
 
 
@@ -578,10 +615,15 @@ public class MainScene extends Application {
     private AnchorPane createAnchorPane() {
         AnchorPane anchorPane = new AnchorPane();
         buttonCancel = new Button("Cancel");
-        buttonContinue = new Button("Continue");
-        buttonContinue.setOnAction(event -> displaySelectedFlights());
-
         buttonCancel.setOnAction(event -> UtilityClass.confirmBoxCloseApp());
+
+        buttonContinue = new Button("Continue");
+        buttonContinue.setOnAction(event ->  {
+            event.consume();
+            getDetails();
+        });
+
+
 
         HBox hBox = new HBox();
         hBox.setSpacing(20);
@@ -596,6 +638,7 @@ public class MainScene extends Application {
 
         return anchorPane;
     }
+
 
 
     public static void main(String[] args) {
