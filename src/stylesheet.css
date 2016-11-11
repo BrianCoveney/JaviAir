@@ -37,12 +37,8 @@
     -fx-translate-x: 10;
 }
 
-.dobField{
+.smallerField {
     -fx-max-width: 85;
-}
-
-.hide{
-    -fx-display-caret: false;
 }
 
 
