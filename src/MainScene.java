@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -467,13 +468,14 @@ public class MainScene extends Application {
 
 
         Label label = new Label("Number of passengers:");
-        List<Integer> comboItemsList = new ArrayList<>();
+        List<Integer> spinnerItemsList = new ArrayList<>();
         for (int i = 0; i <= MAX_PASSENGER_NO; i++) {
-            comboItemsList.add(i);
+            spinnerItemsList.add(i);
         }
 
         ObservableList<Integer> integerObservableList
-                = FXCollections.observableList(comboItemsList);
+                = FXCollections.observableList(spinnerItemsList);
+
 
         spinnerPassengerNo = new Spinner<>();
         spinnerPassengerNo.getStyleClass().add("smallerField");
@@ -482,6 +484,20 @@ public class MainScene extends Application {
                 new SpinnerValueFactory.ListSpinnerValueFactory<>(integerObservableList);
 
         spinnerPassengerNo.setValueFactory(valueFactory);
+
+        spinnerPassengerNo.valueProperty().
+
+        spinnerPassengerNo.valueProperty().addListener(observable -> {
+            getSelectedNumOfPassengers();
+        });
+
+        // if spinnerPassengerNo > newValue TextField[i].setDisable(false)
+//        spinnerPassengerNo.valueProperty().addListener((observable, oldValue, newValue) -> {
+//
+//            for(int i = 0; i <= MAX_PASSENGER_NO; i++) {
+//
+//            }
+//        });
 
         gridPaneLeft.add(label, 1, 2);
         gridPaneLeft.add(spinnerPassengerNo, 1, 3);
@@ -498,37 +514,37 @@ public class MainScene extends Application {
         StackPane.setAlignment(labelBorder, Pos.TOP_CENTER);
         stackPaneRight.getChildren().addAll(labelBorder);
 
-        fName = new TextField();
-        lName = new TextField();
-        fName2 = new TextField();
-        lName2 = new TextField();
-        fName3 = new TextField();
-        lName3 = new TextField();
-        fName4 = new TextField();
-        lName4 = new TextField();
-        fName5 = new TextField();
-        lName5 = new TextField();
-        fName6 = new TextField();
-        lName6 = new TextField();
-        fName7 = new TextField();
-        lName7 = new TextField();
-        fName8 = new TextField();
-        lName8 = new TextField();
-        dateoFBirth1 = new DatePicker();
+        fName = new TextField();  fName.setDisable(true); // fName.setVisible(false);
+        lName = new TextField();  lName.setDisable(true);
+        fName2 = new TextField(); fName2.setDisable(true);
+        lName2 = new TextField(); lName2.setDisable(true);
+        fName3 = new TextField(); fName3.setDisable(true);
+        lName3 = new TextField(); lName3.setDisable(true);
+        fName4 = new TextField(); fName4.setDisable(true);
+        lName4 = new TextField(); lName4.setDisable(true);
+        fName5 = new TextField(); fName5.setDisable(true);
+        lName5 = new TextField(); lName5.setDisable(true);
+        fName6 = new TextField(); fName6.setDisable(true);
+        lName6 = new TextField(); lName6.setDisable(true);
+        fName7 = new TextField(); fName7.setDisable(true);
+        lName7 = new TextField(); lName7.setDisable(true);
+        fName8 = new TextField(); fName8.setDisable(true);
+        lName8 = new TextField(); lName8.setDisable(true);
+        dateoFBirth1 = new DatePicker(); dateoFBirth1.setDisable(true);
         dateoFBirth1.getStyleClass().add("smallerField");
-        dateoFBirth2 = new DatePicker();
+        dateoFBirth2 = new DatePicker(); dateoFBirth2.setDisable(true);
         dateoFBirth2.getStyleClass().add("smallerField");
-        dateoFBirth3 = new DatePicker();
+        dateoFBirth3 = new DatePicker(); dateoFBirth3.setDisable(true);
         dateoFBirth3.getStyleClass().add("smallerField");
-        dateoFBirth4 = new DatePicker();
+        dateoFBirth4 = new DatePicker(); dateoFBirth4.setDisable(true);
         dateoFBirth4.getStyleClass().add("smallerField");
-        dateoFBirth5 = new DatePicker();
+        dateoFBirth5 = new DatePicker(); dateoFBirth5.setDisable(true);
         dateoFBirth5.getStyleClass().add("smallerField");
-        dateoFBirth6 = new DatePicker();
+        dateoFBirth6 = new DatePicker(); dateoFBirth6.setDisable(true);
         dateoFBirth6.getStyleClass().add("smallerField");
-        dateoFBirth7 = new DatePicker();
+        dateoFBirth7 = new DatePicker(); dateoFBirth7.setDisable(true);
         dateoFBirth7.getStyleClass().add("smallerField");
-        dateoFBirth8 = new DatePicker();
+        dateoFBirth8 = new DatePicker(); dateoFBirth8.setDisable(true);
         dateoFBirth8.getStyleClass().add("smallerField");
 
         GridPane gridPane = new GridPane();
@@ -573,6 +589,78 @@ public class MainScene extends Application {
         return hBox;
     }
 
+
+
+    private void getSelectedNumOfPassengers() {
+
+        if(spinnerPassengerNo.getValue() == 0) {
+            fName.setDisable(true);
+            lName.setDisable(true);
+            dateoFBirth1.setDisable(true);
+        }
+        else if(spinnerPassengerNo.getValue() == 1) {
+            fName.setVisible(true);
+            fName.setDisable(false);
+            lName.setDisable(false);
+            dateoFBirth1.setDisable(false);
+            fName2.setDisable(true);
+            lName2.setDisable(true);
+            dateoFBirth2.setDisable(true);
+        }
+        else if(spinnerPassengerNo.getValue() == 2) {
+            fName2.setDisable(false);
+            lName2.setDisable(false);
+            dateoFBirth2.setDisable(false);
+            fName3.setDisable(true);
+            lName3.setDisable(true);
+            dateoFBirth3.setDisable(true);
+        }
+        else if(spinnerPassengerNo.getValue() == 3) {
+            fName3.setDisable(false);
+            lName3.setDisable(false);
+            dateoFBirth3.setDisable(false);
+            fName4.setDisable(true);
+            lName4.setDisable(true);
+            dateoFBirth4.setDisable(true);
+        }
+        else if(spinnerPassengerNo.getValue() == 4) {
+            fName4.setDisable(false);
+            lName4.setDisable(false);
+            dateoFBirth4.setDisable(false);
+            fName5.setDisable(true);
+            lName5.setDisable(true);
+            dateoFBirth5.setDisable(true);
+        }
+        else if(spinnerPassengerNo.getValue() == 5) {
+            fName5.setDisable(false);
+            lName5.setDisable(false);
+            dateoFBirth5.setDisable(false);
+            fName6.setDisable(true);
+            lName6.setDisable(true);
+            dateoFBirth6.setDisable(true);
+        }
+        else if(spinnerPassengerNo.getValue() == 6) {
+            fName6.setDisable(false);
+            lName6.setDisable(false);
+            dateoFBirth6.setDisable(false);
+            fName7.setDisable(true);
+            lName7.setDisable(true);
+            dateoFBirth7.setDisable(true);
+        }
+        else if(spinnerPassengerNo.getValue() == 7) {
+            fName7.setDisable(false);
+            lName7.setDisable(false);
+            dateoFBirth7.setDisable(false);
+            fName8.setDisable(true);
+            lName8.setDisable(true);
+            dateoFBirth8.setDisable(true);
+        }
+        else if(spinnerPassengerNo.getValue() == 8) {
+            fName8.setDisable(false);
+            lName8.setDisable(false);
+            dateoFBirth8.setDisable(false);
+        }
+    }
 
 
     private void getDetails() {
