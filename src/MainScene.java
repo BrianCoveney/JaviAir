@@ -28,7 +28,7 @@ public class MainScene extends Application {
     private GridPane gridPaneRight;
     private TextArea textAreaDepart, textAreaReturn;
     private Label labelOrigin, labelDestination, labelDateDeparture, labelDateReturn;
-    private TextField tf, tfFName, tfLName;
+    private TextField tf, tf2, tfFName, tfLName;
     private HBox hBoxList;
     private String dptFlight, rtnFlight;
     private double dateDepartPrice;
@@ -36,15 +36,12 @@ public class MainScene extends Application {
     private double flightPrice;
     private double currentPrice;
     private final ToggleGroup toggleRadioButtonGroup = new ToggleGroup();
-
+    private LocalDate ldDepartDate, ldReturnDate;
     private GridPane gridPaneLeft;
     private Spinner<Integer> spinnerPassengerNo;
-
     private Stage window;
     private Scene scene1, scene2;
     private VBox vBox;
-
-
     private ObservableList<TextField> tfFirstNamesList = FXCollections.observableArrayList();
     private ObservableList<TextField> tfLastNamesList = FXCollections.observableArrayList();
     private ObservableList<DatePicker> dpDateOfBirthList = FXCollections.observableArrayList();
@@ -63,78 +60,79 @@ public class MainScene extends Application {
     private static final String SUN             = "SUNDAY";
 
     // constants  flight times
-    private static String ORK_MAD_1             = "0920-1300";
-    private static String ORK_SBK_1             = "1030-1400";
-    private static String ORK_JER_1             = "1400-1600";
-    private static String ORK_CDG_1             = "0900-1215";
-    private static String ORK_CDG_2             = "1820-2105";
-    private static String ORK_STN_1             = "0820-0950";
-    private static String ORK_STN_2             = "1120-1305";
-    private static String ORK_AGP_1             = "0800-1130";
-    private static String MAD_ORK_1             = "1800-2000";
-    private static String MAD_SBK_1             = "1200-1400";
-    private static String MAD_JER_1             = "0620-0800";
-    private static String MAD_CDG_1             = "0800-1000";
-    private static String MAD_STN_1             = "1400-1520";
-    private static String MAD_STN_2             = "1905-2120";
-    private static String MAD_AGP_1             = "0800-0905";
-    private static String SBK_ORK_1             = "1900-2020";
-    private static String SBK_MAD_1             = "1800-2020";
-    private static String SBK_JER_1             = "none";
-    private static String SBK_CDG_1             = "0620-0715";
-    private static String SBK_STN_1             = "0805-0830";
-    private static String SBK_AGP_1             = "1200-1530";
-    private static String JER_ORK_1             = "1000-1200";
-    private static String JER_MAD_1             = "1800-2120";
-    private static String JER_SBK_1             = "none";
-    private static String JER_CDG_1             = "0800-1015";
-    private static String JER_STN_1             = "1700-1830";
-    private static String JER_AGP_1             = "0800-1130";
-    private static String CDG_ORK_1             = "1330-1500";
-    private static String CDG_ORK_2             = "2200-2350";
-    private static String CDG_MAD_1             = "1920-2105";
-    private static String CDG_SBK_1             = "1900-2005";
-    private static String CDG_JER_1             = "2000-2015";
-    private static String CDG_STN_1             = "1800-1830";
-    private static String CDG_AGP_1             = "1150-1330";
-    private static String STN_ORK_1             = "1100-1220";
-    private static String STN_ORK_2             = "1800-1920";
-    private static String STN_MAD_1             = "1020-1400";
-    private static String STN_SBK_1             = "1800-2000";
-    private static String STN_JER_1             = "0900-1030";
-    private static String STN_CDG_1             = "0900-1030";
-    private static String STN_AGP_1             = "0800-1100";
-    private static String STN_AGP_2             = "1330-1620";
-    private static String AGP_ORK_1             = "1300-1420";
-    private static String AGP_MAD_1             = "2000-2105";
-    private static String AGP_SBK_1             = "2000-2130";
-    private static String AGP_JER_1             = "1800-1930";
-    private static String AGP_CDG_1             = "1805-1230";
-    private static String AGP_STN_1             = "1500-1610";
-    private static String AGP_STN_2             = "2035-2105";
+    static String ORK_MAD_1 = "0920-1300";
+    static String ORK_SBK_1 = "1030-1400";
+    static String ORK_JER_1 = "1400-1600";
+    static String ORK_CDG_1 = "0900-1215";
+    static String ORK_CDG_2 = "1820-2105";
+    static String ORK_STN_1 = "0820-0950";
+    static String ORK_STN_2 = "1120-1305";
+    static String ORK_AGP_1 = "0800-1130";
+    static String MAD_ORK_1 = "1800-2000";
+    static String MAD_SBK_1 = "1200-1400";
+    static String MAD_JER_1 = "0620-0800";
+    static String MAD_CDG_1 = "0800-1000";
+    static String MAD_STN_1 = "1400-1520";
+    static String MAD_STN_2 = "1905-2120";
+    static String MAD_AGP_1 = "0800-0905";
+    static String SBK_ORK_1 = "1900-2020";
+    static String SBK_MAD_1 = "1800-2020";
+    static String SBK_JER_1 = "none";
+    static String SBK_CDG_1 = "0620-0715";
+    static String SBK_STN_1 = "0805-0830";
+    static String SBK_AGP_1 = "1200-1530";
+    static String JER_ORK_1 = "1000-1200";
+    static String JER_MAD_1 = "1800-2120";
+    static String JER_SBK_1 = "none";
+    static String JER_CDG_1 = "0800-1015";
+    static String JER_STN_1 = "1700-1830";
+    static String JER_AGP_1 = "0800-1130";
+    static String CDG_ORK_1 = "1330-1500";
+    static String CDG_ORK_2 = "2200-2350";
+    static String CDG_MAD_1 = "1920-2105";
+    static String CDG_SBK_1 = "1900-2005";
+    static String CDG_JER_1 = "2000-2015";
+    static String CDG_STN_1 = "1800-1830";
+    static String CDG_AGP_1 = "1150-1330";
+    static String STN_ORK_1 = "1100-1220";
+    static String STN_ORK_2 = "1800-1920";
+    static String STN_MAD_1 = "1020-1400";
+    static String STN_SBK_1 = "1800-2000";
+    static String STN_JER_1 = "0900-1030";
+    static String STN_CDG_1 = "0900-1030";
+    static String STN_AGP_1 = "0800-1100";
+    static String STN_AGP_2 = "1330-1620";
+    static String AGP_ORK_1 = "1300-1420";
+    static String AGP_MAD_1 = "2000-2105";
+    static String AGP_SBK_1 = "2000-2130";
+    static String AGP_JER_1 = "1800-1930";
+    static String AGP_CDG_1 = "1805-1230";
+    static String AGP_STN_1 = "1500-1610";
+    static String AGP_STN_2 = "2035-2105";
 
 
 
     // constants - flight prices
-    private static final int TWO_HND_EIGHTY     = 280;
-    private static final int TWO_HND_FIFTY      = 250;
-    private static final int TWO_HND_FORTY      = 240;
-    private static final int TWO_HND            = 200;
-    private static final int ONE_HND_FIFTY      = 150;
-    private static final int ONE_HND_FORTY      = 140;
-    private static final int ONE_HND_TWENTY     = 120;
-    private static final int ONE_HND            = 100;
-    private static final int EIGHTY             = 80;
-    private static final int SIXTY              = 60;
-    private static final int FORTY              = 40;
-    private static final int ZERO               = 0;
+    static final int TWO_HND_EIGHTY = 280;
+    static final int TWO_HND_FIFTY = 250;
+    static final int TWO_HND_FORTY = 240;
+    static final int TWO_HND = 200;
+    static final int ONE_HND_FIFTY = 150;
+    static final int ONE_HND_FORTY = 140;
+    static final int ONE_HND_TWENTY = 120;
+    static final int ONE_HND = 100;
+    static final int EIGHTY = 80;
+    static final int SIXTY = 60;
+    static final int FORTY = 40;
+    static final int ZERO = 0;
 
     // constants - misc
-    private static final int MAX_PASSENGER_NO   = 8;
-    private static final ObservableList airportList = FXCollections.observableArrayList();
+    static final int MAX_PASSENGER_NO   = 8;
+    static final ObservableList airportList = FXCollections.observableArrayList();
 
-    private Passenger passenger;
-
+    // reference to the Passenger and FLight objects
+    protected Passenger passenger;
+    protected Flight flight;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -170,8 +168,6 @@ public class MainScene extends Application {
         radioButtonReturn.setToggleGroup(toggleRadioButtonGroup);
         radioButtonReturn.fire(); // return btn on by default
 
-
-
         toggleRadioButtonGroup.selectedToggleProperty().addListener(observable -> {
             if(toggleRadioButtonGroup.getSelectedToggle() == radioButtonOneWay) {
                 comboDestination.setDisable(true);
@@ -185,7 +181,6 @@ public class MainScene extends Application {
                 textAreaReturn.setDisable(false);
             }
         });
-
 
         labelOrigin = new Label("From: ");
         comboOrigin = new ComboBox<>();
@@ -220,14 +215,25 @@ public class MainScene extends Application {
         datePickerReturn = new DatePicker();
         datePickerReturn.setPromptText("pick a date");
         datePickerReturn.setEditable(true);
-        datePickerReturn.setOnAction(event -> getSelectDate(event));
+        datePickerReturn.setOnAction(event -> {
+            event.consume();
+            checkForInvalidDates();
+            getSelectDate(event);
+
+
+        });
 
 
         labelDateDeparture = new Label("Depart");
         datePickerDeparture = new DatePicker();
         datePickerDeparture.setPromptText("pick a date");
         datePickerDeparture.setEditable(true);
-        datePickerDeparture.setOnAction(event -> getSelectDate(event));
+        datePickerDeparture.setOnAction(event -> {
+            event.consume();
+            checkForInvalidDates();
+            getSelectDate(event);
+
+        });
 
 
         Button btnFlightSelect = new Button("Select Flight");
@@ -384,14 +390,11 @@ public class MainScene extends Application {
 
     // take the returned 'flightPrice' from getSelectedFlight() and add 20% if day is Fri - Sun
     private Double getSelectDate(ActionEvent event) {
-        LocalDate ldDepartDate = datePickerDeparture.getValue();
-        LocalDate ldReturnDate = datePickerReturn.getValue();
-        String dayOfWeek = ldDepartDate.getDayOfWeek().name();
         try {
-
-            if(ldDepartDate.isAfter(ldReturnDate)) UtilityClass.errorMessageDatesNotPossible();
-
             if (event.getSource().equals(datePickerDeparture)) {
+                ldDepartDate = datePickerDeparture.getValue();
+                // set variable to the day of the week, from the selected date
+                String dayOfWeek = ldDepartDate.getDayOfWeek().name();
 
                 if (dayOfWeek.equals(FRI) || dayOfWeek.equals(SAT) || dayOfWeek.equals(SUN)) {
                     dateDepartPrice = flightPrice + flightPrice * 0.2;
@@ -399,6 +402,8 @@ public class MainScene extends Application {
                     dateDepartPrice = flightPrice;
                 }
             } else if (event.getSource().equals(datePickerReturn)) {
+                ldReturnDate = datePickerReturn.getValue();
+                String dayOfWeek = ldReturnDate.getDayOfWeek().name();
                 if (dayOfWeek.equals(FRI) || dayOfWeek.equals(SAT) || dayOfWeek.equals(SUN)) {
                     dateReturnPrice = flightPrice + flightPrice * 0.2;
                 } else {
@@ -406,11 +411,24 @@ public class MainScene extends Application {
                 }
             }
             currentPrice = dateDepartPrice + dateReturnPrice;
-
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }
+
         return currentPrice;
+    }
+
+
+    private void checkForInvalidDates() {
+        LocalDate departDate = datePickerDeparture.getValue();
+        LocalDate returnDate = datePickerReturn.getValue();
+
+        if(departDate != null && returnDate != null) {
+            if (departDate.isAfter(returnDate)) {
+                UtilityClass.errorMessageDatesNotPossible();
+                datePickerReturn.getEditor().setText(null);
+            }
+        }
     }
 
 
@@ -429,7 +447,9 @@ public class MainScene extends Application {
                 UtilityClass.errorMessageDate();
             }
             else {
-                Flight flight = new Flight(
+
+                // constructor
+                 flight = new Flight(
                         flightDepart,       // setOrigin() from variable in this method
                         flightReturn,       // setDestination() from variable in this method
                         dateDepartPrice,    // setDepartPrice() from the return of getSelectDate()
@@ -439,7 +459,7 @@ public class MainScene extends Application {
                 if (flight != null) {
                     textAreaDepart.setText(flight.toStringDept());
                     textAreaReturn.setText(flight.toStringReturn());
-                    textAreaReturn.appendText("\n\nTotal: " + flight.toString());
+                    textAreaReturn.appendText("\n\n" + flight.toString());
                 }
 
                 if (flightDepart.equals(CORK) && flightReturn.equals(MADRID)) {
@@ -639,10 +659,14 @@ public class MainScene extends Application {
             tf.setMinWidth(500);
             tf.setText(passenger.toString());
 
+            tf2 = new TextField();
+            tf2.setMinWidth(500);
+            tf2.appendText(flight.toStringDept() + " | " + flight.toStringReturn() + " | " + flight.toString());
+
             window.setScene(scene2);
 
             Button button = new Button("Back");
-            vBox.getChildren().addAll(tf, button);
+            vBox.getChildren().addAll(tf, tf2, button);
             button.setOnAction(event -> window.setScene(scene1));
         }
         else {
