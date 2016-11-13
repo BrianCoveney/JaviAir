@@ -57,7 +57,7 @@ public class Flight{
 
 
     @Override
-    public String toString() {return this.price.toString();}
+    public String toString() {return "€"+this.price.toString();}
 
     public String toStringDept()  { return this.origin +" > "+ this.destination +"\t = €"+ this.deapartPrice; }
 

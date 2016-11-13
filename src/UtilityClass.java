@@ -20,7 +20,7 @@ public final class UtilityClass {
 
     // insert the airplane icons between the flight destinations, and the flight times
     public static HBox insertIcon() {
-        Image image = new Image("resources/airplane.png");
+        Image image = new Image("airplane.png");
 
         ImageView imageView = new ImageView(image);
         imageView.setImage(image);
@@ -31,7 +31,7 @@ public final class UtilityClass {
         imageView.getStyleClass().add("imageView");
 
         HBox hBoxImage = new HBox();
-        hBoxImage.getChildren().add(imageView);
+        hBoxImage.getChildren().add(imageView);git
 
         return hBoxImage;
     }
