@@ -62,6 +62,59 @@ public class MainScene extends Application {
     private static final String SAT             = "SATURDAY";
     private static final String SUN             = "SUNDAY";
 
+    // constants  flight times
+    private static String ORK_MAD_1             = "0920-1300";
+    private static String ORK_SBK_1             = "1030-1400";
+    private static String ORK_JER_1             = "1400-1600";
+    private static String ORK_CDG_1             = "0900-1215";
+    private static String ORK_CDG_2             = "1820-2105";
+    private static String ORK_STN_1             = "0820-0950";
+    private static String ORK_STN_2             = "1120-1305";
+    private static String ORK_AGP_1             = "0800-1130";
+    private static String MAD_ORK_1             = "1800-2000";
+    private static String MAD_SBK_1             = "1200-1400";
+    private static String MAD_JER_1             = "0620-0800";
+    private static String MAD_CDG_1             = "0800-1000";
+    private static String MAD_STN_1             = "1400-1520";
+    private static String MAD_STN_2             = "1905-2120";
+    private static String MAD_AGP_1             = "0800-0905";
+    private static String SBK_ORK_1             = "1900-2020";
+    private static String SBK_MAD_1             = "1800-2020";
+    private static String SBK_JER_1             = "none";
+    private static String SBK_CDG_1             = "0620-0715";
+    private static String SBK_STN_1             = "0805-0830";
+    private static String SBK_AGP_1             = "1200-1530";
+    private static String JER_ORK_1             = "1000-1200";
+    private static String JER_MAD_1             = "1800-2120";
+    private static String JER_SBK_1             = "none";
+    private static String JER_CDG_1             = "0800-1015";
+    private static String JER_STN_1             = "1700-1830";
+    private static String JER_AGP_1             = "0800-1130";
+    private static String CDG_ORK_1             = "1330-1500";
+    private static String CDG_ORK_2             = "2200-2350";
+    private static String CDG_MAD_1             = "1920-2105";
+    private static String CDG_SBK_1             = "1900-2005";
+    private static String CDG_JER_1             = "2000-2015";
+    private static String CDG_STN_1             = "1800-1830";
+    private static String CDG_AGP_1             = "1150-1330";
+    private static String STN_ORK_1             = "1100-1220";
+    private static String STN_ORK_2             = "1800-1920";
+    private static String STN_MAD_1             = "1020-1400";
+    private static String STN_SBK_1             = "1800-2000";
+    private static String STN_JER_1             = "0900-1030";
+    private static String STN_CDG_1             = "0900-1030";
+    private static String STN_AGP_1             = "0800-1100";
+    private static String STN_AGP_2             = "1330-1620";
+    private static String AGP_ORK_1             = "1300-1420";
+    private static String AGP_MAD_1             = "2000-2105";
+    private static String AGP_SBK_1             = "2000-2130";
+    private static String AGP_JER_1             = "1800-1930";
+    private static String AGP_CDG_1             = "1805-1230";
+    private static String AGP_STN_1             = "1500-1610";
+    private static String AGP_STN_2             = "2035-2105";
+
+
+
     // constants - flight prices
     private static final int TWO_HND_EIGHTY     = 280;
     private static final int TWO_HND_FIFTY      = 250;
@@ -390,14 +443,44 @@ public class MainScene extends Application {
                 }
 
                 if (flightDepart.equals(CORK) && flightReturn.equals(MADRID)) {
-                    textAreaDepart.appendText("\n0920-1300");
+                    textAreaDepart.appendText("\n" + ORK_MAD_1);
                 } else if (flightDepart.equals(CORK) && flightReturn.equals(ST_BRIEUC)) {
-                    textAreaDepart.appendText("\n1030-1400");
-                } else if (flightDepart.equals(CORK) && flightReturn.equals(ST_BRIEUC)) {
-                    textAreaDepart.appendText("\n1030-1400");
+                    textAreaDepart.appendText("\n" + ORK_SBK_1);
+                } else if (flightDepart.equals(CORK) && flightReturn.equals(JERSEY)) {
+                    textAreaDepart.appendText("\n" + ORK_JER_1);
                 } else if (flightDepart.equals(CORK) && flightReturn.equals(PARIS)) {
-                    textAreaDepart.appendText("\n0920-1215");
-                    textAreaReturn.appendText("\n1820-2105");
+                    textAreaDepart.appendText("\n" + ORK_CDG_1);
+                    textAreaDepart.appendText("\n" + ORK_CDG_2);
+                } else if (flightDepart.equals(CORK) && flightReturn.equals(STANSTED)) {
+                    textAreaDepart.appendText("\n" + ORK_STN_1);
+                    textAreaDepart.appendText("\n" + ORK_STN_2);
+                } else if (flightDepart.equals(CORK) && flightReturn.equals(MALAGA)) {
+                    textAreaDepart.appendText("\n" + ORK_AGP_1);
+                } else if (flightDepart.equals(MADRID) && flightReturn.equals(CORK)) {
+                    textAreaDepart.appendText("\n" + MAD_ORK_1);
+                } else if (flightDepart.equals(MADRID) && flightReturn.equals(ST_BRIEUC)) {
+                    textAreaDepart.appendText("\n" + MAD_SBK_1);
+                } else if (flightDepart.equals(MADRID) && flightReturn.equals(JERSEY)) {
+                    textAreaDepart.appendText("\n" + MAD_JER_1);
+                } else if (flightDepart.equals(MADRID) && flightReturn.equals(PARIS)) {
+                    textAreaDepart.appendText("\n" + MAD_CDG_1);
+                } else if (flightDepart.equals(MADRID) && flightReturn.equals(STANSTED)) {
+                    textAreaDepart.appendText("\n" + MAD_STN_1);
+                    textAreaDepart.appendText("\n" + MAD_STN_2);
+                } else if (flightDepart.equals(MADRID) && flightReturn.equals(MALAGA)) {
+                    textAreaDepart.appendText("\n" + MAD_AGP_1);
+                } else if (flightDepart.equals(ST_BRIEUC) && flightReturn.equals(CORK)) {
+                    textAreaDepart.appendText("\n" + SBK_ORK_1);
+                } else if (flightDepart.equals(ST_BRIEUC) && flightReturn.equals(MADRID)) {
+                    textAreaDepart.appendText("\n" + SBK_MAD_1);
+                } else if (flightDepart.equals(ST_BRIEUC) && flightReturn.equals(JERSEY)) {
+                    textAreaDepart.appendText("\n" + SBK_JER_1);
+                } else if (flightDepart.equals(ST_BRIEUC) && flightReturn.equals(PARIS)) {
+                    textAreaDepart.appendText("\n" + STN_CDG_1);
+                } else if (flightDepart.equals(ST_BRIEUC) && flightReturn.equals(STANSTED)) {
+                    textAreaDepart.appendText("\n" + SBK_STN_1);
+                } else if (flightDepart.equals(ST_BRIEUC) && flightReturn.equals(MALAGA)) {
+                    textAreaDepart.appendText("\n" + SBK_AGP_1);
                 }
             }
         }catch (Exception e) {
