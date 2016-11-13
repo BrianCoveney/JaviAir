@@ -42,7 +42,8 @@ public class MainScene extends Application {
 
     private Stage window;
     private Scene scene1, scene2;
-    private Pane pane;
+    private VBox vBox;
+
 
     private ObservableList<TextField> tfFirstNamesList = FXCollections.observableArrayList();
     private ObservableList<TextField> tfLastNamesList = FXCollections.observableArrayList();
@@ -79,7 +80,7 @@ public class MainScene extends Application {
     private static final int MAX_PASSENGER_NO   = 8;
     private static final ObservableList airportList = FXCollections.observableArrayList();
 
-    Passenger passenger;
+    private Passenger passenger;
 
 
     @Override
@@ -95,8 +96,8 @@ public class MainScene extends Application {
                 createTopGridPane(), createMiddleGridPane(), createBottomPane(), createAnchorPane());
         scene1 = new Scene(vBox, 800, 750);
 
-        pane = new Pane();
-        scene2 = new Scene(pane, 700, 650);
+        this.vBox = new VBox();
+        scene2 = new Scene(this.vBox, 700, 650);
 
         scene1.getStylesheets().add("/stylesheet.css");
         primaryStage.setScene(scene1);
@@ -117,7 +118,7 @@ public class MainScene extends Application {
         radioButtonReturn.fire(); // return btn on by default
 
 
-        /*** Code Associated with the Date Picker ***/
+
         toggleRadioButtonGroup.selectedToggleProperty().addListener(observable -> {
             if(toggleRadioButtonGroup.getSelectedToggle() == radioButtonOneWay) {
                 comboDestination.setDisable(true);
@@ -162,23 +163,19 @@ public class MainScene extends Application {
         });
 
 
-        /*** Code Associated with the Date Picker ***/
         labelDateReturn = new Label("Return");
         datePickerReturn = new DatePicker();
         datePickerReturn.setPromptText("pick a date");
         datePickerReturn.setEditable(true);
-        datePickerReturn.setOnAction(event -> {
-            getSelectDate(event);
-        });
+        datePickerReturn.setOnAction(event -> getSelectDate(event));
+
 
         labelDateDeparture = new Label("Depart");
         datePickerDeparture = new DatePicker();
         datePickerDeparture.setPromptText("pick a date");
         datePickerDeparture.setEditable(true);
-        datePickerDeparture.setOnAction(event -> {
-            getSelectDate(event);
+        datePickerDeparture.setOnAction(event -> getSelectDate(event));
 
-        });
 
         Button btnFlightSelect = new Button("Select Flight");
         btnFlightSelect.setOnAction(event -> displaySelectedFlights());
@@ -275,7 +272,7 @@ public class MainScene extends Application {
             System.out.println(e.getMessage());
         }
 
-        /*** Code Associated with the Date Picker ***/
+
         // Disable March and/or April in the DatePicker.
         // Also disable date before current time and after 6 months from now.
         // JavaFX DatePicker Tutorial website: http://o7planning.org/en/11085/javafx-datepicker-tutorial#a3667895
@@ -287,10 +284,10 @@ public class MainScene extends Application {
     }
 
 
-    /*** Code Associated with the Date Picker ***/
+
     // Disable March and/or April in the DatePicker
     // JavaFX DatePicker Tutorial website: http://o7planning.org/en/11085/javafx-datepicker-tutorial#a3667895g
-    Callback<DatePicker, DateCell> getMonthCellFactory() {
+    private Callback<DatePicker, DateCell> getMonthCellFactory() {
 
         final Callback<DatePicker, DateCell> monthCellFactory = new Callback<DatePicker, DateCell>() {
 
@@ -332,25 +329,23 @@ public class MainScene extends Application {
     }
 
 
-    /*** Code Associated with the Date Picker ***/
     // take the returned 'flightPrice' from getSelectedFlight() and add 20% if day is Fri - Sun
     private Double getSelectDate(ActionEvent event) {
+        LocalDate ldDepartDate = datePickerDeparture.getValue();
+        LocalDate ldReturnDate = datePickerReturn.getValue();
+        String dayOfWeek = ldDepartDate.getDayOfWeek().name();
         try {
-            if (event.getSource().equals(datePickerDeparture)) {
-                LocalDate ldDepartDate = datePickerDeparture.getValue();
 
-                // set variable to the day of the week, from the selected date
-                String dayOfWeek = ldDepartDate.getDayOfWeek().name();
+            if(ldDepartDate.isAfter(ldReturnDate)) UtilityClass.errorMessageDatesNotPossible();
+
+            if (event.getSource().equals(datePickerDeparture)) {
 
                 if (dayOfWeek.equals(FRI) || dayOfWeek.equals(SAT) || dayOfWeek.equals(SUN)) {
                     dateDepartPrice = flightPrice + flightPrice * 0.2;
                 } else {
                     dateDepartPrice = flightPrice;
                 }
-
             } else if (event.getSource().equals(datePickerReturn)) {
-                LocalDate ldReturnDate = datePickerReturn.getValue();
-                String dayOfWeek = ldReturnDate.getDayOfWeek().name();
                 if (dayOfWeek.equals(FRI) || dayOfWeek.equals(SAT) || dayOfWeek.equals(SUN)) {
                     dateReturnPrice = flightPrice + flightPrice * 0.2;
                 } else {
@@ -366,7 +361,6 @@ public class MainScene extends Application {
     }
 
 
-    /*** Code Associated with the Date Picker ***/
     private void displaySelectedFlights() {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
         String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
@@ -377,11 +371,9 @@ public class MainScene extends Application {
 
             if(flightDepart == null || flightReturn == null) {
                 UtilityClass.errorMessageFlight();
-                buttonContinue.setDisable(true);
             }
             else if (dateDept == null || dateReturn == null) {
                 UtilityClass.errorMessageDate();
-                buttonContinue.setDisable(true);
             }
             else {
                 Flight flight = new Flight(
@@ -390,8 +382,6 @@ public class MainScene extends Application {
                         dateDepartPrice,    // setDepartPrice() from the return of getSelectDate()
                         dateReturnPrice,    // setReturnPrice() from the return of getSelectDate()
                         currentPrice);      // setPrice() from the return of getSelectedFlightPrice()
-
-
 
                 if (flight != null) {
                     textAreaDepart.setText(flight.toStringDept());
@@ -414,9 +404,6 @@ public class MainScene extends Application {
             System.out.println(e.getMessage());
         }
     }
-
-
-
 
 
     private GridPane createMiddleGridPane() {
@@ -495,11 +482,9 @@ public class MainScene extends Application {
         });
 
 
-
         gridPaneLeft.add(label, 1, 2);
         gridPaneLeft.add(spinnerPassengerNo, 1, 3);
         GridPane.setMargin(spinnerPassengerNo, new Insets(10, 0, 50, 50));
-
 
         StackPane stackPaneRight = new StackPane();
         stackPaneRight.setPrefHeight(310);
@@ -532,8 +517,6 @@ public class MainScene extends Application {
 
         for (int i = 1; i <= numCustomersSelected; i++) {
             tfFName = new TextField();
-            tfFName.setEditable(true);
-            tfFName.setDisable(false);
             tfFName.setPromptText("Passenger " + i + " first name");
             tfFirstNamesList.add(tfFName);
 
@@ -557,9 +540,7 @@ public class MainScene extends Application {
         int choice = spinnerPassengerNo.getValue();
 
         try {
-            for (int i = 0; i <= MAX_PASSENGER_NO; i++) {
-                gridPaneRight.getChildren().remove(choice);
-            }
+            for (int i = 0; i <= MAX_PASSENGER_NO; i++) gridPaneRight.getChildren().remove(choice);
         }catch (Exception e){
             e.getMessage();
         }
@@ -571,19 +552,15 @@ public class MainScene extends Application {
         if (!(tfFName.getText().isEmpty() || tfLName.getText().isEmpty() || dpDateoFBirth.getValue() == null)) {
             passenger = new Passenger(tfFName.getText(), tfLName.getText(), dpDateoFBirth.getValue().toString());
 
-
             tf = new TextField();
             tf.setMinWidth(500);
             tf.setText(passenger.toString());
 
-
             window.setScene(scene2);
 
             Button button = new Button("Back");
-            pane.getChildren().addAll(tf, button);
-            button.setOnAction(event -> {
-                window.setScene(scene1);
-            });
+            vBox.getChildren().addAll(tf, button);
+            button.setOnAction(event -> window.setScene(scene1));
         }
         else {
             UtilityClass.errorMessageAddCustomer();
@@ -598,9 +575,22 @@ public class MainScene extends Application {
         buttonCancel.setOnAction(event -> UtilityClass.confirmBoxCloseApp());
 
         buttonContinue = new Button("Continue");
-        buttonContinue.setOnAction(event ->  {
-            event.consume();
-            getDetails();
+        buttonContinue.setOnAction(event -> {
+            if (comboOrigin.getValue() != null || comboDestination.getValue() != null) {
+                if (datePickerDeparture.getValue() != null || datePickerReturn.getValue() != null) {
+
+                    if (!(tfFirstNamesList.isEmpty() || tfLastNamesList.isEmpty() || dpDateOfBirthList.isEmpty())) {
+                        event.consume();
+                        getDetails();
+                    } else {
+                        UtilityClass.errorMessageAddCustomer();
+                    }
+                } else {
+                    UtilityClass.errorMessageDate();
+                }
+            } else {
+                UtilityClass.errorMessageFlight();
+            }
         });
 
         HBox hBox = new HBox();

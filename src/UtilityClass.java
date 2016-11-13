@@ -31,7 +31,7 @@ public final class UtilityClass {
         imageView.getStyleClass().add("imageView");
 
         HBox hBoxImage = new HBox();
-        hBoxImage.getChildren().add(imageView);git
+        hBoxImage.getChildren().add(imageView);
 
         return hBoxImage;
     }
@@ -67,6 +67,14 @@ public final class UtilityClass {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Input Error");
         alert.setContentText("No passenger details entered");
+        alert.showAndWait();
+    }
+
+    // user enters incorrect format
+    public static void errorMessageDatesNotPossible() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Input Error");
+        alert.setContentText("Please check your selected dates");
         alert.showAndWait();
     }
 
