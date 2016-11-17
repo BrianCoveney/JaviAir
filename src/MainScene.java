@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -18,8 +19,8 @@ import java.util.List;
 
 public class MainScene extends Application {
 
-    private Button buttonCancel;
-    private Button buttonContinue;
+    private Button buttonCancel, buttonContinue;
+    private Button buttonAdd;
     private ComboBox<String> comboOrigin;
     private ComboBox<String> comboDestination;
     private DatePicker datePickerDeparture, dpDateoFBirth;
@@ -45,7 +46,7 @@ public class MainScene extends Application {
     private ObservableList<TextField> tfFirstNamesList = FXCollections.observableArrayList();
     private ObservableList<TextField> tfLastNamesList = FXCollections.observableArrayList();
     private ObservableList<DatePicker> dpDateOfBirthList = FXCollections.observableArrayList();
-
+    private ObservableList<Button> buttonAddList = FXCollections.observableArrayList();
 
     // constants - flight airports
     private static final String CORK            = "ORK";
@@ -109,8 +110,6 @@ public class MainScene extends Application {
     static String AGP_CDG_1 = "1805-1230";
     static String AGP_STN_1 = "1500-1610";
     static String AGP_STN_2 = "2035-2105";
-
-
 
     // constants - flight prices
     static final int TWO_HND_EIGHTY = 280;
@@ -189,7 +188,16 @@ public class MainScene extends Application {
         comboOrigin.getItems().addAll(airportList);
         comboOrigin.getStyleClass().add("comboOrigin"); // add css class
         comboOrigin.setOnAction(event -> {
+
+            // Need to enforce a new date selection, when user changes the airport
+            datePickerDeparture.getEditor().clear();
+            datePickerReturn.getEditor().clear();
+            datePickerDeparture.setValue(null);
+            datePickerReturn.setValue(null);
+
+
             if (comboOrigin.getItems().contains(comboOrigin.getValue())) {
+                disableFlights();
                 getSelectedFlightPrice();
             } else {
                 UtilityClass.errorMessageInput();
@@ -199,16 +207,21 @@ public class MainScene extends Application {
         labelDestination = new Label("To: ");
         comboDestination = new ComboBox<>();
         comboDestination.setPromptText("select airport");
-        comboDestination.getItems().addAll(airportList);
         comboDestination.setEditable(true);
-
         comboDestination.setOnAction(event -> {
+
+            // Need to enforce a new date selection, when user changes the airport
+            datePickerDeparture.getEditor().clear();
+            datePickerReturn.getEditor().clear();
+            datePickerDeparture.setValue(null);
+            datePickerReturn.setValue(null);
+
+
             if (comboDestination.getItems().contains(comboDestination.getValue())) {
                 getSelectedFlightPrice();
-            } else {
-                UtilityClass.errorMessageInput();
             }
         });
+
 
 
         labelDateReturn = new Label("Return");
@@ -237,7 +250,13 @@ public class MainScene extends Application {
 
 
         Button btnFlightSelect = new Button("Select Flight");
-        btnFlightSelect.setOnAction(event -> displaySelectedFlights());
+        btnFlightSelect.setOnAction(event ->{
+            if(comboDestination.getSelectionModel().isEmpty()){
+                UtilityClass.errorMessageFlight();
+            }
+
+            displaySelectedFlights();
+        });
 
         comboOrigin.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.length() > 3) {
@@ -275,10 +294,45 @@ public class MainScene extends Application {
         return gridPane;
     }
 
+    private void disableFlights() {
+        String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
+
+        try {
+            if(flightDepart.equals(CORK)) {
+                comboDestination.getItems().clear();
+                comboDestination.getItems().addAll(MADRID, ST_BRIEUC, JERSEY, PARIS, STANSTED, MALAGA);
+            }
+            else if(flightDepart.equals(MADRID)) {
+                comboDestination.getItems().clear();
+                comboDestination.getItems().addAll(CORK, ST_BRIEUC, JERSEY, PARIS, STANSTED, MALAGA);
+            }
+            else if(flightDepart.equals(PARIS)) {
+                comboDestination.getItems().clear();
+                comboDestination.getItems().addAll(CORK, MADRID, ST_BRIEUC, JERSEY, STANSTED, MALAGA);
+            }
+            else if(flightDepart.equals(STANSTED)) {
+                comboDestination.getItems().clear();
+                comboDestination.getItems().addAll(CORK, MADRID, ST_BRIEUC, JERSEY, PARIS, MALAGA);
+            }
+            else if(flightDepart.equals(MALAGA)) {
+                comboDestination.getItems().clear();
+                comboDestination.getItems().addAll(CORK, MADRID, ST_BRIEUC, JERSEY, PARIS, STANSTED);
+            }
+            else if (flightDepart.equals(ST_BRIEUC) || flightDepart.equals(JERSEY)) {
+                comboDestination.getItems().clear();
+                comboDestination.getItems().addAll(CORK, MADRID, PARIS, STANSTED, MALAGA);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+    }
+
 
     private Double getSelectedFlightPrice() {
         dptFlight = comboOrigin.getSelectionModel().getSelectedItem();
         rtnFlight = comboDestination.getSelectionModel().getSelectedItem();
+
 
         try {
 
@@ -341,6 +395,8 @@ public class MainScene extends Application {
 
         return flightPrice;
     }
+
+
 
 
 
@@ -440,7 +496,7 @@ public class MainScene extends Application {
 
         try {
 
-            if(flightDepart == null || flightReturn == null) {
+            if(flightDepart == null) {
                 UtilityClass.errorMessageFlight();
             }
             else if (dateDept == null || dateReturn == null) {
@@ -459,7 +515,7 @@ public class MainScene extends Application {
                 if (flight != null) {
                     textAreaDepart.setText(flight.toStringDept());
                     textAreaReturn.setText(flight.toStringReturn());
-                    textAreaReturn.appendText("\n\n" + flight.toString());
+                    textAreaReturn.appendText("\n\n" + flight.getPrice());
                 }
 
                 if (flightDepart.equals(CORK) && flightReturn.equals(MADRID)) {
@@ -570,7 +626,7 @@ public class MainScene extends Application {
 
 
         spinnerPassengerNo = new Spinner<>();
-        spinnerPassengerNo.getStyleClass().add("smallerField");
+        spinnerPassengerNo.getStyleClass().add("mySpinner");
 
         SpinnerValueFactory<Integer> valueFactory =
                 new SpinnerValueFactory.ListSpinnerValueFactory<>(integerObservableList);
@@ -591,7 +647,7 @@ public class MainScene extends Application {
 
         StackPane stackPaneRight = new StackPane();
         stackPaneRight.setPrefHeight(310);
-        stackPaneRight.setMaxWidth(465);
+        stackPaneRight.setMaxWidth(550);
         stackPaneRight.getStyleClass().add("stackPaneRight");
 
         StackPane.setAlignment(gridPaneRight, Pos.TOP_LEFT);
@@ -630,10 +686,14 @@ public class MainScene extends Application {
             dpDateoFBirth = new DatePicker();
             dpDateoFBirth.setPromptText("DOB");
             dpDateOfBirthList.add(dpDateoFBirth);
-            dpDateoFBirth.getStyleClass().add("smallerField");
+            dpDateoFBirth.getStyleClass().add("myDatePicker");
+
+            buttonAdd = new Button("Add " + i);
+            buttonAdd.setOnAction(event -> addPassengers(event));
+            buttonAddList.add(buttonAdd);
 
             hBoxList = new HBox(8);
-            hBoxList.getChildren().addAll(tfFName, tfLName, dpDateoFBirth);
+            hBoxList.getChildren().addAll(tfFName, tfLName, dpDateoFBirth, buttonAdd);
             gridPaneRight.add(hBoxList, 1, i - 1);
         }
     }
@@ -649,6 +709,15 @@ public class MainScene extends Application {
         }
     }
 
+    public void addPassengers(ActionEvent event) {
+
+        System.out.println(buttonAddList.size());
+//        if(event.getSource() == buttonAddList.get(1)) {
+//            UtilityClass.errorMessageFlight();
+//        }
+
+
+    }
 
 
     private void getDetails() {
@@ -661,7 +730,7 @@ public class MainScene extends Application {
 
             tf2 = new TextField();
             tf2.setMinWidth(500);
-            tf2.appendText(flight.toStringDept() + " | " + flight.toStringReturn() + " | " + flight.toString());
+            tf2.appendText(flight.toStringDept() + " | " + flight.toStringReturn() + " | " + flight.getPrice());
 
             window.setScene(scene2);
 

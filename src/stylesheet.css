@@ -37,8 +37,10 @@
     -fx-translate-x: 10;
 }
 
-.smallerField {
+.myDatePicker {
     -fx-max-width: 120;
 }
 
-
+.mySpinner {
+    -fx-max-width: 50;
+}

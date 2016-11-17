@@ -9,6 +9,8 @@ public class Flight{
     private Double returnPice;
     private Double price;
 
+    public Flight(){}
+
 
     public Flight (String origin, String destination, Double deapartPrice, Double returnPice, Double price) {
         this.origin = origin;
