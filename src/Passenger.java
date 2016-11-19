@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 /**
  * Created by brian on 11/11/16.
  */
@@ -5,10 +8,11 @@ public class Passenger {
 
     private String firstName;
     private String lastName;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
+    private ArrayList<Passenger> passengers;
 
 
-    public Passenger(String firstName, String lastName, String dateOfBirth) {
+    public Passenger(String firstName, String lastName, LocalDate dateOfBirth) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -31,12 +35,16 @@ public class Passenger {
         this.lastName = lastName;
     }
 
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public ArrayList<Passenger> getPassengers() {
+        return this.passengers;
     }
 
 

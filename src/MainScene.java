@@ -30,6 +30,8 @@ public class MainScene extends Application {
     private TextArea textAreaDepart, textAreaReturn;
     private Label labelOrigin, labelDestination, labelDateDeparture, labelDateReturn;
     private TextField tf, tf2, tfFName, tfLName;
+    private ListView listView;
+
     private HBox hBoxList;
     private String dptFlight, rtnFlight;
     private double dateDepartPrice;
@@ -90,7 +92,6 @@ public class MainScene extends Application {
     static String SBK_AGP_1 = "1200-1530";
     static String JER_ORK_1 = "1000-1200";
     static String JER_MAD_1 = "1800-2120";
-    static String JER_SBK_1 = "none";
     static String JER_CDG_1 = "0800-1015";
     static String JER_STN_1 = "1700-1830";
     static String JER_AGP_1 = "0800-1130";
@@ -131,13 +132,21 @@ public class MainScene extends Application {
     static final int FORTY = 40;
     static final int ZERO = 0;
 
+    static final Double CHILD_PRICE = 60.0;
+    static final Double CHILD_TOTAL_PRICE = CHILD_PRICE * 2;
+
+
+
     // constants - misc
     static final int MAX_PASSENGER_NO   = 8;
     static final ObservableList airportList = FXCollections.observableArrayList();
 
     // reference to the Passenger and FLight objects
+    protected List<Passenger> passengerList;
+    protected List<Flight> flightList;
     protected Passenger passenger, passenger2;
     protected Flight flight;
+    protected Flight flight2;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -510,13 +519,7 @@ public class MainScene extends Application {
             }
             else {
 
-                // constructor
-                 flight = new Flight(
-                        flightDepart,       // setOrigin() from variable in this method
-                        flightReturn,       // setDestination() from variable in this method
-                        dateDepartPrice,    // setDepartPrice() from the return of getSelectDate()
-                        dateReturnPrice,    // setReturnPrice() from the return of getSelectDate()
-                        currentPrice);      // setPrice() from the return of getSelectedFlightPrice()
+                setAdultPrice();
 
                 if (flight != null) {
                     textAreaDepart.setText(flight.toStringDept());
@@ -569,6 +572,20 @@ public class MainScene extends Application {
             System.out.println(e.getMessage());
         }
     }
+
+    private void setAdultPrice() {
+        String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
+        String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
+
+        // constructor
+        flight = new Flight(
+                flightDepart,       // setOrigin() from variable in this method
+                flightReturn,       // setDestination() from variable in this method
+                dateDepartPrice,    // setDepartPrice() from the return of getSelectDate()
+                dateReturnPrice,    // setReturnPrice() from the return of getSelectDate()
+                currentPrice);      // setPrice() from the return of getSelectedFlightPrice()
+    }
+
 
 
     private GridPane createMiddleGridPane() {
@@ -814,47 +831,55 @@ public class MainScene extends Application {
 
 
     private void getDetails() {
+        listView = new ListView();
 
         if (!(fName.getText().isEmpty() || lName.getText().isEmpty() || dateoFBirth1.getValue() == null)) {
-            passenger = new Passenger(fName.getText(), lName.getText(), dateoFBirth1.getValue().toString());
+            passenger = new Passenger(fName.getText(), lName.getText(), dateoFBirth1.getValue());
+
+            passengerList = new ArrayList<>();
+            passengerList.add(passenger);
+
+            LocalDate currentDate = LocalDate.now();
+            LocalDate currentDateMinus5yrs = currentDate.minusYears(5);
+
+            if(passenger.getDateOfBirth().isBefore(currentDateMinus5yrs)) {
+                setAdultPrice();
+                listView.getItems().addAll(passenger, flight.toString());
+            }
+            else {
+                setChildPrice();
+                listView.getItems().addAll(passenger, flight2.toString());
+            }
+
         }
         else {
             UtilityClass.errorMessageAddCustomer();
         }
 
-
-        if(spinnerPassengerNo.getValue() == 2) {
-            if (!(fName2.getText().isEmpty() || lName2.getText().isEmpty() || dateoFBirth2.getValue() == null)) {
-                passenger2 = new Passenger(fName2.getText(), lName2.getText(), dateoFBirth2.getValue().toString());
-
-            }
-            else {
-                UtilityClass.errorMessageAddCustomer();
-            }
-        }
-
-        tf = new TextField();
-        tf.setMinWidth(500);
-        tf.setText(passenger.toString());
-        tf.appendText("\n" + passenger2.toString());
-
-        tf2 = new TextField();
-        tf2.setMinWidth(500);
-        tf2.appendText(flight.toStringDept() + " | " + flight.toStringReturn() + " | " + flight.toString());
-
         window.setScene(scene2);
 
         Button button = new Button("Back");
-        vBox.getChildren().addAll(tf, tf2, button);
-        button.setOnAction(event -> window.setScene(scene1));
+        vBox.getChildren().addAll(listView, button);
+        button.setOnAction(event -> {
 
+            window.setScene(scene1);
+        });
 
     }
 
 
+    public void setChildPrice() {
+        String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
+        String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
 
+        flight2 = new Flight();
+        flight2.setDeapartPrice(CHILD_PRICE);
+        flight2.setReturnPrice(CHILD_PRICE);
+        flight2.setPrice(CHILD_TOTAL_PRICE);
+        flight2.setOrigin(flightDepart);
+        flight2.setDestination(flightReturn);
 
-
+    }
 
 
     private AnchorPane createAnchorPane() {

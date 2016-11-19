@@ -6,17 +6,17 @@ public class Flight{
     private String origin;
     private String destination;
     private Double deapartPrice;
-    private Double returnPice;
+    private Double returnPrice;
     private Double price;
 
     public Flight(){}
 
 
-    public Flight (String origin, String destination, Double deapartPrice, Double returnPice, Double price) {
+    public Flight (String origin, String destination, Double deapartPrice, Double returnPrice, Double price) {
         this.origin = origin;
         this.destination = destination;
         this.deapartPrice = deapartPrice;
-        this.returnPice = returnPice;
+        this.returnPrice = returnPrice;
         this.price = price;
     }
 
@@ -44,24 +44,31 @@ public class Flight{
         this.deapartPrice = deapartPrice;
     }
 
-    public Double getReturnPice() {
-        return returnPice;
+    public Double getReturnPrice() {
+        return returnPrice;
     }
 
-    public void setReturnPice(Double returnPice) {
-        this.returnPice = returnPice;
+    public void setReturnPrice(Double returnPrice) {
+        this.returnPrice = returnPrice;
     }
 
-    public Double getPrice() { return price; }
+    public Double getPrice() {
+        return price;
+    }
 
-    public Double setPrice(Double price) { return price; }
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 
 
-
-    @Override
-    public String toString() {return "Total: €"+this.price.toString();}
+    public String toStringTotalPrice() {return "Total:\t\t = €"+this.price;}
 
     public String toStringDept()  { return this.origin +" > "+ this.destination +"\t = €"+ this.deapartPrice; }
 
-    public String toStringReturn()  { return this.destination +" > "+ this.origin +"\t = €"+ this.returnPice; }
+    public String toStringReturn()  { return this.destination +" > "+ this.origin +"\t = €"+ this.returnPrice; }
+
+    @Override
+    public String toString() {
+        return toStringDept() +" \n"+ toStringReturn() +" \n"+ toStringTotalPrice();
+    }
 }
