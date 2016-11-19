@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /**
@@ -50,6 +51,16 @@ public class Passenger {
 
     @Override
     public String toString() {
-        return  this.firstName + " | " + this.lastName + " | " +this.dateOfBirth;
+
+        LocalDate date = this.dateOfBirth;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String formattedDob = date.format(formatter);
+
+        return  "Passenger Details:"+
+                "\n\n\tFirst name:\t " + this.firstName +
+                "\n" +
+                "\tLast name:\t " + this.lastName +
+                "\n" +
+                "\tDate of birth:\t " + formattedDob;
     }
 }

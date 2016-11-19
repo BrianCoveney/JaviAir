@@ -69,6 +69,9 @@ public class Flight{
 
     @Override
     public String toString() {
-        return toStringDept() +" \n"+ toStringReturn() +" \n"+ toStringTotalPrice();
+        return "Flight details:"+
+               "\n\n\tDepart: \t" + toStringDept() +
+                "\n\tReturn: \t"+ toStringReturn() +
+                       "\n\tPrice: \t"+ toStringTotalPrice();
     }
 }

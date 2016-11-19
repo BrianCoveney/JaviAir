@@ -146,7 +146,6 @@ public class MainScene extends Application {
     protected List<Flight> flightList;
     protected Passenger passenger, passenger2;
     protected Flight flight;
-    protected Flight flight2;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -848,7 +847,7 @@ public class MainScene extends Application {
             }
             else {
                 setChildPrice();
-                listView.getItems().addAll(passenger, flight2.toString());
+                listView.getItems().addAll(passenger, flight.toString());
             }
 
         }
@@ -872,12 +871,12 @@ public class MainScene extends Application {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
         String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
 
-        flight2 = new Flight();
-        flight2.setDeapartPrice(CHILD_PRICE);
-        flight2.setReturnPrice(CHILD_PRICE);
-        flight2.setPrice(CHILD_TOTAL_PRICE);
-        flight2.setOrigin(flightDepart);
-        flight2.setDestination(flightReturn);
+        flight = new Flight();
+        flight.setDeapartPrice(CHILD_PRICE);
+        flight.setReturnPrice(CHILD_PRICE);
+        flight.setPrice(CHILD_TOTAL_PRICE);
+        flight.setOrigin(flightDepart);
+        flight.setDestination(flightReturn);
 
     }
 
