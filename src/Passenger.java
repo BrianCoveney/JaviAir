@@ -56,7 +56,7 @@ public class Passenger {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String formattedDob = date.format(formatter);
 
-        return  "Passenger Details:"+
+        return  " Details:"+
                 "\n\n\tFirst name:\t " + this.firstName +
                 "\n" +
                 "\tLast name:\t " + this.lastName +

@@ -31,6 +31,7 @@ public class MainScene extends Application {
     private Label labelOrigin, labelDestination, labelDateDeparture, labelDateReturn;
     private TextField tf, tf2, tfFName, tfLName;
     private ListView listView;
+    private String firstName1, lastName1, dateOfBirth1;
 
     private HBox hBoxList;
     private String dptFlight, rtnFlight;
@@ -144,7 +145,7 @@ public class MainScene extends Application {
     // reference to the Passenger and FLight objects
     protected List<Passenger> passengerList;
     protected List<Flight> flightList;
-    protected Passenger passenger, passenger2;
+    protected Passenger passenger, passenger2, passenger3, passenger4, passenger5, passenger6, passenger7,passenger8;
     protected Flight flight;
 
     @Override
@@ -235,7 +236,6 @@ public class MainScene extends Application {
                 getSelectedFlightPrice();
             }
         });
-
 
 
         labelDateReturn = new Label("Return");
@@ -518,7 +518,7 @@ public class MainScene extends Application {
             }
             else {
 
-                setAdultPrice();
+                setFlightPriceAdult();
 
                 if (flight != null) {
                     textAreaDepart.setText(flight.toStringDept());
@@ -570,19 +570,6 @@ public class MainScene extends Application {
         }catch (Exception e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    private void setAdultPrice() {
-        String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
-        String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
-
-        // constructor
-        flight = new Flight(
-                flightDepart,       // setOrigin() from variable in this method
-                flightReturn,       // setDestination() from variable in this method
-                dateDepartPrice,    // setDepartPrice() from the return of getSelectDate()
-                dateReturnPrice,    // setReturnPrice() from the return of getSelectDate()
-                currentPrice);      // setPrice() from the return of getSelectedFlightPrice()
     }
 
 
@@ -657,13 +644,6 @@ public class MainScene extends Application {
             getSelectedNumOfPassengers();
         });
 
-        // if spinnerPassengerNo > newValue TextField[i].setDisable(false)
-//        spinnerPassengerNo.valueProperty().addListener((observable, oldValue, newValue) -> {
-//
-//            for(int i = 0; i <= MAX_PASSENGER_NO; i++) {
-//
-//            }
-//        });
 
         gridPaneLeft.add(label, 1, 2);
         gridPaneLeft.add(spinnerPassengerNo, 1, 3);
@@ -712,6 +692,9 @@ public class MainScene extends Application {
         dateoFBirth7.getStyleClass().add("myDatePicker");
         dateoFBirth8 = new DatePicker(); dateoFBirth8.setDisable(true);
         dateoFBirth8.getStyleClass().add("myDatePicker");
+
+        tfFirstNamesList.addAll(fName, fName2, fName3, fName4, fName5, fName6, fName7, fName8);
+
 
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
@@ -829,45 +812,110 @@ public class MainScene extends Application {
     }
 
 
+
     private void getDetails() {
         listView = new ListView();
+        passengerList = new ArrayList<>();
+        LocalDate now = LocalDate.now();
+        LocalDate nowMinus5yrs = now.minusYears(5);
 
-        if (!(fName.getText().isEmpty() || lName.getText().isEmpty() || dateoFBirth1.getValue() == null)) {
-            passenger = new Passenger(fName.getText(), lName.getText(), dateoFBirth1.getValue());
+        passenger = new Passenger(fName.getText(), lName.getText(), dateoFBirth1.getValue());
+        passenger2 = new Passenger(fName2.getText(), lName2.getText(), dateoFBirth2.getValue());
+        passenger3 = new Passenger(fName3.getText(), lName3.getText(), dateoFBirth3.getValue());
+        passenger4 = new Passenger(fName4.getText(), lName4.getText(), dateoFBirth4.getValue());
+        passenger5 = new Passenger(fName5.getText(), lName5.getText(), dateoFBirth5.getValue());
+        passenger6 = new Passenger(fName6.getText(), lName6.getText(), dateoFBirth6.getValue());
+        passenger7 = new Passenger(fName7.getText(), lName7.getText(), dateoFBirth7.getValue());
+        passenger8 = new Passenger(fName8.getText(), lName8.getText(), dateoFBirth8.getValue());
+        passengerList.add(passenger);
+        passengerList.add(passenger2);
+        passengerList.add(passenger3);
+        passengerList.add(passenger4);
+        passengerList.add(passenger5);
+        passengerList.add(passenger6);
+        passengerList.add(passenger7);
+        passengerList.add(passenger8);
 
-            passengerList = new ArrayList<>();
-            passengerList.add(passenger);
 
-            LocalDate currentDate = LocalDate.now();
-            LocalDate currentDateMinus5yrs = currentDate.minusYears(5);
-
-            if(passenger.getDateOfBirth().isBefore(currentDateMinus5yrs)) {
-                setAdultPrice();
-                listView.getItems().addAll(passenger, flight.toString());
-            }
-            else {
-                setChildPrice();
-                listView.getItems().addAll(passenger, flight.toString());
-            }
-
+        if (passenger.getDateOfBirth().isBefore(nowMinus5yrs)) {
+            setFlightPriceAdult();
+            listView.getItems().addAll("Passenger 1 " + passenger, flight);
+        } else {
+            setFlightPriceChild();
+            listView.getItems().addAll("Passenger 1 " + passenger, flight);
         }
-        else {
-            UtilityClass.errorMessageAddCustomer();
+
+        if (passenger2.getDateOfBirth().isBefore(nowMinus5yrs)) {
+            setFlightPriceAdult();
+            listView.getItems().addAll("Passenger 2 " + passenger2, flight);
+        } else {
+            setFlightPriceChild();
+            listView.getItems().addAll("Passenger 2 " + passenger2, flight);
         }
+
+        if (passenger3.getDateOfBirth().isBefore(nowMinus5yrs)) {
+            setFlightPriceAdult();
+            listView.getItems().addAll("Passenger 3 " + passenger3, flight);
+        } else {
+            setFlightPriceChild();
+            listView.getItems().addAll("Passenger 3 " + passenger3, flight);
+        }
+
+        if (passenger4.getDateOfBirth().isBefore(nowMinus5yrs)) {
+            setFlightPriceAdult();
+            listView.getItems().addAll("Passenger 4 " + passenger4, flight);
+        } else {
+            setFlightPriceChild();
+            listView.getItems().addAll("Passenger 4 " + passenger4, flight);
+        }
+
+        if (passenger5.getDateOfBirth().isBefore(nowMinus5yrs)) {
+            setFlightPriceAdult();
+            listView.getItems().addAll("Passenger 5 " + passenger5, flight);
+        } else {
+            setFlightPriceChild();
+            listView.getItems().addAll("Passenger 5 " + passenger5, flight);
+        }
+
+        if (passenger6.getDateOfBirth().isBefore(nowMinus5yrs)) {
+            setFlightPriceAdult();
+            listView.getItems().addAll("Passenger 6 " + passenger6, flight);
+        } else {
+            setFlightPriceChild();
+            listView.getItems().addAll("Passenger 6 " + passenger6, flight);
+        }
+
+        if (passenger7.getDateOfBirth().isBefore(nowMinus5yrs)) {
+            setFlightPriceAdult();
+            listView.getItems().addAll("Passenger 7 " + passenger7, flight);
+        } else {
+            setFlightPriceChild();
+            listView.getItems().addAll("Passenger 7 " + passenger7, flight);
+        }
+
+
+        if (passenger8.getDateOfBirth().isBefore(nowMinus5yrs)) {
+            setFlightPriceAdult();
+            listView.getItems().addAll("Passenger 8 " + passenger8, flight);
+        } else {
+            setFlightPriceChild();
+            listView.getItems().addAll("Passenger 8 " + passenger8, flight);
+        }
+
+
 
         window.setScene(scene2);
 
         Button button = new Button("Back");
         vBox.getChildren().addAll(listView, button);
         button.setOnAction(event -> {
-
             window.setScene(scene1);
         });
 
     }
 
 
-    public void setChildPrice() {
+    public void setFlightPriceChild() {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
         String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
 
@@ -877,7 +925,20 @@ public class MainScene extends Application {
         flight.setPrice(CHILD_TOTAL_PRICE);
         flight.setOrigin(flightDepart);
         flight.setDestination(flightReturn);
+    }
 
+
+    private void setFlightPriceAdult() {
+        String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
+        String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
+
+        // constructor
+        flight = new Flight(
+                flightDepart,       // setOrigin() from variable in this method
+                flightReturn,       // setDestination() from variable in this method
+                dateDepartPrice,    // setDepartPrice() from the return of getSelectDate()
+                dateReturnPrice,    // setReturnPrice() from the return of getSelectDate()
+                currentPrice);      // setPrice() from the return of getSelectedFlightPrice()
     }
 
 
@@ -891,11 +952,61 @@ public class MainScene extends Application {
             if (comboOrigin.getValue() != null || comboDestination.getValue() != null) {
                 if (datePickerDeparture.getValue() != null || datePickerReturn.getValue() != null) {
 
-                    if (!(fName == null || tfLastNamesList == null || dateoFBirth1.getValue() == null)) {
-                        event.consume();
-                        getDetails();
-                    } else {
-                        UtilityClass.errorMessageAddCustomer();
+                    if (spinnerPassengerNo.getValue() == 1) {
+                        if (!(fName.getText().isEmpty() || lName.getText().isEmpty() || dateoFBirth1.getValue() == null)) {
+                            getDetails();
+                        } else {
+                            UtilityClass.errorMessageAddCustomer();
+                        }
+                    }
+                    else if (spinnerPassengerNo.getValue() == 2) {
+                        if (!(fName2.getText().isEmpty() || lName2.getText().isEmpty() || dateoFBirth2.getValue() == null)) {
+                            getDetails();
+                        } else {
+                            UtilityClass.errorMessageAddCustomer();
+                        }
+                    }
+                    else if (spinnerPassengerNo.getValue() == 3) {
+                        if (!(fName3.getText().isEmpty() || lName3.getText().isEmpty() || dateoFBirth3.getValue() == null)) {
+                            getDetails();
+                        } else {
+                            UtilityClass.errorMessageAddCustomer();
+                        }
+                    }
+                    else if (spinnerPassengerNo.getValue() == 4) {
+                        if (!(fName4.getText().isEmpty() || lName4.getText().isEmpty() || dateoFBirth4.getValue() == null)) {
+                            getDetails();
+                        } else {
+                            UtilityClass.errorMessageAddCustomer();
+                        }
+                    }
+                    else if (spinnerPassengerNo.getValue() == 5) {
+                        if (!(fName5.getText().isEmpty() || lName5.getText().isEmpty() || dateoFBirth5.getValue() == null)) {
+                            getDetails();
+                        } else {
+                            UtilityClass.errorMessageAddCustomer();
+                        }
+                    }
+                    else if (spinnerPassengerNo.getValue() == 6) {
+                        if (!(fName6.getText().isEmpty() || lName6.getText().isEmpty() || dateoFBirth6.getValue() == null)) {
+                            getDetails();
+                        } else {
+                            UtilityClass.errorMessageAddCustomer();
+                        }
+                    }
+                    else if (spinnerPassengerNo.getValue() == 7) {
+                        if (!(fName7.getText().isEmpty() || lName7.getText().isEmpty() || dateoFBirth7.getValue() == null)) {
+                            getDetails();
+                        } else {
+                            UtilityClass.errorMessageAddCustomer();
+                        }
+                    }
+                    else if (spinnerPassengerNo.getValue() == 8) {
+                        if (!(fName8.getText().isEmpty() || lName8.getText().isEmpty() || dateoFBirth8.getValue() == null)) {
+                            getDetails();
+                        } else {
+                            UtilityClass.errorMessageAddCustomer();
+                        }
                     }
                 } else {
                     UtilityClass.errorMessageDate();
