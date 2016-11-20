@@ -145,7 +145,7 @@ public class MainScene extends Application {
     // reference to the Passenger and FLight objects
     List<Passenger> passengerList = FXCollections.observableArrayList();
     protected List<Flight> flightList;
-    protected Passenger passenger, passenger2, passenger3, passenger4, passenger5, passenger6, passenger7,passenger8;
+    protected Passenger passenger1, passenger2, passenger3, passenger4, passenger5, passenger6, passenger7,passenger8;
     protected Flight flight;
 
     @Override
@@ -819,7 +819,7 @@ public class MainScene extends Application {
         LocalDate now = LocalDate.now();
         LocalDate nowMinus5yrs = now.minusYears(5);
 
-        passenger = new Passenger(fName.getText(), lName.getText(), dateoFBirth1.getValue());
+        passenger1 = new Passenger(fName.getText(), lName.getText(), dateoFBirth1.getValue());
         passenger2 = new Passenger(fName2.getText(), lName2.getText(), dateoFBirth2.getValue());
         passenger3 = new Passenger(fName3.getText(), lName3.getText(), dateoFBirth3.getValue());
         passenger4 = new Passenger(fName4.getText(), lName4.getText(), dateoFBirth4.getValue());
@@ -827,7 +827,7 @@ public class MainScene extends Application {
         passenger6 = new Passenger(fName6.getText(), lName6.getText(), dateoFBirth6.getValue());
         passenger7 = new Passenger(fName7.getText(), lName7.getText(), dateoFBirth7.getValue());
         passenger8 = new Passenger(fName8.getText(), lName8.getText(), dateoFBirth8.getValue());
-        passengerList.add(passenger);
+        passengerList.add(passenger1);
         passengerList.add(passenger2);
         passengerList.add(passenger3);
         passengerList.add(passenger4);
@@ -844,10 +844,11 @@ public class MainScene extends Application {
                     mCounter++;
                     if (mPassenger.getDateOfBirth().isBefore(nowMinus5yrs)) {
                         setFlightPriceAdult();
-                        listView.getItems().addAll("Passenger " + mCounter + passenger, flight);
+                        // add each flight from the observablelist, using a counter as the index
+                        listView.getItems().addAll("Passenger " + mCounter + passengerList.get(mCounter -1), flight);
                     } else {
                         setFlightPriceChild();
-                        listView.getItems().addAll("Passenger " + mCounter + passenger, flight);
+                        listView.getItems().addAll("Passenger " + mCounter + passengerList.get(mCounter -1), flight);
                     }
                 }
             }catch (Exception e) {

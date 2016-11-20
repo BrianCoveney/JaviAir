@@ -66,7 +66,7 @@ public final class UtilityClass {
     public static void errorMessageAddCustomer() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Input Error");
-        alert.setContentText("No passenger details entered");
+        alert.setContentText("No passenger1 details entered");
         alert.showAndWait();
     }
 
