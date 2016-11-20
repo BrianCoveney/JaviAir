@@ -143,7 +143,7 @@ public class MainScene extends Application {
     static final ObservableList airportList = FXCollections.observableArrayList();
 
     // reference to the Passenger and FLight objects
-    protected List<Passenger> passengerList;
+    List<Passenger> passengerList = FXCollections.observableArrayList();
     protected List<Flight> flightList;
     protected Passenger passenger, passenger2, passenger3, passenger4, passenger5, passenger6, passenger7,passenger8;
     protected Flight flight;
@@ -837,71 +837,23 @@ public class MainScene extends Application {
         passengerList.add(passenger8);
 
 
-        if (passenger.getDateOfBirth().isBefore(nowMinus5yrs)) {
-            setFlightPriceAdult();
-            listView.getItems().addAll("Passenger 1 " + passenger, flight);
-        } else {
-            setFlightPriceChild();
-            listView.getItems().addAll("Passenger 1 " + passenger, flight);
+        int mCounter = 0;
+        for (Passenger mPassenger : passengerList) {
+            try {
+                if (mPassenger != null) {
+                    mCounter++;
+                    if (mPassenger.getDateOfBirth().isBefore(nowMinus5yrs)) {
+                        setFlightPriceAdult();
+                        listView.getItems().addAll("Passenger " + mCounter + passenger, flight);
+                    } else {
+                        setFlightPriceChild();
+                        listView.getItems().addAll("Passenger " + mCounter + passenger, flight);
+                    }
+                }
+            }catch (Exception e) {
+                e.getMessage();
+            }
         }
-
-        if (passenger2.getDateOfBirth().isBefore(nowMinus5yrs)) {
-            setFlightPriceAdult();
-            listView.getItems().addAll("Passenger 2 " + passenger2, flight);
-        } else {
-            setFlightPriceChild();
-            listView.getItems().addAll("Passenger 2 " + passenger2, flight);
-        }
-
-        if (passenger3.getDateOfBirth().isBefore(nowMinus5yrs)) {
-            setFlightPriceAdult();
-            listView.getItems().addAll("Passenger 3 " + passenger3, flight);
-        } else {
-            setFlightPriceChild();
-            listView.getItems().addAll("Passenger 3 " + passenger3, flight);
-        }
-
-        if (passenger4.getDateOfBirth().isBefore(nowMinus5yrs)) {
-            setFlightPriceAdult();
-            listView.getItems().addAll("Passenger 4 " + passenger4, flight);
-        } else {
-            setFlightPriceChild();
-            listView.getItems().addAll("Passenger 4 " + passenger4, flight);
-        }
-
-        if (passenger5.getDateOfBirth().isBefore(nowMinus5yrs)) {
-            setFlightPriceAdult();
-            listView.getItems().addAll("Passenger 5 " + passenger5, flight);
-        } else {
-            setFlightPriceChild();
-            listView.getItems().addAll("Passenger 5 " + passenger5, flight);
-        }
-
-        if (passenger6.getDateOfBirth().isBefore(nowMinus5yrs)) {
-            setFlightPriceAdult();
-            listView.getItems().addAll("Passenger 6 " + passenger6, flight);
-        } else {
-            setFlightPriceChild();
-            listView.getItems().addAll("Passenger 6 " + passenger6, flight);
-        }
-
-        if (passenger7.getDateOfBirth().isBefore(nowMinus5yrs)) {
-            setFlightPriceAdult();
-            listView.getItems().addAll("Passenger 7 " + passenger7, flight);
-        } else {
-            setFlightPriceChild();
-            listView.getItems().addAll("Passenger 7 " + passenger7, flight);
-        }
-
-
-        if (passenger8.getDateOfBirth().isBefore(nowMinus5yrs)) {
-            setFlightPriceAdult();
-            listView.getItems().addAll("Passenger 8 " + passenger8, flight);
-        } else {
-            setFlightPriceChild();
-            listView.getItems().addAll("Passenger 8 " + passenger8, flight);
-        }
-
 
 
         window.setScene(scene2);
@@ -951,6 +903,7 @@ public class MainScene extends Application {
         buttonContinue.setOnAction(event -> {
             if (comboOrigin.getValue() != null || comboDestination.getValue() != null) {
                 if (datePickerDeparture.getValue() != null || datePickerReturn.getValue() != null) {
+
 
                     if (spinnerPassengerNo.getValue() == 1) {
                         if (!(fName.getText().isEmpty() || lName.getText().isEmpty() || dateoFBirth1.getValue() == null)) {
