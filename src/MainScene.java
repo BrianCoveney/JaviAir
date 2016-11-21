@@ -23,6 +23,7 @@ public class MainScene extends Application {
     private Button buttonAdd;
     private ComboBox<String> comboOrigin;
     private ComboBox<String> comboDestination;
+    private ComboBox<Integer> comboBag1, comboBag2, comboBag3, comboBag4, comboBag5, comboBag6, comboBag7, comboBag8;
     private DatePicker datePickerDeparture, dpDateoFBirth;
     private DatePicker datePickerReturn;
     private GridPane gridPaneMiddle;
@@ -48,6 +49,9 @@ public class MainScene extends Application {
     private ObservableList<TextField> tfFirstNamesList = FXCollections.observableArrayList();
     private ObservableList<TextField> tfLastNamesList = FXCollections.observableArrayList();
     private ObservableList<DatePicker> dpDateOfBirthList = FXCollections.observableArrayList();
+    private ObservableList<ComboBox> comboBagList = FXCollections.observableArrayList();
+    private static final ObservableList<Integer> baggageNumbers = FXCollections.observableArrayList();
+    private static final ObservableList airportList = FXCollections.observableArrayList();
 
     private TextField   fName, fName2, fName3, fName4, fName5, fName6, fName7, fName8,
             lName, lName2, lName3, lName4, lName5, lName6, lName7, lName8;
@@ -58,16 +62,16 @@ public class MainScene extends Application {
     private Pane pane;
 
     // constants - flight airports
-    private static final String CORK            = "ORK";
-    private static final String MADRID          = "MAD";
-    private static final String ST_BRIEUC       = "SBK";
-    private static final String JERSEY          = "JER";
-    private static final String PARIS           = "CDG";
-    private static final String STANSTED        = "STN";
-    private static final String MALAGA          = "AGP";
-    private static final String FRI             = "FRIDAY";
-    private static final String SAT             = "SATURDAY";
-    private static final String SUN             = "SUNDAY";
+     static final String CORK            = "ORK";
+     static final String MADRID          = "MAD";
+     static final String ST_BRIEUC       = "SBK";
+     static final String JERSEY          = "JER";
+     static final String PARIS           = "CDG";
+     static final String STANSTED        = "STN";
+     static final String MALAGA          = "AGP";
+     static final String FRI             = "FRIDAY";
+     static final String SAT             = "SATURDAY";
+     static final String SUN             = "SUNDAY";
 
     // constants  flight times
     static String ORK_MAD_1 = "0920-1300";
@@ -135,18 +139,17 @@ public class MainScene extends Application {
 
     static final Double CHILD_PRICE = 60.0;
     static final Double CHILD_TOTAL_PRICE = CHILD_PRICE * 2;
+    static final Double BABY_PRICE = 0.0;
 
 
-
-    // constants - misc
     static final int MAX_PASSENGER_NO   = 8;
-    static final ObservableList airportList = FXCollections.observableArrayList();
+
 
     // reference to the Passenger and FLight objects
-    List<Passenger> passengerList = FXCollections.observableArrayList();
-    protected List<Flight> flightList;
-    protected Passenger passenger1, passenger2, passenger3, passenger4, passenger5, passenger6, passenger7,passenger8;
-    protected Flight flight;
+    private List<Passenger> passengerList = FXCollections.observableArrayList();
+    private List<Flight> flightList;
+    private Passenger passenger1, passenger2, passenger3, passenger4, passenger5, passenger6, passenger7,passenger8;
+    private Flight flight;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -160,6 +163,8 @@ public class MainScene extends Application {
         vBox.getChildren().addAll(
                 createTopGridPane(), createMiddleGridPane(), createBottomPane(), createAnchorPane());
         scene1 = new Scene(vBox, 800, 750);
+
+        listView = new ListView();
 
         this.vBox = new VBox();
         scene2 = new Scene(this.vBox, 700, 650);
@@ -310,6 +315,8 @@ public class MainScene extends Application {
 
     private void disableFlights() {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
+
+
 
         try {
             if(flightDepart.equals(CORK)) {
@@ -521,8 +528,8 @@ public class MainScene extends Application {
                 setFlightPriceAdult();
 
                 if (flight != null) {
-                    textAreaDepart.setText(flight.toStringDept());
-                    textAreaReturn.setText(flight.toStringReturn());
+                    textAreaDepart.setText(flight.displayDeptDetails());
+                    textAreaReturn.setText(flight.displayReturnDetails());
                     textAreaReturn.appendText("\n\n" + flight.getPrice());
                 }
 
@@ -614,7 +621,7 @@ public class MainScene extends Application {
 
         StackPane stackPaneLeft = new StackPane();
         stackPaneLeft.setPrefHeight(300);
-        stackPaneLeft.setMaxWidth(200);
+        stackPaneLeft.setMaxWidth(150);
         stackPaneLeft.getStyleClass().add("stackPaneLeft");
         StackPane.setAlignment(gridPaneLeft, Pos.TOP_LEFT);
         stackPaneLeft.getChildren().addAll(gridPaneLeft);
@@ -631,7 +638,7 @@ public class MainScene extends Application {
 
 
         spinnerPassengerNo = new Spinner<>();
-        spinnerPassengerNo.getStyleClass().add("myDatePicker");
+        spinnerPassengerNo.getStyleClass().add("mySpinner");
 
         SpinnerValueFactory<Integer> valueFactory =
                 new SpinnerValueFactory.ListSpinnerValueFactory<>(integerObservableList);
@@ -652,16 +659,18 @@ public class MainScene extends Application {
         // RHS Pane
         StackPane stackPaneRight = new StackPane();
         stackPaneRight.setPrefHeight(310);
-        stackPaneRight.setMaxWidth(465);
+        stackPaneRight.setMaxWidth(550);
         stackPaneRight.getStyleClass().add("stackPaneRight");
 
-        Label labelBorder = new Label("Passenger Details");
-        labelBorder.getStyleClass().add("border-title");
+        Label labelBorder = new Label("Passenger Details"); labelBorder.getStyleClass().add("border-title");
         StackPane.setAlignment(labelBorder, Pos.TOP_CENTER);
-        stackPaneRight.getChildren().addAll(labelBorder);
+        Label labelBag = new Label("Baggage"); labelBag.getStyleClass().add("baggage-title");
+        StackPane.setAlignment(labelBag, Pos.TOP_RIGHT);
 
-        fName = new TextField();  fName.setDisable(true); // fName.setVisible(false);
-        lName = new TextField();  lName.setDisable(true);
+        stackPaneRight.getChildren().addAll(labelBorder, labelBag);
+
+        fName = new TextField();  fName.setDisable(true);  fName.setPromptText("first name"); // fName.setVisible(false);
+        lName = new TextField();  lName.setDisable(true);  lName.setPromptText("last name");
         fName2 = new TextField(); fName2.setDisable(true);
         lName2 = new TextField(); lName2.setDisable(true);
         fName3 = new TextField(); fName3.setDisable(true);
@@ -676,7 +685,7 @@ public class MainScene extends Application {
         lName7 = new TextField(); lName7.setDisable(true);
         fName8 = new TextField(); fName8.setDisable(true);
         lName8 = new TextField(); lName8.setDisable(true);
-        dateoFBirth1 = new DatePicker(); dateoFBirth1.setDisable(true);
+        dateoFBirth1 = new DatePicker(); dateoFBirth1.setDisable(true); dateoFBirth1.setPromptText("dd/mm/yyyy");
         dateoFBirth1.getStyleClass().add("myDatePicker");
         dateoFBirth2 = new DatePicker(); dateoFBirth2.setDisable(true);
         dateoFBirth2.getStyleClass().add("myDatePicker");
@@ -693,6 +702,25 @@ public class MainScene extends Application {
         dateoFBirth8 = new DatePicker(); dateoFBirth8.setDisable(true);
         dateoFBirth8.getStyleClass().add("myDatePicker");
 
+        baggageNumbers.addAll(0, 1, 2, 3);
+        comboBag1 = new ComboBox<>(); comboBag1.setItems(baggageNumbers); comboBag1.getStyleClass().add("smCombo");
+        comboBag2 = new ComboBox<>(); comboBag2.setItems(baggageNumbers); comboBag2.getStyleClass().add("smCombo");
+        comboBag3 = new ComboBox<>(); comboBag3.setItems(baggageNumbers); comboBag3.getStyleClass().add("smCombo");
+        comboBag4 = new ComboBox<>(); comboBag4.setItems(baggageNumbers); comboBag4.getStyleClass().add("smCombo");
+        comboBag5 = new ComboBox<>(); comboBag5.setItems(baggageNumbers); comboBag5.getStyleClass().add("smCombo");
+        comboBag6 = new ComboBox<>(); comboBag6.setItems(baggageNumbers); comboBag6.getStyleClass().add("smCombo");
+        comboBag7 = new ComboBox<>(); comboBag7.setItems(baggageNumbers); comboBag7.getStyleClass().add("smCombo");
+        comboBag8 = new ComboBox<>(); comboBag8.setItems(baggageNumbers); comboBag8.getStyleClass().add("smCombo");
+        comboBagList.add(comboBag1);
+        comboBagList.add(comboBag2);
+        comboBagList.add(comboBag3);
+        comboBagList.add(comboBag4);
+        comboBagList.add(comboBag5);
+        comboBagList.add(comboBag6);
+        comboBagList.add(comboBag7);
+        comboBagList.add(comboBag8);
+
+
         tfFirstNamesList.addAll(fName, fName2, fName3, fName4, fName5, fName6, fName7, fName8);
 
 
@@ -703,27 +731,35 @@ public class MainScene extends Application {
         gridPane.add(fName, 1, 0);
         gridPane.add(lName, 2, 0);
         gridPane.add(dateoFBirth1, 3, 0);
+        gridPane.add(comboBag1, 4, 0);
         gridPane.add(fName2, 1, 1);
         gridPane.add(lName2, 2, 1);
         gridPane.add(dateoFBirth2, 3, 1);
+        gridPane.add(comboBag2, 4, 1);
         gridPane.add(fName3, 1, 2);
         gridPane.add(lName3, 2, 2);
         gridPane.add(dateoFBirth3, 3, 2);
+        gridPane.add(comboBag3, 4, 2);
         gridPane.add(fName4, 1, 3);
         gridPane.add(lName4, 2, 3);
         gridPane.add(dateoFBirth4, 3, 3);
+        gridPane.add(comboBag4, 4, 3);
         gridPane.add(fName5, 1, 4);
         gridPane.add(lName5, 2, 4);
         gridPane.add(dateoFBirth5, 3, 4);
+        gridPane.add(comboBag5, 4, 4);
         gridPane.add(fName6, 1, 5);
         gridPane.add(lName6, 2, 5);
         gridPane.add(dateoFBirth6, 3, 5);
+        gridPane.add(comboBag6, 4, 5);
         gridPane.add(fName7, 1, 6);
         gridPane.add(lName7, 2, 6);
         gridPane.add(dateoFBirth7, 3, 6);
+        gridPane.add(comboBag7, 4, 6);
         gridPane.add(fName8, 1, 7);
         gridPane.add(lName8, 2, 7);
         gridPane.add(dateoFBirth8, 3, 7);
+        gridPane.add(comboBag8, 4, 7);
 
         StackPane.setAlignment(gridPane, Pos.TOP_LEFT);
         stackPaneRight.getChildren().addAll(gridPane);
@@ -814,10 +850,10 @@ public class MainScene extends Application {
 
 
     private void getDetails() {
-        listView = new ListView();
         passengerList = new ArrayList<>();
         LocalDate now = LocalDate.now();
         LocalDate nowMinus5yrs = now.minusYears(5);
+        LocalDate nowMinus1yr = now.minusYears(1);
 
         passenger1 = new Passenger(fName.getText(), lName.getText(), dateoFBirth1.getValue());
         passenger2 = new Passenger(fName2.getText(), lName2.getText(), dateoFBirth2.getValue());
@@ -842,13 +878,20 @@ public class MainScene extends Application {
             try {
                 if (mPassenger != null) {
                     mCounter++;
-                    if (mPassenger.getDateOfBirth().isBefore(nowMinus5yrs)) {
-                        setFlightPriceAdult();
+
+                    if(mPassenger.getDateOfBirth().isAfter(nowMinus1yr)) {
+                        setFlightPriceBaby();
                         // add each flight from the observablelist, using a counter as the index
-                        listView.getItems().addAll("Passenger " + mCounter + passengerList.get(mCounter -1), flight);
-                    } else {
+                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter -1), flight);
+                        comboBagList.get(mCounter).setValue(null);
+                    }
+                    else if (mPassenger.getDateOfBirth().isAfter(nowMinus5yrs) && mPassenger.getDateOfBirth().isBefore(nowMinus1yr)) {
                         setFlightPriceChild();
-                        listView.getItems().addAll("Passenger " + mCounter + passengerList.get(mCounter -1), flight);
+                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter -1), flight);
+                    }
+                    else if (mPassenger.getDateOfBirth().isBefore(nowMinus5yrs)) {
+                        setFlightPriceAdult();
+                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter -1), flight);
                     }
                 }
             }catch (Exception e) {
@@ -856,15 +899,18 @@ public class MainScene extends Application {
             }
         }
 
-
         window.setScene(scene2);
 
-        Button button = new Button("Back");
-        vBox.getChildren().addAll(listView, button);
-        button.setOnAction(event -> {
-            window.setScene(scene1);
-        });
-
+        try {
+            Button buttonBack = new Button("Back");
+            vBox.getChildren().addAll(listView, buttonBack);
+            buttonBack.setOnAction(event -> {
+                listView.getItems().clear();
+                window.setScene(scene1);
+            });
+        }catch (IllegalArgumentException iae) {
+            iae.getMessage();
+        }
     }
 
 
@@ -878,6 +924,20 @@ public class MainScene extends Application {
         flight.setPrice(CHILD_TOTAL_PRICE);
         flight.setOrigin(flightDepart);
         flight.setDestination(flightReturn);
+
+    }
+
+    public void setFlightPriceBaby() {
+        String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
+        String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
+
+        flight = new Flight();
+        flight.setDeapartPrice(BABY_PRICE);
+        flight.setReturnPrice(BABY_PRICE);
+        flight.setPrice(BABY_PRICE);
+        flight.setOrigin(flightDepart);
+        flight.setDestination(flightReturn);
+
     }
 
 

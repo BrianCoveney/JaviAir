@@ -61,17 +61,21 @@ public class Flight{
     }
 
 
-    public String toStringTotalPrice() {return "Total:\t\t = €"+this.price;}
+    public String displayTotalPrice() {return "Total:\t\t = €"+this.price;}
 
-    public String toStringDept()  { return this.origin +" > "+ this.destination +"\t = €"+ this.deapartPrice; }
+    public String displayDeptDetails()  { return this.origin +" > "+ this.destination +"\t = €"+ this.deapartPrice; }
 
-    public String toStringReturn()  { return this.destination +" > "+ this.origin +"\t = €"+ this.returnPrice; }
+    public String displayReturnDetails()  { return this.destination +" > "+ this.origin +"\t = €"+ this.returnPrice; }
 
     @Override
     public String toString() {
-        return "Flight details:"+
-               "\n\n\tDepart: \t" + toStringDept() +
-                "\n\tReturn: \t"+ toStringReturn() +
-                       "\n\tPrice: \t"+ toStringTotalPrice();
+        return "\tDepart: \t\t" + displayDeptDetails() +
+                "\n\tReturn: \t\t"+ displayReturnDetails() +
+                       "\n\tPrice: \t\t"+ displayTotalPrice() + "\n";
     }
+
+
+
+
+
 }
