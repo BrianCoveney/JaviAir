@@ -720,6 +720,24 @@ public class MainScene extends Application {
         comboBagList.add(comboBag7);
         comboBagList.add(comboBag8);
 
+        dpDateOfBirthList.addAll(dateoFBirth1, dateoFBirth2, dateoFBirth3, dateoFBirth4, dateoFBirth5, dateoFBirth6, dateoFBirth7, dateoFBirth8);
+
+        LocalDate now = LocalDate.now();
+        LocalDate nowMinus1yr = now.minusYears(1);
+
+        // TODO
+        try {
+            for (DatePicker datePicker : dpDateOfBirthList) {
+                if (datePicker.valueProperty().getValue().isAfter(nowMinus1yr)) {
+                    comboBag1.setDisable(false);
+                }
+            }
+        }catch (Exception e) {
+            e.getMessage();
+        }
+
+
+
 
         tfFirstNamesList.addAll(fName, fName2, fName3, fName4, fName5, fName6, fName7, fName8);
 
@@ -851,9 +869,6 @@ public class MainScene extends Application {
 
     private void getDetails() {
         passengerList = new ArrayList<>();
-        LocalDate now = LocalDate.now();
-        LocalDate nowMinus5yrs = now.minusYears(5);
-        LocalDate nowMinus1yr = now.minusYears(1);
 
         passenger1 = new Passenger(fName.getText(), lName.getText(), dateoFBirth1.getValue());
         passenger2 = new Passenger(fName2.getText(), lName2.getText(), dateoFBirth2.getValue());
@@ -873,6 +888,29 @@ public class MainScene extends Application {
         passengerList.add(passenger8);
 
 
+        addPassenger();
+
+        window.setScene(scene2);
+
+        try {
+            Button buttonBack = new Button("Back");
+            vBox.getChildren().addAll(listView, buttonBack);
+            buttonBack.setOnAction(event -> {
+                listView.getItems().clear();
+                window.setScene(scene1);
+            });
+        }catch (IllegalArgumentException iae) {
+            iae.getMessage();
+        }
+    }
+
+
+
+    public void addPassenger() {
+        LocalDate now = LocalDate.now();
+        LocalDate nowMinus5yrs = now.minusYears(5);
+        LocalDate nowMinus1yr = now.minusYears(1);
+
         int mCounter = 0;
         for (Passenger mPassenger : passengerList) {
             try {
@@ -883,7 +921,6 @@ public class MainScene extends Application {
                         setFlightPriceBaby();
                         // add each flight from the observablelist, using a counter as the index
                         listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter -1), flight);
-                        comboBagList.get(mCounter).setValue(null);
                     }
                     else if (mPassenger.getDateOfBirth().isAfter(nowMinus5yrs) && mPassenger.getDateOfBirth().isBefore(nowMinus1yr)) {
                         setFlightPriceChild();
@@ -897,19 +934,6 @@ public class MainScene extends Application {
             }catch (Exception e) {
                 e.getMessage();
             }
-        }
-
-        window.setScene(scene2);
-
-        try {
-            Button buttonBack = new Button("Back");
-            vBox.getChildren().addAll(listView, buttonBack);
-            buttonBack.setOnAction(event -> {
-                listView.getItems().clear();
-                window.setScene(scene1);
-            });
-        }catch (IllegalArgumentException iae) {
-            iae.getMessage();
         }
     }
 
@@ -962,16 +986,23 @@ public class MainScene extends Application {
 
         buttonContinue = new Button("Continue");
         buttonContinue.setOnAction(event -> {
+
             if (comboOrigin.getValue() != null || comboDestination.getValue() != null) {
                 if (datePickerDeparture.getValue() != null || datePickerReturn.getValue() != null) {
 
-
                     if (spinnerPassengerNo.getValue() == 1) {
                         if (!(fName.getText().isEmpty() || lName.getText().isEmpty() || dateoFBirth1.getValue() == null)) {
-                            getDetails();
+
+                            if(dateoFBirth1.getValue().isAfter(LocalDate.now().minusYears(1)) &&
+                                    comboBag1.getValue() >= 1) {
+                                UtilityClass.errorMessageNoBagsForBabies();
+                            } else {
+                                getDetails();
+                            }
                         } else {
                             UtilityClass.errorMessageAddCustomer();
                         }
+
                     }
                     else if (spinnerPassengerNo.getValue() == 2) {
                         if (!(fName2.getText().isEmpty() || lName2.getText().isEmpty() || dateoFBirth2.getValue() == null)) {

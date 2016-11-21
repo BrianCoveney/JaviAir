@@ -78,6 +78,15 @@ public final class UtilityClass {
         alert.showAndWait();
     }
 
+    // user enters incorrect format
+    public static void errorMessageNoBagsForBabies() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Input Error");
+        alert.setContentText("Baggage not allowed for babies");
+        alert.showAndWait();
+    }
+
+
 
     public static void confirmBoxCloseApp() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
