@@ -1,3 +1,5 @@
+import javafx.scene.control.RadioButton;
+
 import java.time.LocalDate;
 
 /**
@@ -5,8 +7,8 @@ import java.time.LocalDate;
  */
 public class PassengerAdult extends Passenger {
 
-    public PassengerAdult(String firstName, String lastName, LocalDate dateOfBirth) {
-        super(firstName, lastName, dateOfBirth);
+    public PassengerAdult(String firstName, String lastName, LocalDate dateOfBirth, RadioButton baggageSelect) {
+        super(firstName, lastName, dateOfBirth, baggageSelect);
 
     }
 }

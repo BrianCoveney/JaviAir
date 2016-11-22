@@ -19,60 +19,36 @@ import java.util.List;
 
 public class MainScene extends Application {
 
-    private Button buttonCancel, buttonContinue;
-    private Button buttonAdd;
-    private ComboBox<String> comboOrigin;
-    private ComboBox<String> comboDestination;
-    private ComboBox<Integer> comboBag1, comboBag2, comboBag3, comboBag4, comboBag5, comboBag6, comboBag7, comboBag8;
-    private DatePicker datePickerDeparture, dpDateoFBirth;
-    private DatePicker datePickerReturn;
-    private GridPane gridPaneMiddle;
-    private GridPane gridPaneRight;
-    private TextArea textAreaDepart, textAreaReturn;
-    private Label labelOrigin, labelDestination, labelDateDeparture, labelDateReturn;
-    private TextField tf, tf2, tfFName, tfLName;
-    private ListView listView;
-    private String firstName1, lastName1, dateOfBirth1;
-
-    private HBox hBoxList;
-    private String dptFlight, rtnFlight;
-    private double dateDepartPrice;
-    private double dateReturnPrice;
-    private double flightPrice;
-    private double currentPrice;
-    private final ToggleGroup toggleRadioButtonGroup = new ToggleGroup();
-    private LocalDate ldDepartDate, ldReturnDate;
-    private GridPane gridPaneLeft;
-    private Stage window;
-    private Scene scene1, scene2;
-    private VBox vBox;
-    private ObservableList<TextField> tfFirstNamesList = FXCollections.observableArrayList();
-    private ObservableList<TextField> tfLastNamesList = FXCollections.observableArrayList();
-    private ObservableList<DatePicker> dpDateOfBirthList = FXCollections.observableArrayList();
-    private ObservableList<ComboBox> comboBagList = FXCollections.observableArrayList();
+    // constants - flight airports
+    static final String CORK = "ORK";
+    static final String MADRID = "MAD";
+    static final String ST_BRIEUC = "SBK";
+    static final String JERSEY = "JER";
+    static final String PARIS = "CDG";
+    static final String STANSTED = "STN";
+    static final String MALAGA = "AGP";
+    static final String FRI = "FRIDAY";
+    static final String SAT = "SATURDAY";
+    static final String SUN = "SUNDAY";
+    // constants - flight prices
+    static final int TWO_HND_EIGHTY = 280;
+    static final int TWO_HND_FIFTY = 250;
+    static final int TWO_HND_FORTY = 240;
+    static final int TWO_HND = 200;
+    static final int ONE_HND_FIFTY = 150;
+    static final int ONE_HND_FORTY = 140;
+    static final int ONE_HND_TWENTY = 120;
+    static final int ONE_HND = 100;
+    static final int EIGHTY = 80;
+    static final int SIXTY = 60;
+    static final int FORTY = 40;
+    static final int ZERO = 0;
+    static final Double CHILD_PRICE = 60.0;
+    static final Double CHILD_TOTAL_PRICE = CHILD_PRICE * 2;
+    static final Double BABY_PRICE = 0.0;
+    static final int MAX_PASSENGER_NO = 8;
     private static final ObservableList<Integer> baggageNumbers = FXCollections.observableArrayList();
     private static final ObservableList airportList = FXCollections.observableArrayList();
-
-    private TextField   fName, fName2, fName3, fName4, fName5, fName6, fName7, fName8,
-            lName, lName2, lName3, lName4, lName5, lName6, lName7, lName8;
-    private DatePicker dateoFBirth1, dateoFBirth2, dateoFBirth3, dateoFBirth4, dateoFBirth5, dateoFBirth6, dateoFBirth7, dateoFBirth8;
-    private Spinner<Integer> spinnerPassengerNo;
-
-    private FlowPane pane1, pane2;
-    private Pane pane;
-
-    // constants - flight airports
-     static final String CORK            = "ORK";
-     static final String MADRID          = "MAD";
-     static final String ST_BRIEUC       = "SBK";
-     static final String JERSEY          = "JER";
-     static final String PARIS           = "CDG";
-     static final String STANSTED        = "STN";
-     static final String MALAGA          = "AGP";
-     static final String FRI             = "FRIDAY";
-     static final String SAT             = "SATURDAY";
-     static final String SUN             = "SUNDAY";
-
     // constants  flight times
     static String ORK_MAD_1 = "0920-1300";
     static String ORK_SBK_1 = "1030-1400";
@@ -122,34 +98,53 @@ public class MainScene extends Application {
     static String AGP_CDG_1 = "1805-1230";
     static String AGP_STN_1 = "1500-1610";
     static String AGP_STN_2 = "2035-2105";
-
-    // constants - flight prices
-    static final int TWO_HND_EIGHTY = 280;
-    static final int TWO_HND_FIFTY = 250;
-    static final int TWO_HND_FORTY = 240;
-    static final int TWO_HND = 200;
-    static final int ONE_HND_FIFTY = 150;
-    static final int ONE_HND_FORTY = 140;
-    static final int ONE_HND_TWENTY = 120;
-    static final int ONE_HND = 100;
-    static final int EIGHTY = 80;
-    static final int SIXTY = 60;
-    static final int FORTY = 40;
-    static final int ZERO = 0;
-
-    static final Double CHILD_PRICE = 60.0;
-    static final Double CHILD_TOTAL_PRICE = CHILD_PRICE * 2;
-    static final Double BABY_PRICE = 0.0;
-
-
-    static final int MAX_PASSENGER_NO   = 8;
-
-
+    private final ToggleGroup toggleRadioButtonGroup = new ToggleGroup();
+    ObservableList<Integer> spinnerObservableList = FXCollections.observableArrayList();
+    private Button buttonCancel, buttonContinue;
+    private Button buttonAdd;
+    private ComboBox<String> comboOrigin;
+    private ComboBox<String> comboDestination;
+    private RadioButton radioBtn1, radioBtn2, radioBtn3, radioBtn4, radioBtn5, radioBtn6, radioBtn7, radioBtn8;
+    private DatePicker datePickerDeparture, dpDateoFBirth;
+    private DatePicker datePickerReturn;
+    private GridPane gridPaneMiddle;
+    private GridPane gridPaneRight;
+    private TextArea textAreaDepart, textAreaReturn;
+    private Label labelOrigin, labelDestination, labelDateDeparture, labelDateReturn;
+    private TextField tf, tf2, tfFName, tfLName;
+    private ListView listView;
+    private String firstName1, lastName1, dateOfBirth1;
+    private HBox hBoxList;
+    private String dptFlight, rtnFlight;
+    private double dateDepartPrice;
+    private double dateReturnPrice;
+    private double flightPrice;
+    private double currentPrice;
+    private LocalDate ldDepartDate, ldReturnDate;
+    private GridPane gridPaneLeft;
+    private Stage window;
+    private Scene scene1, scene2;
+    private VBox vBox;
+    private ObservableList<TextField> tfFirstNamesList = FXCollections.observableArrayList();
+    private ObservableList<TextField> tfLastNamesList = FXCollections.observableArrayList();
+    private ObservableList<DatePicker> dpDateOfBirthList = FXCollections.observableArrayList();
+    private ObservableList<ComboBox> comboBagList = FXCollections.observableArrayList();
+    private ObservableList<RadioButton> radioBtnList = FXCollections.observableArrayList();
+    private TextField fName, fName2, fName3, fName4, fName5, fName6, fName7, fName8,
+            lName, lName2, lName3, lName4, lName5, lName6, lName7, lName8;
+    private DatePicker dateoFBirth1, dateoFBirth2, dateoFBirth3, dateoFBirth4, dateoFBirth5, dateoFBirth6, dateoFBirth7, dateoFBirth8;
+    private Spinner<Integer> spinnerPassengerNo;
+    private FlowPane pane1, pane2;
+    private Pane pane;
     // reference to the Passenger and FLight objects
     private List<Passenger> passengerList = FXCollections.observableArrayList();
     private List<Flight> flightList;
-    private Passenger passenger1, passenger2, passenger3, passenger4, passenger5, passenger6, passenger7,passenger8;
+    private Passenger passenger1, passenger2, passenger3, passenger4, passenger5, passenger6, passenger7, passenger8;
     private Flight flight;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -175,7 +170,6 @@ public class MainScene extends Application {
         primaryStage.show();
     }
 
-
     private GridPane createTopGridPane() {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
@@ -188,13 +182,12 @@ public class MainScene extends Application {
         radioButtonReturn.fire(); // return btn on by default
 
         toggleRadioButtonGroup.selectedToggleProperty().addListener(observable -> {
-            if(toggleRadioButtonGroup.getSelectedToggle() == radioButtonOneWay) {
+            if (toggleRadioButtonGroup.getSelectedToggle() == radioButtonOneWay) {
                 comboDestination.setDisable(true);
                 datePickerReturn.setDisable(true);
                 textAreaReturn.setDisable(true);
 
-            }
-            else if(toggleRadioButtonGroup.getSelectedToggle() ==  radioButtonReturn) {
+            } else if (toggleRadioButtonGroup.getSelectedToggle() == radioButtonReturn) {
                 comboDestination.setDisable(false);
                 datePickerReturn.setDisable(false);
                 textAreaReturn.setDisable(false);
@@ -269,8 +262,8 @@ public class MainScene extends Application {
 
 
         Button btnFlightSelect = new Button("Select Flight");
-        btnFlightSelect.setOnAction(event ->{
-            if(comboDestination.getSelectionModel().isEmpty()){
+        btnFlightSelect.setOnAction(event -> {
+            if (comboDestination.getSelectionModel().isEmpty()) {
                 UtilityClass.errorMessageFlight();
             }
 
@@ -317,38 +310,31 @@ public class MainScene extends Application {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
 
 
-
         try {
-            if(flightDepart.equals(CORK)) {
+            if (flightDepart.equals(CORK)) {
                 comboDestination.getItems().clear();
                 comboDestination.getItems().addAll(MADRID, ST_BRIEUC, JERSEY, PARIS, STANSTED, MALAGA);
-            }
-            else if(flightDepart.equals(MADRID)) {
+            } else if (flightDepart.equals(MADRID)) {
                 comboDestination.getItems().clear();
                 comboDestination.getItems().addAll(CORK, ST_BRIEUC, JERSEY, PARIS, STANSTED, MALAGA);
-            }
-            else if(flightDepart.equals(PARIS)) {
+            } else if (flightDepart.equals(PARIS)) {
                 comboDestination.getItems().clear();
                 comboDestination.getItems().addAll(CORK, MADRID, ST_BRIEUC, JERSEY, STANSTED, MALAGA);
-            }
-            else if(flightDepart.equals(STANSTED)) {
+            } else if (flightDepart.equals(STANSTED)) {
                 comboDestination.getItems().clear();
                 comboDestination.getItems().addAll(CORK, MADRID, ST_BRIEUC, JERSEY, PARIS, MALAGA);
-            }
-            else if(flightDepart.equals(MALAGA)) {
+            } else if (flightDepart.equals(MALAGA)) {
                 comboDestination.getItems().clear();
                 comboDestination.getItems().addAll(CORK, MADRID, ST_BRIEUC, JERSEY, PARIS, STANSTED);
-            }
-            else if (flightDepart.equals(ST_BRIEUC) || flightDepart.equals(JERSEY)) {
+            } else if (flightDepart.equals(ST_BRIEUC) || flightDepart.equals(JERSEY)) {
                 comboDestination.getItems().clear();
                 comboDestination.getItems().addAll(CORK, MADRID, PARIS, STANSTED, MALAGA);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
     }
-
 
     private Double getSelectedFlightPrice() {
         dptFlight = comboOrigin.getSelectionModel().getSelectedItem();
@@ -417,10 +403,6 @@ public class MainScene extends Application {
         return flightPrice;
     }
 
-
-
-
-
     // Disable March and/or April in the DatePicker
     // JavaFX DatePicker Tutorial website: http://o7planning.org/en/11085/javafx-datepicker-tutorial#a3667895g
     private Callback<DatePicker, DateCell> getMonthCellFactory() {
@@ -437,9 +419,9 @@ public class MainScene extends Application {
                         LocalDate currentDate = LocalDate.now();
                         LocalDate nowPlusSixMonths = currentDate.plusMonths(6);
 
-                        if(item.isBefore(currentDate) || item.isAfter(nowPlusSixMonths)) {
-                                setDisable(true);
-                                setStyle("-fx-background-color: #ffc0cb;");
+                        if (item.isBefore(currentDate) || item.isAfter(nowPlusSixMonths)) {
+                            setDisable(true);
+                            setStyle("-fx-background-color: #ffc0cb;");
                         }
 
                         if (item != null) {
@@ -463,7 +445,6 @@ public class MainScene extends Application {
         };
         return monthCellFactory;
     }
-
 
     // take the returned 'flightPrice' from getSelectedFlight() and add 20% if day is Fri - Sun
     private Double getSelectDate(ActionEvent event) {
@@ -495,12 +476,11 @@ public class MainScene extends Application {
         return currentPrice;
     }
 
-
     private void checkForInvalidDates() {
         LocalDate departDate = datePickerDeparture.getValue();
         LocalDate returnDate = datePickerReturn.getValue();
 
-        if(departDate != null && returnDate != null) {
+        if (departDate != null && returnDate != null) {
             if (departDate.isAfter(returnDate)) {
                 UtilityClass.errorMessageDatesNotPossible();
                 datePickerReturn.getEditor().setText(null);
@@ -508,22 +488,19 @@ public class MainScene extends Application {
         }
     }
 
-
     private void displaySelectedFlights() {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
         String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
         LocalDate dateDept = datePickerDeparture.getValue();
-        LocalDate dateReturn= datePickerReturn.getValue();
+        LocalDate dateReturn = datePickerReturn.getValue();
 
         try {
 
-            if(flightDepart == null) {
+            if (flightDepart == null) {
                 UtilityClass.errorMessageFlight();
-            }
-            else if (dateDept == null || dateReturn == null) {
+            } else if (dateDept == null || dateReturn == null) {
                 UtilityClass.errorMessageDate();
-            }
-            else {
+            } else {
 
                 setFlightPriceAdult();
 
@@ -574,12 +551,10 @@ public class MainScene extends Application {
                     textAreaDepart.appendText("\n" + SBK_AGP_1);
                 }
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-
-
 
     private GridPane createMiddleGridPane() {
         Button buttonFlightSelect = new Button("Select Flight");
@@ -612,7 +587,6 @@ public class MainScene extends Application {
         return gridPaneMiddle;
     }
 
-
     private HBox createBottomPane() {
         // LHS Pane
 
@@ -628,20 +602,16 @@ public class MainScene extends Application {
 
 
         Label label = new Label("Number of passengers:");
-        List<Integer> spinnerItemsList = new ArrayList<>();
-        for (int i = 0; i <= MAX_PASSENGER_NO; i++) {
-            spinnerItemsList.add(i);
-        }
 
-        ObservableList<Integer> integerObservableList
-                = FXCollections.observableList(spinnerItemsList);
+
+        spinnerObservableList.addAll(0, 1, 2, 3, 4, 5, 6, 7, 8);
 
 
         spinnerPassengerNo = new Spinner<>();
         spinnerPassengerNo.getStyleClass().add("mySpinner");
 
         SpinnerValueFactory<Integer> valueFactory =
-                new SpinnerValueFactory.ListSpinnerValueFactory<>(integerObservableList);
+                new SpinnerValueFactory.ListSpinnerValueFactory<>(spinnerObservableList);
 
         spinnerPassengerNo.setValueFactory(valueFactory);
 
@@ -662,81 +632,88 @@ public class MainScene extends Application {
         stackPaneRight.setMaxWidth(550);
         stackPaneRight.getStyleClass().add("stackPaneRight");
 
-        Label labelBorder = new Label("Passenger Details"); labelBorder.getStyleClass().add("border-title");
+        Label labelBorder = new Label("Passenger Details");
+        labelBorder.getStyleClass().add("border-title");
         StackPane.setAlignment(labelBorder, Pos.TOP_CENTER);
-        Label labelBag = new Label("Baggage"); labelBag.getStyleClass().add("baggage-title");
+        Label labelBag = new Label("Baggage");
+        labelBag.getStyleClass().add("baggage-title");
         StackPane.setAlignment(labelBag, Pos.TOP_RIGHT);
 
         stackPaneRight.getChildren().addAll(labelBorder, labelBag);
 
-        fName = new TextField();  fName.setDisable(true);  fName.setPromptText("first name"); // fName.setVisible(false);
-        lName = new TextField();  lName.setDisable(true);  lName.setPromptText("last name");
-        fName2 = new TextField(); fName2.setDisable(true);
-        lName2 = new TextField(); lName2.setDisable(true);
-        fName3 = new TextField(); fName3.setDisable(true);
-        lName3 = new TextField(); lName3.setDisable(true);
-        fName4 = new TextField(); fName4.setDisable(true);
-        lName4 = new TextField(); lName4.setDisable(true);
-        fName5 = new TextField(); fName5.setDisable(true);
-        lName5 = new TextField(); lName5.setDisable(true);
-        fName6 = new TextField(); fName6.setDisable(true);
-        lName6 = new TextField(); lName6.setDisable(true);
-        fName7 = new TextField(); fName7.setDisable(true);
-        lName7 = new TextField(); lName7.setDisable(true);
-        fName8 = new TextField(); fName8.setDisable(true);
-        lName8 = new TextField(); lName8.setDisable(true);
-        dateoFBirth1 = new DatePicker(); dateoFBirth1.setDisable(true); dateoFBirth1.setPromptText("dd/mm/yyyy");
+        fName = new TextField();
+        fName.setDisable(true);
+        fName.setPromptText("first name"); // fName.setVisible(false);
+        lName = new TextField();
+        lName.setDisable(true);
+        lName.setPromptText("last name");
+        fName2 = new TextField();
+        fName2.setDisable(true);
+        lName2 = new TextField();
+        lName2.setDisable(true);
+        fName3 = new TextField();
+        fName3.setDisable(true);
+        lName3 = new TextField();
+        lName3.setDisable(true);
+        fName4 = new TextField();
+        fName4.setDisable(true);
+        lName4 = new TextField();
+        lName4.setDisable(true);
+        fName5 = new TextField();
+        fName5.setDisable(true);
+        lName5 = new TextField();
+        lName5.setDisable(true);
+        fName6 = new TextField();
+        fName6.setDisable(true);
+        lName6 = new TextField();
+        lName6.setDisable(true);
+        fName7 = new TextField();
+        fName7.setDisable(true);
+        lName7 = new TextField();
+        lName7.setDisable(true);
+        fName8 = new TextField();
+        fName8.setDisable(true);
+        lName8 = new TextField();
+        lName8.setDisable(true);
+        dateoFBirth1 = new DatePicker();
+        dateoFBirth1.setDisable(true);
+        dateoFBirth1.setPromptText("dd/mm/yyyy");
         dateoFBirth1.getStyleClass().add("myDatePicker");
-        dateoFBirth2 = new DatePicker(); dateoFBirth2.setDisable(true);
+        dateoFBirth2 = new DatePicker();
+        dateoFBirth2.setDisable(true);
         dateoFBirth2.getStyleClass().add("myDatePicker");
-        dateoFBirth3 = new DatePicker(); dateoFBirth3.setDisable(true);
+        dateoFBirth3 = new DatePicker();
+        dateoFBirth3.setDisable(true);
         dateoFBirth3.getStyleClass().add("myDatePicker");
-        dateoFBirth4 = new DatePicker(); dateoFBirth4.setDisable(true);
+        dateoFBirth4 = new DatePicker();
+        dateoFBirth4.setDisable(true);
         dateoFBirth4.getStyleClass().add("myDatePicker");
-        dateoFBirth5 = new DatePicker(); dateoFBirth5.setDisable(true);
+        dateoFBirth5 = new DatePicker();
+        dateoFBirth5.setDisable(true);
         dateoFBirth5.getStyleClass().add("myDatePicker");
-        dateoFBirth6 = new DatePicker(); dateoFBirth6.setDisable(true);
+        dateoFBirth6 = new DatePicker();
+        dateoFBirth6.setDisable(true);
         dateoFBirth6.getStyleClass().add("myDatePicker");
-        dateoFBirth7 = new DatePicker(); dateoFBirth7.setDisable(true);
+        dateoFBirth7 = new DatePicker();
+        dateoFBirth7.setDisable(true);
         dateoFBirth7.getStyleClass().add("myDatePicker");
-        dateoFBirth8 = new DatePicker(); dateoFBirth8.setDisable(true);
+        dateoFBirth8 = new DatePicker();
+        dateoFBirth8.setDisable(true);
         dateoFBirth8.getStyleClass().add("myDatePicker");
 
-        baggageNumbers.addAll(0, 1, 2, 3);
-        comboBag1 = new ComboBox<>(); comboBag1.setItems(baggageNumbers); comboBag1.getStyleClass().add("smCombo");
-        comboBag2 = new ComboBox<>(); comboBag2.setItems(baggageNumbers); comboBag2.getStyleClass().add("smCombo");
-        comboBag3 = new ComboBox<>(); comboBag3.setItems(baggageNumbers); comboBag3.getStyleClass().add("smCombo");
-        comboBag4 = new ComboBox<>(); comboBag4.setItems(baggageNumbers); comboBag4.getStyleClass().add("smCombo");
-        comboBag5 = new ComboBox<>(); comboBag5.setItems(baggageNumbers); comboBag5.getStyleClass().add("smCombo");
-        comboBag6 = new ComboBox<>(); comboBag6.setItems(baggageNumbers); comboBag6.getStyleClass().add("smCombo");
-        comboBag7 = new ComboBox<>(); comboBag7.setItems(baggageNumbers); comboBag7.getStyleClass().add("smCombo");
-        comboBag8 = new ComboBox<>(); comboBag8.setItems(baggageNumbers); comboBag8.getStyleClass().add("smCombo");
-        comboBagList.add(comboBag1);
-        comboBagList.add(comboBag2);
-        comboBagList.add(comboBag3);
-        comboBagList.add(comboBag4);
-        comboBagList.add(comboBag5);
-        comboBagList.add(comboBag6);
-        comboBagList.add(comboBag7);
-        comboBagList.add(comboBag8);
+
+        radioBtn1 = new RadioButton();
+        radioBtn2 = new RadioButton();
+        radioBtn3 = new RadioButton();
+        radioBtn4 = new RadioButton();
+        radioBtn5 = new RadioButton();
+        radioBtn6 = new RadioButton();
+        radioBtn7 = new RadioButton();
+        radioBtn8 = new RadioButton();
+        radioBtnList.addAll(radioBtn1, radioBtn2, radioBtn3, radioBtn4, radioBtn5, radioBtn6, radioBtn7, radioBtn8);
+
 
         dpDateOfBirthList.addAll(dateoFBirth1, dateoFBirth2, dateoFBirth3, dateoFBirth4, dateoFBirth5, dateoFBirth6, dateoFBirth7, dateoFBirth8);
-
-        LocalDate now = LocalDate.now();
-        LocalDate nowMinus1yr = now.minusYears(1);
-
-        // TODO
-        try {
-            for (DatePicker datePicker : dpDateOfBirthList) {
-                if (datePicker.valueProperty().getValue().isAfter(nowMinus1yr)) {
-                    comboBag1.setDisable(false);
-                }
-            }
-        }catch (Exception e) {
-            e.getMessage();
-        }
-
-
 
 
         tfFirstNamesList.addAll(fName, fName2, fName3, fName4, fName5, fName6, fName7, fName8);
@@ -749,35 +726,35 @@ public class MainScene extends Application {
         gridPane.add(fName, 1, 0);
         gridPane.add(lName, 2, 0);
         gridPane.add(dateoFBirth1, 3, 0);
-        gridPane.add(comboBag1, 4, 0);
+        gridPane.add(radioBtn1, 4, 0);
         gridPane.add(fName2, 1, 1);
         gridPane.add(lName2, 2, 1);
         gridPane.add(dateoFBirth2, 3, 1);
-        gridPane.add(comboBag2, 4, 1);
+        gridPane.add(radioBtn2, 4, 1);
         gridPane.add(fName3, 1, 2);
         gridPane.add(lName3, 2, 2);
         gridPane.add(dateoFBirth3, 3, 2);
-        gridPane.add(comboBag3, 4, 2);
+        gridPane.add(radioBtn3, 4, 2);
         gridPane.add(fName4, 1, 3);
         gridPane.add(lName4, 2, 3);
         gridPane.add(dateoFBirth4, 3, 3);
-        gridPane.add(comboBag4, 4, 3);
+        gridPane.add(radioBtn4, 4, 3);
         gridPane.add(fName5, 1, 4);
         gridPane.add(lName5, 2, 4);
         gridPane.add(dateoFBirth5, 3, 4);
-        gridPane.add(comboBag5, 4, 4);
+        gridPane.add(radioBtn5, 4, 4);
         gridPane.add(fName6, 1, 5);
         gridPane.add(lName6, 2, 5);
         gridPane.add(dateoFBirth6, 3, 5);
-        gridPane.add(comboBag6, 4, 5);
+        gridPane.add(radioBtn6, 4, 5);
         gridPane.add(fName7, 1, 6);
         gridPane.add(lName7, 2, 6);
         gridPane.add(dateoFBirth7, 3, 6);
-        gridPane.add(comboBag7, 4, 6);
+        gridPane.add(radioBtn7, 4, 6);
         gridPane.add(fName8, 1, 7);
         gridPane.add(lName8, 2, 7);
         gridPane.add(dateoFBirth8, 3, 7);
-        gridPane.add(comboBag8, 4, 7);
+        gridPane.add(radioBtn8, 4, 7);
 
         StackPane.setAlignment(gridPane, Pos.TOP_LEFT);
         stackPaneRight.getChildren().addAll(gridPane);
@@ -792,16 +769,13 @@ public class MainScene extends Application {
         return hBox;
     }
 
-
-
     private void getSelectedNumOfPassengers() {
 
-        if(spinnerPassengerNo.getValue() == 0) {
+        if (spinnerPassengerNo.getValue() == 0) {
             fName.setDisable(true);
             lName.setDisable(true);
             dateoFBirth1.setDisable(true);
-        }
-        else if(spinnerPassengerNo.getValue() == 1) {
+        } else if (spinnerPassengerNo.getValue() == 1) {
             fName.setVisible(true);
             fName.setDisable(false);
             lName.setDisable(false);
@@ -809,134 +783,54 @@ public class MainScene extends Application {
             fName2.setDisable(true);
             lName2.setDisable(true);
             dateoFBirth2.setDisable(true);
-        }
-        else if(spinnerPassengerNo.getValue() == 2) {
+        } else if (spinnerPassengerNo.getValue() == 2) {
             fName2.setDisable(false);
             lName2.setDisable(false);
             dateoFBirth2.setDisable(false);
             fName3.setDisable(true);
             lName3.setDisable(true);
             dateoFBirth3.setDisable(true);
-        }
-        else if(spinnerPassengerNo.getValue() == 3) {
+        } else if (spinnerPassengerNo.getValue() == 3) {
             fName3.setDisable(false);
             lName3.setDisable(false);
             dateoFBirth3.setDisable(false);
             fName4.setDisable(true);
             lName4.setDisable(true);
             dateoFBirth4.setDisable(true);
-        }
-        else if(spinnerPassengerNo.getValue() == 4) {
+        } else if (spinnerPassengerNo.getValue() == 4) {
             fName4.setDisable(false);
             lName4.setDisable(false);
             dateoFBirth4.setDisable(false);
             fName5.setDisable(true);
             lName5.setDisable(true);
             dateoFBirth5.setDisable(true);
-        }
-        else if(spinnerPassengerNo.getValue() == 5) {
+        } else if (spinnerPassengerNo.getValue() == 5) {
             fName5.setDisable(false);
             lName5.setDisable(false);
             dateoFBirth5.setDisable(false);
             fName6.setDisable(true);
             lName6.setDisable(true);
             dateoFBirth6.setDisable(true);
-        }
-        else if(spinnerPassengerNo.getValue() == 6) {
+        } else if (spinnerPassengerNo.getValue() == 6) {
             fName6.setDisable(false);
             lName6.setDisable(false);
             dateoFBirth6.setDisable(false);
             fName7.setDisable(true);
             lName7.setDisable(true);
             dateoFBirth7.setDisable(true);
-        }
-        else if(spinnerPassengerNo.getValue() == 7) {
+        } else if (spinnerPassengerNo.getValue() == 7) {
             fName7.setDisable(false);
             lName7.setDisable(false);
             dateoFBirth7.setDisable(false);
             fName8.setDisable(true);
             lName8.setDisable(true);
             dateoFBirth8.setDisable(true);
-        }
-        else if(spinnerPassengerNo.getValue() == 8) {
+        } else if (spinnerPassengerNo.getValue() == 8) {
             fName8.setDisable(false);
             lName8.setDisable(false);
             dateoFBirth8.setDisable(false);
         }
     }
-
-
-
-    private void getDetails() {
-        passengerList = new ArrayList<>();
-
-        passenger1 = new Passenger(fName.getText(), lName.getText(), dateoFBirth1.getValue());
-        passenger2 = new Passenger(fName2.getText(), lName2.getText(), dateoFBirth2.getValue());
-        passenger3 = new Passenger(fName3.getText(), lName3.getText(), dateoFBirth3.getValue());
-        passenger4 = new Passenger(fName4.getText(), lName4.getText(), dateoFBirth4.getValue());
-        passenger5 = new Passenger(fName5.getText(), lName5.getText(), dateoFBirth5.getValue());
-        passenger6 = new Passenger(fName6.getText(), lName6.getText(), dateoFBirth6.getValue());
-        passenger7 = new Passenger(fName7.getText(), lName7.getText(), dateoFBirth7.getValue());
-        passenger8 = new Passenger(fName8.getText(), lName8.getText(), dateoFBirth8.getValue());
-        passengerList.add(passenger1);
-        passengerList.add(passenger2);
-        passengerList.add(passenger3);
-        passengerList.add(passenger4);
-        passengerList.add(passenger5);
-        passengerList.add(passenger6);
-        passengerList.add(passenger7);
-        passengerList.add(passenger8);
-
-
-        addPassenger();
-
-        window.setScene(scene2);
-
-        try {
-            Button buttonBack = new Button("Back");
-            vBox.getChildren().addAll(listView, buttonBack);
-            buttonBack.setOnAction(event -> {
-                listView.getItems().clear();
-                window.setScene(scene1);
-            });
-        }catch (IllegalArgumentException iae) {
-            iae.getMessage();
-        }
-    }
-
-
-
-    public void addPassenger() {
-        LocalDate now = LocalDate.now();
-        LocalDate nowMinus5yrs = now.minusYears(5);
-        LocalDate nowMinus1yr = now.minusYears(1);
-
-        int mCounter = 0;
-        for (Passenger mPassenger : passengerList) {
-            try {
-                if (mPassenger != null) {
-                    mCounter++;
-
-                    if(mPassenger.getDateOfBirth().isAfter(nowMinus1yr)) {
-                        setFlightPriceBaby();
-                        // add each flight from the observablelist, using a counter as the index
-                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter -1), flight);
-                    }
-                    else if (mPassenger.getDateOfBirth().isAfter(nowMinus5yrs) && mPassenger.getDateOfBirth().isBefore(nowMinus1yr)) {
-                        setFlightPriceChild();
-                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter -1), flight);
-                    }
-                    else if (mPassenger.getDateOfBirth().isBefore(nowMinus5yrs)) {
-                        setFlightPriceAdult();
-                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter -1), flight);
-                    }
-                }
-            }catch (Exception e) {
-                e.getMessage();
-            }
-        }
-    }
-
 
     public void setFlightPriceChild() {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
@@ -964,7 +858,6 @@ public class MainScene extends Application {
 
     }
 
-
     private void setFlightPriceAdult() {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
         String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
@@ -978,6 +871,141 @@ public class MainScene extends Application {
                 currentPrice);      // setPrice() from the return of getSelectedFlightPrice()
     }
 
+    public void getDetails() {
+        passengerList = new ArrayList<>();
+
+
+        passenger1 = new Passenger(fName.getText(), lName.getText(), dateoFBirth1.getValue(), radioBtn1);
+        passenger2 = new Passenger(fName2.getText(), lName2.getText(), dateoFBirth2.getValue(), radioBtn2);
+        passenger3 = new Passenger(fName3.getText(), lName3.getText(), dateoFBirth3.getValue(), radioBtn3);
+        passenger4 = new Passenger(fName4.getText(), lName4.getText(), dateoFBirth4.getValue(), radioBtn4);
+        passenger5 = new Passenger(fName5.getText(), lName5.getText(), dateoFBirth5.getValue(), radioBtn5);
+        passenger6 = new Passenger(fName6.getText(), lName6.getText(), dateoFBirth6.getValue(), radioBtn6);
+        passenger7 = new Passenger(fName7.getText(), lName7.getText(), dateoFBirth7.getValue(), radioBtn7);
+        passenger8 = new Passenger(fName8.getText(), lName8.getText(), dateoFBirth8.getValue(), radioBtn8);
+        passengerList.add(passenger1);
+        passengerList.add(passenger2);
+        passengerList.add(passenger3);
+        passengerList.add(passenger4);
+        passengerList.add(passenger5);
+        passengerList.add(passenger6);
+        passengerList.add(passenger7);
+        passengerList.add(passenger8);
+
+        LocalDate now = LocalDate.now();
+        LocalDate nowMinus5yrs = now.minusYears(5);
+        LocalDate nowMinus1yr = now.minusYears(1);
+
+        int mCounter = 0;
+        for (Passenger mPassenger : passengerList) {
+
+            try {
+                if (mPassenger != null) {
+                    mCounter++;
+
+                    if (mPassenger.getDateOfBirth().isAfter(nowMinus1yr) && mPassenger.getBaggageSelect().isSelected()) {
+                        UtilityClass.errorMessageNoBagsForBabies();
+                    } else {
+
+                        window.setScene(scene2);
+                    }
+
+                    if (mPassenger.getDateOfBirth().isAfter(nowMinus1yr) && !mPassenger.getBaggageSelect().isSelected()) {
+
+                        setFlightPriceBaby();
+                        // add each flight from the observablelist, using a counter as the index
+                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flight);
+
+                    } else if (mPassenger.getDateOfBirth().isAfter(nowMinus5yrs) && mPassenger.getDateOfBirth().isBefore(nowMinus1yr)) {
+                        setFlightPriceChild();
+                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flight);
+                    } else if (mPassenger.getDateOfBirth().isBefore(nowMinus5yrs)) {
+                        setFlightPriceAdult();
+                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flight);
+                    }
+                }
+            } catch (Exception e) {
+                e.getMessage();
+            }
+        }
+
+
+        try {
+            Button buttonBack = new Button("Back");
+            vBox.getChildren().addAll(listView, buttonBack);
+            buttonBack.setOnAction(event -> {
+                listView.getItems().clear();
+                window.setScene(scene1);
+            });
+        } catch (IllegalArgumentException iae) {
+            iae.getMessage();
+        }
+    }
+
+    public void validateForEmptyFields() {
+
+        if (comboOrigin.getValue() != null || comboDestination.getValue() != null) {
+            if (datePickerDeparture.getValue() != null || datePickerReturn.getValue() != null) {
+
+                if (spinnerPassengerNo.getValue() == 1) {
+                    if (!(fName.getText().isEmpty() || lName.getText().isEmpty() || dateoFBirth1.getValue() == null)) {
+                        getDetails();
+                    } else {
+                        UtilityClass.errorMessageAddCustomer();
+                    }
+
+                } else if (spinnerPassengerNo.getValue() == 2) {
+                    if (!(fName2.getText().isEmpty() || lName2.getText().isEmpty() || dateoFBirth2.getValue() == null)) {
+                        getDetails();
+                    } else {
+                        UtilityClass.errorMessageAddCustomer();
+                    }
+                } else if (spinnerPassengerNo.getValue() == 3) {
+                    if (!(fName3.getText().isEmpty() || lName3.getText().isEmpty() || dateoFBirth3.getValue() == null)) {
+                        getDetails();
+                    } else {
+                        UtilityClass.errorMessageAddCustomer();
+                    }
+                } else if (spinnerPassengerNo.getValue() == 4) {
+                    if (!(fName4.getText().isEmpty() || lName4.getText().isEmpty() || dateoFBirth4.getValue() == null)) {
+                        getDetails();
+                    } else {
+                        UtilityClass.errorMessageAddCustomer();
+                    }
+                } else if (spinnerPassengerNo.getValue() == 5) {
+                    if (!(fName5.getText().isEmpty() || lName5.getText().isEmpty() || dateoFBirth5.getValue() == null)) {
+                        getDetails();
+                    } else {
+                        UtilityClass.errorMessageAddCustomer();
+                    }
+                } else if (spinnerPassengerNo.getValue() == 6) {
+                    if (!(fName6.getText().isEmpty() || lName6.getText().isEmpty() || dateoFBirth6.getValue() == null)) {
+                        getDetails();
+                    } else {
+                        UtilityClass.errorMessageAddCustomer();
+                    }
+                } else if (spinnerPassengerNo.getValue() == 7) {
+                    if (!(fName7.getText().isEmpty() || lName7.getText().isEmpty() || dateoFBirth7.getValue() == null)) {
+                        getDetails();
+                    } else {
+                        UtilityClass.errorMessageAddCustomer();
+                    }
+                } else if (spinnerPassengerNo.getValue() == 8) {
+                    if (!(fName8.getText().isEmpty() || lName8.getText().isEmpty() || dateoFBirth8.getValue() == null)) {
+                        getDetails();
+                    } else {
+                        UtilityClass.errorMessageAddCustomer();
+                    }
+                }
+            } else {
+                UtilityClass.errorMessageDate();
+            }
+        } else {
+            UtilityClass.errorMessageFlight();
+        }
+
+
+    }
 
     private AnchorPane createAnchorPane() {
         AnchorPane anchorPane = new AnchorPane();
@@ -986,80 +1014,10 @@ public class MainScene extends Application {
 
         buttonContinue = new Button("Continue");
         buttonContinue.setOnAction(event -> {
+            validateForEmptyFields();
 
-            if (comboOrigin.getValue() != null || comboDestination.getValue() != null) {
-                if (datePickerDeparture.getValue() != null || datePickerReturn.getValue() != null) {
-
-                    if (spinnerPassengerNo.getValue() == 1) {
-                        if (!(fName.getText().isEmpty() || lName.getText().isEmpty() || dateoFBirth1.getValue() == null)) {
-
-                            if(dateoFBirth1.getValue().isAfter(LocalDate.now().minusYears(1)) &&
-                                    comboBag1.getValue() >= 1) {
-                                UtilityClass.errorMessageNoBagsForBabies();
-                            } else {
-                                getDetails();
-                            }
-                        } else {
-                            UtilityClass.errorMessageAddCustomer();
-                        }
-
-                    }
-                    else if (spinnerPassengerNo.getValue() == 2) {
-                        if (!(fName2.getText().isEmpty() || lName2.getText().isEmpty() || dateoFBirth2.getValue() == null)) {
-                            getDetails();
-                        } else {
-                            UtilityClass.errorMessageAddCustomer();
-                        }
-                    }
-                    else if (spinnerPassengerNo.getValue() == 3) {
-                        if (!(fName3.getText().isEmpty() || lName3.getText().isEmpty() || dateoFBirth3.getValue() == null)) {
-                            getDetails();
-                        } else {
-                            UtilityClass.errorMessageAddCustomer();
-                        }
-                    }
-                    else if (spinnerPassengerNo.getValue() == 4) {
-                        if (!(fName4.getText().isEmpty() || lName4.getText().isEmpty() || dateoFBirth4.getValue() == null)) {
-                            getDetails();
-                        } else {
-                            UtilityClass.errorMessageAddCustomer();
-                        }
-                    }
-                    else if (spinnerPassengerNo.getValue() == 5) {
-                        if (!(fName5.getText().isEmpty() || lName5.getText().isEmpty() || dateoFBirth5.getValue() == null)) {
-                            getDetails();
-                        } else {
-                            UtilityClass.errorMessageAddCustomer();
-                        }
-                    }
-                    else if (spinnerPassengerNo.getValue() == 6) {
-                        if (!(fName6.getText().isEmpty() || lName6.getText().isEmpty() || dateoFBirth6.getValue() == null)) {
-                            getDetails();
-                        } else {
-                            UtilityClass.errorMessageAddCustomer();
-                        }
-                    }
-                    else if (spinnerPassengerNo.getValue() == 7) {
-                        if (!(fName7.getText().isEmpty() || lName7.getText().isEmpty() || dateoFBirth7.getValue() == null)) {
-                            getDetails();
-                        } else {
-                            UtilityClass.errorMessageAddCustomer();
-                        }
-                    }
-                    else if (spinnerPassengerNo.getValue() == 8) {
-                        if (!(fName8.getText().isEmpty() || lName8.getText().isEmpty() || dateoFBirth8.getValue() == null)) {
-                            getDetails();
-                        } else {
-                            UtilityClass.errorMessageAddCustomer();
-                        }
-                    }
-                } else {
-                    UtilityClass.errorMessageDate();
-                }
-            } else {
-                UtilityClass.errorMessageFlight();
-            }
         });
+
 
         HBox hBox = new HBox();
         hBox.setSpacing(20);
@@ -1073,12 +1031,6 @@ public class MainScene extends Application {
         AnchorPane.setRightAnchor(buttonCancel, 415.0);
 
         return anchorPane;
-    }
-
-
-
-    public static void main(String[] args) {
-        launch(args);
     }
 
 }
