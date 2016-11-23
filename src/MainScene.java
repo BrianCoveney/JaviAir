@@ -1036,22 +1036,6 @@ public class MainScene extends Application {
 
 
 
-//        try {
-//            for (int i = 0; i <= passengerList.size(); i++) {
-//
-//                if (passengerList.get(i).getDateOfBirth().isBefore(LocalDate.now().minusYears(18))) {
-//                    System.out.println("Correct");
-//                } else if (passengerList.get(i).getDateOfBirth().isBefore(LocalDate.now()) && passengerList.get(i).getDateOfBirth().isAfter(LocalDate.now().minusYears(18))) {
-//                    UtilityClass.errorMessageUnder18();
-//                }
-//            }
-//        }catch (Exception e) {
-//            e.getMessage();
-//        }
-
-
-
-
         LocalDate now = LocalDate.now();
         LocalDate nowMinus1yr = now.minusYears(1);
         LocalDate nowMinus5yrs = now.minusYears(5);
@@ -1072,6 +1056,7 @@ public class MainScene extends Application {
                     else{
                         window.setScene(scene2);
                     }
+
 
 
 
@@ -1109,70 +1094,38 @@ public class MainScene extends Application {
 
     public void validateForEmptyFields() {
 
+        getDetails();
 
 
-//        if (comboOrigin.getValue() != null || comboDestination.getValue() != null) {
-//            if (datePickerDeparture.getValue() != null || datePickerReturn.getValue() != null) {
+        if (comboOrigin.getValue() != null || comboDestination.getValue() != null) {
+            if (datePickerDeparture.getValue() != null || datePickerReturn.getValue() != null) {
 
-                if (spinnerPassengerNo.getValue() == 1) {
-                    if (!(fName.getText().isEmpty() || lName.getText().isEmpty() || dateoFBirth1.getValue() == null)) {
-                        getDetails();
-                    } else {
-                        UtilityClass.errorMessageAddCustomer();
-                    }
+            try {
 
-                } else if (spinnerPassengerNo.getValue() == 2) {
-                    if (!(fName2.getText().isEmpty() || lName2.getText().isEmpty() || dateoFBirth2.getValue() == null)) {
-                        getDetails();
-                    } else {
-                        UtilityClass.errorMessageAddCustomer();
-                    }
-                } else if (spinnerPassengerNo.getValue() == 3) {
-                    if (!(fName3.getText().isEmpty() || lName3.getText().isEmpty() || dateoFBirth3.getValue() == null)) {
-                        getDetails();
-                    } else {
-                        UtilityClass.errorMessageAddCustomer();
-                    }
-                } else if (spinnerPassengerNo.getValue() == 4) {
-                    if (!(fName4.getText().isEmpty() || lName4.getText().isEmpty() || dateoFBirth4.getValue() == null)) {
-                        getDetails();
-                    } else {
-                        UtilityClass.errorMessageAddCustomer();
-                    }
-                } else if (spinnerPassengerNo.getValue() == 5) {
-                    if (!(fName5.getText().isEmpty() || lName5.getText().isEmpty() || dateoFBirth5.getValue() == null)) {
-                        getDetails();
-                    } else {
-                        UtilityClass.errorMessageAddCustomer();
-                    }
-                } else if (spinnerPassengerNo.getValue() == 6) {
-                    if (!(fName6.getText().isEmpty() || lName6.getText().isEmpty() || dateoFBirth6.getValue() == null)) {
-                        getDetails();
-                    } else {
-                        UtilityClass.errorMessageAddCustomer();
-                    }
-                } else if (spinnerPassengerNo.getValue() == 7) {
-                    if (!(fName7.getText().isEmpty() || lName7.getText().isEmpty() || dateoFBirth7.getValue() == null)) {
-                        getDetails();
-                    } else {
-                        UtilityClass.errorMessageAddCustomer();
-                    }
-                } else if (spinnerPassengerNo.getValue() == 8) {
-                    if (!(fName8.getText().isEmpty() || lName8.getText().isEmpty() || dateoFBirth8.getValue() == null)) {
-                        getDetails();
-                    } else {
-                        UtilityClass.errorMessageAddCustomer();
+                for(int i = 0; i <= MAX_PASSENGER_NO; i++) {
+
+                    if(spinnerPassengerNo.getValue() == i+1) {
+
+                        if(passengerList.get(i).getFirstName().isEmpty() ||
+                                passengerList.get(i).getLastName().isEmpty() ||
+                                passengerList.get(i).getDateOfBirth() == null)
+                        {
+                            UtilityClass.errorMessageAddCustomer();
+                        }
                     }
                 }
-//            } else {
-//                UtilityClass.errorMessageDate();
-//            }
-//        } else {
-//            UtilityClass.errorMessageFlight();
-//        }
+            }catch (Exception e){
+                e.getMessage();
+            }
 
-
+            } else {
+                UtilityClass.errorMessageDate();
+            }
+        } else {
+            UtilityClass.errorMessageFlight();
+        }
     }
+
 
     private AnchorPane createAnchorPane() {
         AnchorPane anchorPane = new AnchorPane();
@@ -1181,6 +1134,7 @@ public class MainScene extends Application {
 
         buttonContinue = new Button("Continue");
         buttonContinue.setOnAction(event -> {
+
             validateForEmptyFields();
 
         });
