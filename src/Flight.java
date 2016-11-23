@@ -60,7 +60,6 @@ public class Flight{
         this.price = price;
     }
 
-
     public String displayTotalPrice() {return "Total:\t\t = €"+this.price;}
 
     public String displayDeptDetails()  { return this.origin +" > "+ this.destination +"\t = €"+ this.deapartPrice; }

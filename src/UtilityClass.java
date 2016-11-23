@@ -86,6 +86,14 @@ public final class UtilityClass {
         alert.showAndWait();
     }
 
+    // user enters incorrect format
+    public static void errorMessageUnder18() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Input Error");
+        alert.setContentText("Booking cannot be made without an Adult. \n Please add Adult passenger first.");
+        alert.showAndWait();
+    }
+
 
 
     public static void confirmBoxCloseApp() {

@@ -1,5 +1,3 @@
-import javafx.scene.control.RadioButton;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -11,23 +9,23 @@ public class Passenger {
 
     private String firstName;
     private String lastName;
-    private RadioButton baggageSelect;
+    private boolean baggageSelect;
     private LocalDate dateOfBirth;
     private ArrayList<Passenger> passengers;
 
 
-    public Passenger(String firstName, String lastName, LocalDate dateOfBirth, RadioButton baggageSelect) {
+    public Passenger(String firstName, String lastName, LocalDate dateOfBirth, boolean baggageSelect) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.baggageSelect = baggageSelect;
     }
 
-    public RadioButton getBaggageSelect() {
+    public boolean getBaggageSelect() {
         return baggageSelect;
     }
 
-    public void setBaggageSelect(RadioButton baggageSelect) {
+    public void setBaggageSelect(boolean baggageSelect) {
         this.baggageSelect = baggageSelect;
     }
 
@@ -62,16 +60,24 @@ public class Passenger {
 
     @Override
     public String toString() {
-
+        String bagCost = "";
         LocalDate date = this.dateOfBirth;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String formattedDob = date.format(formatter);
+
+        if(this.baggageSelect == true) {
+            bagCost = "€60";
+        } else {
+            bagCost = "€0";
+        }
 
         return  " Details:"+
                 "\n\n\tFirst name:\t " + this.firstName +
                 "\n" +
                 "\tLast name:\t " + this.lastName +
                 "\n" +
-                "\tDate of birth:\t " + formattedDob;
+                "\tDate of birth:\t " + formattedDob +
+                "\n\t" + "Baggage: \t" + bagCost;
     }
+
 }
