@@ -1013,10 +1013,8 @@ public class MainScene extends Application {
         return baggageCost;
     }
 
-
-    private void getDetails() {
+    private void addPassengers() {
         passengerList = new ArrayList<>();
-
         passenger1 = new Passenger(fName.getText(), lName.getText(), dateoFBirth1.getValue(), radioBtn1.isSelected());
         passenger2 = new Passenger(fName2.getText(), lName2.getText(), dateoFBirth2.getValue(), radioBtn2.isSelected());
         passenger3 = new Passenger(fName3.getText(), lName3.getText(), dateoFBirth3.getValue(), radioBtn3.isSelected());
@@ -1033,7 +1031,11 @@ public class MainScene extends Application {
         passengerList.add(passenger6);
         passengerList.add(passenger7);
         passengerList.add(passenger8);
+    }
 
+    private void getDetails() {
+
+        addPassengers();
 
 
         LocalDate now = LocalDate.now();
@@ -1049,15 +1051,15 @@ public class MainScene extends Application {
                 if (mPassenger != null) {
                     mCounter++;
 
-                    if(mPassenger.getDateOfBirth().isBefore(now) && mPassenger.getDateOfBirth().isAfter(nowMinus18yrs)){
-                        UtilityClass.errorMessageUnder18();
-                        listView.getItems().remove(mCounter + 1); // removes the incorrect entry
-                    }
-                    else{
+
+                    // OFF for Testing
+//                    if(mPassenger.getDateOfBirth().isBefore(now) && mPassenger.getDateOfBirth().isAfter(nowMinus18yrs)){
+//                        UtilityClass.errorMessageUnder18();
+//                        listView.getItems().remove(mCounter + 1); // removes the incorrect entry
+//                    }
+//                    else{
                         window.setScene(scene2);
-                    }
-
-
+//                    }
 
 
                     if (mPassenger.getDateOfBirth().isAfter(nowMinus1yr)) {
@@ -1094,11 +1096,11 @@ public class MainScene extends Application {
 
     public void validateForEmptyFields() {
 
-        getDetails();
+        addPassengers();
 
-
-        if (comboOrigin.getValue() != null || comboDestination.getValue() != null) {
-            if (datePickerDeparture.getValue() != null || datePickerReturn.getValue() != null) {
+        // OFF for Testing
+//        if (comboOrigin.getValue() != null || comboDestination.getValue() != null) {
+//            if (datePickerDeparture.getValue() != null || datePickerReturn.getValue() != null) {
 
             try {
 
@@ -1111,6 +1113,8 @@ public class MainScene extends Application {
                                 passengerList.get(i).getDateOfBirth() == null)
                         {
                             UtilityClass.errorMessageAddCustomer();
+                        } else {
+                            getDetails();
                         }
                     }
                 }
@@ -1118,12 +1122,12 @@ public class MainScene extends Application {
                 e.getMessage();
             }
 
-            } else {
-                UtilityClass.errorMessageDate();
-            }
-        } else {
-            UtilityClass.errorMessageFlight();
-        }
+//            } else {
+//                UtilityClass.errorMessageDate();
+//            }
+//        } else {
+//            UtilityClass.errorMessageFlight();
+//        }
     }
 
 
