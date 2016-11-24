@@ -1,6 +1,5 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
 /**
  * Created by brian on 11/11/16.
@@ -9,16 +8,46 @@ public class Passenger {
 
     private String firstName;
     private String lastName;
-    private boolean baggageSelect;
     private LocalDate dateOfBirth;
-    private ArrayList<Passenger> passengers;
-
+    private boolean baggageSelect;
+    private double baggagePrice;
 
     public Passenger(String firstName, String lastName, LocalDate dateOfBirth, boolean baggageSelect) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.baggageSelect = baggageSelect;
+
+    }
+
+    public Passenger(String firstName, String lastName, LocalDate dateOfBirth, boolean baggageSelect, double baggagePrice) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.baggageSelect = baggageSelect;
+        this.baggagePrice = baggagePrice;
+    }
+
+    public boolean isBaggageSelect() {
+        return baggageSelect;
+    }
+
+    public double getBaggagePrice() {
+        return baggagePrice;
+    }
+
+    public void setBaggagePrice(double baggagePrice) {
+        this.baggagePrice = baggagePrice;
+    }
+
+    public double addBaggagePrice(){
+
+        double bagPrice = 0.0;
+
+        if(isBaggageSelect() == true) {
+            bagPrice = bagPrice + 30;
+        }
+        return bagPrice;
     }
 
     public boolean getBaggageSelect() {
@@ -53,23 +82,13 @@ public class Passenger {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public ArrayList<Passenger> getPassengers() {
-        return this.passengers;
-    }
-
 
     @Override
     public String toString() {
-        String bagCost = "";
+
         LocalDate date = this.dateOfBirth;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String formattedDob = date.format(formatter);
-
-        if(this.baggageSelect == true) {
-            bagCost = "€60";
-        } else {
-            bagCost = "€0";
-        }
 
         return  " Details:"+
                 "\n\n\tFirst name:\t " + this.firstName +
@@ -77,7 +96,19 @@ public class Passenger {
                 "\tLast name:\t " + this.lastName +
                 "\n" +
                 "\tDate of birth:\t " + formattedDob +
-                "\n\t" + "Baggage: \t" + bagCost;
+                "\n\t" + "Baggage: \t" + addBaggagePrice();
+    }
+
+
+    public double toStringPrice() {
+
+        double bagPrice = 0.0;
+
+        if(isBaggageSelect() == true) {
+            bagPrice = bagPrice + 30;
+        }
+        return bagPrice;
+
     }
 
 }

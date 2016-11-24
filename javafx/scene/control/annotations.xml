@@ -1,0 +1,5 @@
+<root>
+    <item name='javafx.scene.control.SelectionModel void setSelectedIndex(int)'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+</root>

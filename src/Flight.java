@@ -60,7 +60,7 @@ public class Flight{
         this.price = price;
     }
 
-    public String displayTotalPrice() {return "Total:\t\t = €"+this.price;}
+    public String displayTotalPrice() {return "\t\t = €"+this.price;}
 
     public String displayDeptDetails()  { return this.origin +" > "+ this.destination +"\t = €"+ this.deapartPrice; }
 
@@ -70,7 +70,7 @@ public class Flight{
     public String toString() {
         return "\tDepart: \t\t" + displayDeptDetails() +
                 "\n\tReturn: \t\t"+ displayReturnDetails() +
-                       "\n\tPrice: \t\t"+ displayTotalPrice() + "\n";
+                       "\n\tPrice: \t\t\t"+ displayTotalPrice() + "\n";
     }
 
 

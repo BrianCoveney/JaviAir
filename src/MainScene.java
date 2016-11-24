@@ -120,6 +120,7 @@ public class MainScene extends Application {
     private double dateReturnPrice;
     private double flightPrice;
     private double currentPrice;
+    private double bagPrice = 0.0;
     private LocalDate ldDepartDate, ldReturnDate;
     private GridPane gridPaneLeft;
     private Stage window;
@@ -138,10 +139,11 @@ public class MainScene extends Application {
     private Pane pane;
     // reference to the Passenger and FLight objects
     private List<Passenger> passengerList = FXCollections.observableArrayList();
-    private List<Flight> flightList;
+    private List<Flight> flightList = FXCollections.observableArrayList();
     private Passenger passenger1, passenger2, passenger3, passenger4, passenger5, passenger6, passenger7, passenger8;
     private Flight flight;
-    private int myCounter = -1;
+
+
 
     public static void main(String[] args) {
         launch(args);
@@ -200,6 +202,7 @@ public class MainScene extends Application {
         comboOrigin.setEditable(true);
         comboOrigin.setPromptText("select airport");
         comboOrigin.getItems().addAll(airportList);
+
         comboOrigin.getStyleClass().add("comboOrigin"); // add css class
         comboOrigin.setOnAction(event -> {
 
@@ -677,7 +680,7 @@ public class MainScene extends Application {
         lName8 = new TextField();
         lName8.setDisable(true);
         dateoFBirth1 = new DatePicker();
-        dateoFBirth1.setDisable(true);
+        dateoFBirth1.setDisable(true); dateoFBirth1.setValue(LocalDate.now().minusYears(19));
         dateoFBirth1.setPromptText("dd/mm/yyyy");
         dateoFBirth1.getStyleClass().add("myDatePicker");
         dateoFBirth2 = new DatePicker();
@@ -715,35 +718,6 @@ public class MainScene extends Application {
 
 
         dpDateOfBirthList.addAll(dateoFBirth1, dateoFBirth2, dateoFBirth3, dateoFBirth4, dateoFBirth5, dateoFBirth6, dateoFBirth7, dateoFBirth8);
-
-        disableBagSelectionForBabyPassengers();
-
-        // tried a loop, but got unexpected & undesirable results
-//        try {
-//            for(int i = 0; i <= dpDateOfBirthList.size(); i++)
-//            {
-//                dpDateOfBirthList.get(i).valueProperty().addListener((observable, oldValue, newValue) -> {
-//
-//                    try {
-//                        myCounter++;
-//                        if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
-//                            radioBtnList.get(myCounter).setDisable(true);
-//
-//                        }
-//                        else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)){
-//                            radioBtnList.get(myCounter).fire();
-//                        }
-//
-//                    } catch (Exception e) {
-//                        e.getMessage();
-//                    }
-//                });
-//            }
-//        } catch (Exception e) {
-//            e.getMessage();
-//        }
-
-
 
 
         tfFirstNamesList.addAll(fName, fName2, fName3, fName4, fName5, fName6, fName7, fName8);
@@ -785,6 +759,9 @@ public class MainScene extends Application {
         gridPane.add(lName8, 2, 7);
         gridPane.add(dateoFBirth8, 3, 7);
         gridPane.add(radioBtn8, 4, 7);
+
+        disableBagSelectionForBabyPassengers();
+
 
         StackPane.setAlignment(gridPane, Pos.TOP_LEFT);
         stackPaneRight.getChildren().addAll(gridPane);
@@ -971,7 +948,7 @@ public class MainScene extends Application {
         flight.setDestination(flightReturn);
         flight.setDeapartPrice(CHILD_PRICE);
         flight.setReturnPrice(CHILD_PRICE);
-        flight.setPrice(setBaggageSelectPrice());
+        flight.setPrice(CHILD_PRICE * 2);
     }
 
     public void setFlightPriceBaby() {
@@ -991,7 +968,6 @@ public class MainScene extends Application {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
         String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
 
-        setBaggageSelectPrice();
 
         // constructor
         flight = new Flight(
@@ -999,19 +975,11 @@ public class MainScene extends Application {
                 flightReturn,       // setDestination() from variable in this method
                 dateDepartPrice,    // setDepartPrice() from the return of getSelectDate()
                 dateReturnPrice,    // setReturnPrice() from the return of getSelectDate()
-                setBaggageSelectPrice());      // setPrice() from the return of getSelectedFlightPrice()
+                currentPrice);      // setPrice() from the return of getSelectedFlightPrice()
     }
 
 
-    private double setBaggageSelectPrice() {
-        double baggageCost = 0.0;
-        if (radioBtn1.isSelected()) {
-            baggageCost = currentPrice + 60.0;
-        } else {
-            baggageCost = currentPrice;
-        }
-        return baggageCost;
-    }
+
 
     private void addPassengers() {
         passengerList = new ArrayList<>();
@@ -1062,18 +1030,29 @@ public class MainScene extends Application {
 //                    }
 
 
-                    if (mPassenger.getDateOfBirth().isAfter(nowMinus1yr)) {
+                    //
+                    double bagPrice = passengerList.get(mCounter - 1).toStringPrice();
+                    double flightPrice = currentPrice;
+                    double price = bagPrice + flightPrice;
 
+
+                    // add Passanger and Flight objects to the ListView displayed in the next scene (after Continue button is selected)
+                    if (mPassenger.getDateOfBirth().isAfter(nowMinus1yr)) {
                         setFlightPriceBaby();
                         // add each flight from the observablelist, using a counter as the index
                         listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flight);
 
+
                     } else if (mPassenger.getDateOfBirth().isAfter(nowMinus5yrs) && mPassenger.getDateOfBirth().isBefore(nowMinus1yr)) {
                         setFlightPriceChild();
-                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flight);
+                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flight,
+                                "\tTotal: \t\t\t\t\t = €" + price + " (incl baggage cost, if selected)");
+
                     } else if (mPassenger.getDateOfBirth().isBefore(nowMinus5yrs)) {
                         setFlightPriceAdult();
-                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flight);
+                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flight,
+                                "\tTotal: \t\t\t\t\t = €" + price + " (incl baggage cost, if selected)");
+
                     }
                 }
             } catch (Exception e) {
@@ -1157,5 +1136,6 @@ public class MainScene extends Application {
 
         return anchorPane;
     }
+
 
 }
