@@ -43,6 +43,7 @@ public class MainScene extends Application {
     static final int SIXTY = 60;
     static final int FORTY = 40;
     static final int ZERO = 0;
+    static final double BAGGAGE_PRICE = 15.0;
     static final Double CHILD_PRICE = 60.0;
     static final Double CHILD_TOTAL_PRICE = CHILD_PRICE * 2;
     static final Double BABY_PRICE = 0.0;
@@ -141,7 +142,7 @@ public class MainScene extends Application {
     private List<Passenger> passengerList = FXCollections.observableArrayList();
     private List<Flight> flightList = FXCollections.observableArrayList();
     private Passenger passenger1, passenger2, passenger3, passenger4, passenger5, passenger6, passenger7, passenger8;
-    private Flight flight;
+    private Flight flight, flightForChild, flightForBaby;
 
 
 
@@ -943,26 +944,19 @@ public class MainScene extends Application {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
         String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
 
-        flight = new Flight();
-        flight.setOrigin(flightDepart);
-        flight.setDestination(flightReturn);
-        flight.setDeapartPrice(CHILD_PRICE);
-        flight.setReturnPrice(CHILD_PRICE);
-        flight.setPrice(CHILD_PRICE * 2);
+        // constructor
+        flightForChild = new Flight(flightDepart, flightReturn, CHILD_PRICE, CHILD_PRICE, CHILD_TOTAL_PRICE);
     }
 
-    public void setFlightPriceBaby() {
+
+    private void setFlightPriceBaby() {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
         String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
 
-        flight = new Flight();
-        flight.setOrigin(flightDepart);
-        flight.setDestination(flightReturn);
-        flight.setDeapartPrice(BABY_PRICE);
-        flight.setReturnPrice(BABY_PRICE);
-        flight.setPrice(BABY_PRICE);
-
+        // constructor
+        flightForBaby = new Flight(flightDepart, flightReturn, BABY_PRICE, BABY_PRICE, BABY_PRICE);
     }
+
 
     private void setFlightPriceAdult() {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
@@ -1030,28 +1024,38 @@ public class MainScene extends Application {
 //                    }
 
 
-                    //
-                    double bagPrice = passengerList.get(mCounter - 1).toStringPrice();
+                    // setting variable equal to the current passenger, then getting returned value for the Flight object method
+                    double bagPrice = passengerList.get(mCounter - 1).displayPriceFromBagSelected();
+
+                    // setting variable equal to the returned value from getSelectedFlightPrice() in this class
                     double flightPrice = currentPrice;
-                    double price = bagPrice + flightPrice;
+
+                    // setting variable equal to the sum of the above two vars.
+                    double adultPrice = bagPrice + flightPrice;
+
+                    // setting variable equal to bagPrice plus the constant - child price total
+                    double childPrice = bagPrice + CHILD_TOTAL_PRICE;
 
 
                     // add Passanger and Flight objects to the ListView displayed in the next scene (after Continue button is selected)
                     if (mPassenger.getDateOfBirth().isAfter(nowMinus1yr)) {
+
                         setFlightPriceBaby();
                         // add each flight from the observablelist, using a counter as the index
-                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flight);
+                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flightForBaby);
 
 
                     } else if (mPassenger.getDateOfBirth().isAfter(nowMinus5yrs) && mPassenger.getDateOfBirth().isBefore(nowMinus1yr)) {
+
                         setFlightPriceChild();
-                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flight,
-                                "\tTotal: \t\t\t\t\t = €" + price + " (incl baggage cost, if selected)");
+                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flightForChild,
+                                "\tTotal: \t\t\t\t\t = €" + childPrice + " (incl baggage cost, if selected)");
 
                     } else if (mPassenger.getDateOfBirth().isBefore(nowMinus5yrs)) {
+
                         setFlightPriceAdult();
                         listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flight,
-                                "\tTotal: \t\t\t\t\t = €" + price + " (incl baggage cost, if selected)");
+                                "\tTotal: \t\t\t\t\t = €" + adultPrice + " (incl baggage cost, if selected)");
 
                     }
                 }

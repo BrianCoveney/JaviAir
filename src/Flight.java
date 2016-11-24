@@ -70,7 +70,7 @@ public class Flight{
     public String toString() {
         return "\tDepart: \t\t" + displayDeptDetails() +
                 "\n\tReturn: \t\t"+ displayReturnDetails() +
-                       "\n\tPrice: \t\t\t"+ displayTotalPrice() + "\n";
+                       "\n\tFlight Price: \t\t"+ displayTotalPrice() + "\n";
     }
 
 

@@ -40,12 +40,12 @@ public class Passenger {
         this.baggagePrice = baggagePrice;
     }
 
-    public double addBaggagePrice(){
+    public double displayPriceFromBagSelected() {
 
         double bagPrice = 0.0;
 
         if(isBaggageSelect() == true) {
-            bagPrice = bagPrice + 30;
+            bagPrice = bagPrice + 15;
         }
         return bagPrice;
     }
@@ -96,19 +96,7 @@ public class Passenger {
                 "\tLast name:\t " + this.lastName +
                 "\n" +
                 "\tDate of birth:\t " + formattedDob +
-                "\n\t" + "Baggage: \t" + addBaggagePrice();
-    }
-
-
-    public double toStringPrice() {
-
-        double bagPrice = 0.0;
-
-        if(isBaggageSelect() == true) {
-            bagPrice = bagPrice + 30;
-        }
-        return bagPrice;
-
+                "\n\t" + "Baggage: \t €" + displayPriceFromBagSelected();
     }
 
 }
