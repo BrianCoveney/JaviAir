@@ -8,6 +8,8 @@ public class Flight{
     private Double deapartPrice;
     private Double returnPrice;
     private Double price;
+    private String departTime;
+    private String returnTime;
 
     public Flight(){}
 
@@ -18,6 +20,26 @@ public class Flight{
         this.deapartPrice = deapartPrice;
         this.returnPrice = returnPrice;
         this.price = price;
+    }
+
+
+    public Flight (String origin, String destination, Double deapartPrice, Double returnPrice, Double price, String flightTime, String returnTime) {
+        this.origin = origin;
+        this.destination = destination;
+        this.deapartPrice = deapartPrice;
+        this.returnPrice = returnPrice;
+        this.price = price;
+        this.departTime = flightTime;
+        this.returnTime = returnTime;
+    }
+
+
+    public String getDepartTime() {
+        return departTime;
+    }
+
+    public void setDepartTime(String departTime) {
+        this.departTime = departTime;
     }
 
     public String getOrigin() {
@@ -70,6 +92,7 @@ public class Flight{
     public String toString() {
         return "\tDepart: \t\t" + displayDeptDetails() +
                 "\n\tReturn: \t\t"+ displayReturnDetails() +
+                "\n\tDepart Time: \t"+ this.departTime + "\n\tReturn Time: \t" + this.returnTime +
                        "\n\tFlight Price: \t\t"+ displayTotalPrice() + "\n";
     }
 

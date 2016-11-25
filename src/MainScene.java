@@ -7,6 +7,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -20,124 +22,120 @@ import java.util.List;
 public class MainScene extends Application {
 
     // constants - flight airports
-    static final String CORK = "ORK";
-    static final String MADRID = "MAD";
-    static final String ST_BRIEUC = "SBK";
-    static final String JERSEY = "JER";
-    static final String PARIS = "CDG";
-    static final String STANSTED = "STN";
-    static final String MALAGA = "AGP";
-    static final String FRI = "FRIDAY";
-    static final String SAT = "SATURDAY";
-    static final String SUN = "SUNDAY";
+    private static final String CORK = "ORK";
+    private static final String MADRID = "MAD";
+    private static final String ST_BRIEUC = "SBK";
+    private static final String JERSEY = "JER";
+    private static final String PARIS = "CDG";
+    private static final String STANSTED = "STN";
+    private static final String MALAGA = "AGP";
+    private static final String FRI = "FRIDAY";
+    private static final String SAT = "SATURDAY";
+    private static final String SUN = "SUNDAY";
     // constants - flight prices
-    static final int TWO_HND_EIGHTY = 280;
-    static final int TWO_HND_FIFTY = 250;
-    static final int TWO_HND_FORTY = 240;
-    static final int TWO_HND = 200;
-    static final int ONE_HND_FIFTY = 150;
-    static final int ONE_HND_FORTY = 140;
-    static final int ONE_HND_TWENTY = 120;
-    static final int ONE_HND = 100;
-    static final int EIGHTY = 80;
-    static final int SIXTY = 60;
-    static final int FORTY = 40;
-    static final int ZERO = 0;
-    static final double BAGGAGE_PRICE = 15.0;
-    static final Double CHILD_PRICE = 60.0;
-    static final Double CHILD_TOTAL_PRICE = CHILD_PRICE * 2;
-    static final Double BABY_PRICE = 0.0;
-    static final int MAX_PASSENGER_NO = 8;
+    private static final int TWO_HND_EIGHTY = 280;
+    private static final int TWO_HND_FIFTY = 250;
+    private static final int TWO_HND_FORTY = 240;
+    private static final int TWO_HND = 200;
+    private static final int ONE_HND_FIFTY = 150;
+    private static final int ONE_HND_FORTY = 140;
+    private static final int ONE_HND_TWENTY = 120;
+    private static final int ONE_HND = 100;
+    private static final int EIGHTY = 80;
+    private static final int SIXTY = 60;
+    private static final int FORTY = 40;
+    private static final int ZERO = 0;
+    private static final double BAGGAGE_PRICE = 15.0;
+    private static final Double CHILD_PRICE = 60.0;
+    private static final Double CHILD_TOTAL_PRICE = CHILD_PRICE * 2;
+    private static final Double BABY_PRICE = 0.0;
+    private static final int MAX_PASSENGER_NO = 8;
     private static final ObservableList<Integer> baggageNumbers = FXCollections.observableArrayList();
     private static final ObservableList airportList = FXCollections.observableArrayList();
     // constants  flight times
-    static String ORK_MAD_1 = "0920-1300";
-    static String ORK_SBK_1 = "1030-1400";
-    static String ORK_JER_1 = "1400-1600";
-    static String ORK_CDG_1 = "0900-1215";
-    static String ORK_CDG_2 = "1820-2105";
-    static String ORK_STN_1 = "0820-0950";
-    static String ORK_STN_2 = "1120-1305";
-    static String ORK_AGP_1 = "0800-1130";
-    static String MAD_ORK_1 = "1800-2000";
-    static String MAD_SBK_1 = "1200-1400";
-    static String MAD_JER_1 = "0620-0800";
-    static String MAD_CDG_1 = "0800-1000";
-    static String MAD_STN_1 = "1400-1520";
-    static String MAD_STN_2 = "1905-2120";
-    static String MAD_AGP_1 = "0800-0905";
-    static String SBK_ORK_1 = "1900-2020";
-    static String SBK_MAD_1 = "1800-2020";
-    static String SBK_JER_1 = "none";
-    static String SBK_CDG_1 = "0620-0715";
-    static String SBK_STN_1 = "0805-0830";
-    static String SBK_AGP_1 = "1200-1530";
-    static String JER_ORK_1 = "1000-1200";
-    static String JER_MAD_1 = "1800-2120";
-    static String JER_CDG_1 = "0800-1015";
-    static String JER_STN_1 = "1700-1830";
-    static String JER_AGP_1 = "0800-1130";
-    static String CDG_ORK_1 = "1330-1500";
-    static String CDG_ORK_2 = "2200-2350";
-    static String CDG_MAD_1 = "1920-2105";
-    static String CDG_SBK_1 = "1900-2005";
-    static String CDG_JER_1 = "2000-2015";
-    static String CDG_STN_1 = "1800-1830";
-    static String CDG_AGP_1 = "1150-1330";
-    static String STN_ORK_1 = "1100-1220";
-    static String STN_ORK_2 = "1800-1920";
-    static String STN_MAD_1 = "1020-1400";
-    static String STN_SBK_1 = "1800-2000";
-    static String STN_JER_1 = "0900-1030";
-    static String STN_CDG_1 = "0900-1030";
-    static String STN_AGP_1 = "0800-1100";
-    static String STN_AGP_2 = "1330-1620";
-    static String AGP_ORK_1 = "1300-1420";
-    static String AGP_MAD_1 = "2000-2105";
-    static String AGP_SBK_1 = "2000-2130";
-    static String AGP_JER_1 = "1800-1930";
-    static String AGP_CDG_1 = "1805-1230";
-    static String AGP_STN_1 = "1500-1610";
-    static String AGP_STN_2 = "2035-2105";
-    private final ToggleGroup toggleRadioButtonGroup = new ToggleGroup();
+    private static String ORK_MAD_1 = "0920-1300";
+    private static String ORK_SBK_1 = "1030-1400";
+    private static String ORK_JER_1 = "1400-1600";
+    private static String ORK_CDG_1 = "0900-1215";
+    private static String ORK_CDG_2 = "1820-2105";
+    private static String ORK_STN_1 = "0820-0950";
+    private static String ORK_STN_2 = "1120-1305";
+    private static String ORK_AGP_1 = "0800-1130";
+    private static String MAD_ORK_1 = "1800-2000";
+    private static String MAD_SBK_1 = "1200-1400";
+    private static String MAD_JER_1 = "0620-0800";
+    private static String MAD_CDG_1 = "0800-1000";
+    private static String MAD_STN_1 = "1400-1520";
+    private static String MAD_STN_2 = "1905-2120";
+    private static String MAD_AGP_1 = "0800-0905";
+    private static String SBK_ORK_1 = "1900-2020";
+    private static String SBK_MAD_1 = "1800-2020";
+    private static String SBK_JER_1 = "none";
+    private static String SBK_CDG_1 = "0620-0715";
+    private static String SBK_STN_1 = "0805-0830";
+    private static String SBK_AGP_1 = "1200-1530";
+    private static String JER_ORK_1 = "1000-1200";
+    private static String JER_MAD_1 = "1800-2120";
+    private static String JER_CDG_1 = "0800-1015";
+    private static String JER_STN_1 = "1700-1830";
+    private static String JER_AGP_1 = "0800-1130";
+    private static String CDG_ORK_1 = "1330-1500";
+    private static String CDG_ORK_2 = "2200-2350";
+    private static String CDG_MAD_1 = "1920-2105";
+    private static String CDG_SBK_1 = "1900-2005";
+    private static String CDG_JER_1 = "2000-2015";
+    private static String CDG_STN_1 = "1800-1830";
+    private static String CDG_AGP_1 = "1150-1330";
+    private static String STN_ORK_1 = "1100-1220";
+    private static String STN_ORK_2 = "1800-1920";
+    private static String STN_MAD_1 = "1020-1400";
+    private static String STN_SBK_1 = "1800-2000";
+    private static String STN_JER_1 = "0900-1030";
+    private static String STN_CDG_1 = "0900-1030";
+    private static String STN_AGP_1 = "0800-1100";
+    private static String STN_AGP_2 = "1330-1620";
+    private static String AGP_ORK_1 = "1300-1420";
+    private static String AGP_MAD_1 = "2000-2105";
+    private static String AGP_SBK_1 = "2000-2130";
+    private static String AGP_JER_1 = "1800-1930";
+    private static String AGP_CDG_1 = "1805-1230";
+    private static String AGP_STN_1 = "1500-1610";
+    private static String AGP_STN_2 = "2035-2105";
+    private VBox vBoxRadioBtns1, vBoxRadioBtns2;
+    private String mFlightTimes, flightTime1, flightTime2, selectedDeptTime, selectedReturnTime;
+    private final ToggleGroup toggleGroupFlights = new ToggleGroup();
+    private final ToggleGroup toggleGroupFlightTimes_1 = new ToggleGroup();
+    private final ToggleGroup toggleGroupFlightTimes_2 = new ToggleGroup();
     ObservableList<Integer> spinnerObservableList = FXCollections.observableArrayList();
+    private ImageView imageViewReturn, imageViewDept;
     private Button buttonCancel, buttonContinue;
-    private Button buttonAdd;
     private ComboBox<String> comboOrigin;
     private ComboBox<String> comboDestination;
     private RadioButton radioBtn1, radioBtn2, radioBtn3, radioBtn4, radioBtn5, radioBtn6, radioBtn7, radioBtn8;
-    private DatePicker datePickerDeparture, dpDateoFBirth;
+    private DatePicker datePickerDeparture;
     private DatePicker datePickerReturn;
     private GridPane gridPaneMiddle;
-    private GridPane gridPaneRight;
     private TextArea textAreaDepart, textAreaReturn;
     private Label labelOrigin, labelDestination, labelDateDeparture, labelDateReturn;
-    private TextField tf, tf2, tfFName, tfLName;
     private ListView listView;
-    private String firstName1, lastName1, dateOfBirth1;
-    private HBox hBoxList;
+    private RadioButton radioButtonReturn, radioButtonDeptTime1, radioButtonDeptTime2, radioButtonReturnTime1, radioButtonReturnTime2;
     private String dptFlight, rtnFlight;
     private double dateDepartPrice;
     private double dateReturnPrice;
     private double flightPrice;
     private double currentPrice;
-    private double bagPrice = 0.0;
     private LocalDate ldDepartDate, ldReturnDate;
     private GridPane gridPaneLeft;
     private Stage window;
     private Scene scene1, scene2;
     private VBox vBox;
     private ObservableList<TextField> tfFirstNamesList = FXCollections.observableArrayList();
-    private ObservableList<TextField> tfLastNamesList = FXCollections.observableArrayList();
     private ObservableList<DatePicker> dpDateOfBirthList = FXCollections.observableArrayList();
-    private ObservableList<ComboBox> comboBagList = FXCollections.observableArrayList();
     private ObservableList<RadioButton> radioBtnList = FXCollections.observableArrayList();
     private TextField fName, fName2, fName3, fName4, fName5, fName6, fName7, fName8,
             lName, lName2, lName3, lName4, lName5, lName6, lName7, lName8;
-    private DatePicker dateoFBirth1, dateoFBirth2, dateoFBirth3, dateoFBirth4, dateoFBirth5, dateoFBirth6, dateoFBirth7, dateoFBirth8;
+    private DatePicker dateOfBirth1, dateOfBirth2, dateOfBirth3, dateOfBirth4, dateOfBirth5, dateOfBirth6, dateOfBirth7, dateOfBirth8;
     private Spinner<Integer> spinnerPassengerNo;
-    private FlowPane pane1, pane2;
-    private Pane pane;
     // reference to the Passenger and FLight objects
     private List<Passenger> passengerList = FXCollections.observableArrayList();
     private List<Flight> flightList = FXCollections.observableArrayList();
@@ -161,7 +159,7 @@ public class MainScene extends Application {
         VBox vBox = new VBox();
         vBox.getChildren().addAll(
                 createTopGridPane(), createMiddleGridPane(), createBottomPane(), createAnchorPane());
-        scene1 = new Scene(vBox, 800, 750);
+        scene1 = new Scene(vBox, 800, 800);
 
         listView = new ListView();
 
@@ -180,23 +178,44 @@ public class MainScene extends Application {
         gridPane.getStyleClass().add("grid");
 
         RadioButton radioButtonOneWay = new RadioButton("One Way");
-        radioButtonOneWay.setToggleGroup(toggleRadioButtonGroup);
-        RadioButton radioButtonReturn = new RadioButton("Return");
-        radioButtonReturn.setToggleGroup(toggleRadioButtonGroup);
+        radioButtonOneWay.setToggleGroup(toggleGroupFlights);
+        radioButtonReturn = new RadioButton("Return");
+        radioButtonReturn.setToggleGroup(toggleGroupFlights);
         radioButtonReturn.fire(); // return btn on by default
 
-        toggleRadioButtonGroup.selectedToggleProperty().addListener(observable -> {
-            if (toggleRadioButtonGroup.getSelectedToggle() == radioButtonOneWay) {
-                comboDestination.setDisable(true);
+        toggleGroupFlights.selectedToggleProperty().addListener(observable -> {
+            if (toggleGroupFlights.getSelectedToggle() == radioButtonOneWay) {
                 datePickerReturn.setDisable(true);
-                textAreaReturn.setDisable(true);
+                imageViewReturn.setVisible(false);
+                radioButtonReturnTime1.setVisible(false);
+                radioButtonReturnTime2.setVisible(false);
 
-            } else if (toggleRadioButtonGroup.getSelectedToggle() == radioButtonReturn) {
-                comboDestination.setDisable(false);
+
+            } else if (toggleGroupFlights.getSelectedToggle() == radioButtonReturn) {
                 datePickerReturn.setDisable(false);
-                textAreaReturn.setDisable(false);
+                imageViewReturn.setVisible(true);
+                radioButtonReturnTime1.setVisible(true);
+                radioButtonReturnTime2.setVisible(true);
+
             }
         });
+
+
+        radioButtonDeptTime1 = new RadioButton();
+        radioButtonDeptTime2 = new RadioButton();
+        radioButtonReturnTime1 = new RadioButton();
+        radioButtonReturnTime2 = new RadioButton();
+
+
+        vBoxRadioBtns1 = new VBox(10);
+        vBoxRadioBtns1.getChildren().addAll(radioButtonDeptTime1, radioButtonDeptTime2);
+        vBoxRadioBtns1.setMinWidth(200);
+
+
+        vBoxRadioBtns2 = new VBox(10);
+        vBoxRadioBtns2.getChildren().addAll(radioButtonReturnTime1, radioButtonReturnTime2);
+        vBoxRadioBtns2.setMinWidth(200);
+
 
         labelOrigin = new Label("From: ");
         comboOrigin = new ComboBox<>();
@@ -241,6 +260,18 @@ public class MainScene extends Application {
         });
 
 
+        labelDateDeparture = new Label("Depart");
+        datePickerDeparture = new DatePicker();
+        datePickerDeparture.setPromptText("pick a date");
+        datePickerDeparture.setEditable(true);
+        datePickerDeparture.setOnAction(event -> {
+            event.consume();
+            checkForInvalidDates();
+            getSelectDate(event);
+
+        });
+
+
         labelDateReturn = new Label("Return");
         datePickerReturn = new DatePicker();
         datePickerReturn.setPromptText("pick a date");
@@ -254,18 +285,6 @@ public class MainScene extends Application {
         });
 
 
-        labelDateDeparture = new Label("Depart");
-        datePickerDeparture = new DatePicker();
-        datePickerDeparture.setPromptText("pick a date");
-        datePickerDeparture.setEditable(true);
-        datePickerDeparture.setOnAction(event -> {
-            event.consume();
-            checkForInvalidDates();
-            getSelectDate(event);
-
-        });
-
-
         Button btnFlightSelect = new Button("Select Flight");
         btnFlightSelect.setOnAction(event -> {
             if (comboDestination.getSelectionModel().isEmpty()) {
@@ -273,6 +292,8 @@ public class MainScene extends Application {
             }
 
             displaySelectedFlights();
+//            getDepartTime();
+
         });
 
         comboOrigin.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
@@ -503,63 +524,210 @@ public class MainScene extends Application {
 
             if (flightDepart == null) {
                 UtilityClass.errorMessageFlight();
-            } else if (dateDept == null || dateReturn == null) {
+            } else if (dateDept == null || dateReturn == null && radioButtonReturn.isSelected()) {
                 UtilityClass.errorMessageDate();
             } else {
 
                 setFlightPriceAdult();
 
                 if (flight != null) {
-                    textAreaDepart.setText(flight.displayDeptDetails());
-                    textAreaReturn.setText(flight.displayReturnDetails());
-                    textAreaReturn.appendText("\n\n" + flight.getPrice());
+//                    textAreaDepart.setText(flight.displayDeptDetails());
+//                    textAreaReturn.setText(flight.displayReturnDetails());
+//                    textAreaReturn.appendText("\n\n" + flight.getPrice());
+
                 }
 
                 if (flightDepart.equals(CORK) && flightReturn.equals(MADRID)) {
-                    textAreaDepart.appendText("\n" + ORK_MAD_1);
+                    flightTime1 = ORK_MAD_1;
+                    flightTime2 = null;
                 } else if (flightDepart.equals(CORK) && flightReturn.equals(ST_BRIEUC)) {
-                    textAreaDepart.appendText("\n" + ORK_SBK_1);
+                    flightTime1 =ORK_SBK_1;
+                    flightTime2 = null;
                 } else if (flightDepart.equals(CORK) && flightReturn.equals(JERSEY)) {
-                    textAreaDepart.appendText("\n" + ORK_JER_1);
+                    flightTime1 = ORK_JER_1;
+                    flightTime2 = null;
                 } else if (flightDepart.equals(CORK) && flightReturn.equals(PARIS)) {
-                    textAreaDepart.appendText("\n" + ORK_CDG_1);
-                    textAreaDepart.appendText("\n" + ORK_CDG_2);
+                    flightTime1 = ORK_CDG_1;
+                    flightTime2 = ORK_CDG_2;
                 } else if (flightDepart.equals(CORK) && flightReturn.equals(STANSTED)) {
-                    textAreaDepart.appendText("\n" + ORK_STN_1);
-                    textAreaDepart.appendText("\n" + ORK_STN_2);
+                    flightTime1 = ORK_STN_1;
+                    flightTime2 = ORK_STN_2;
                 } else if (flightDepart.equals(CORK) && flightReturn.equals(MALAGA)) {
-                    textAreaDepart.appendText("\n" + ORK_AGP_1);
+                    flightTime1 = ORK_AGP_1;
+                    flightTime2 = null;
                 } else if (flightDepart.equals(MADRID) && flightReturn.equals(CORK)) {
-                    textAreaDepart.appendText("\n" + MAD_ORK_1);
+                    flightTime1 = MAD_ORK_1;
+                    flightTime2 = null;
                 } else if (flightDepart.equals(MADRID) && flightReturn.equals(ST_BRIEUC)) {
-                    textAreaDepart.appendText("\n" + MAD_SBK_1);
+                    flightTime1 = MAD_SBK_1;
+                    flightTime2 = null;
                 } else if (flightDepart.equals(MADRID) && flightReturn.equals(JERSEY)) {
-                    textAreaDepart.appendText("\n" + MAD_JER_1);
+                    flightTime1 = MAD_JER_1;
+                    flightTime2 = null;
                 } else if (flightDepart.equals(MADRID) && flightReturn.equals(PARIS)) {
-                    textAreaDepart.appendText("\n" + MAD_CDG_1);
+                    flightTime1 = MAD_CDG_1;
+                    flightTime2 = null;
                 } else if (flightDepart.equals(MADRID) && flightReturn.equals(STANSTED)) {
-                    textAreaDepart.appendText("\n" + MAD_STN_1);
-                    textAreaDepart.appendText("\n" + MAD_STN_2);
+                    flightTime1 = MAD_STN_1;
+                    flightTime2 = MAD_STN_2;
                 } else if (flightDepart.equals(MADRID) && flightReturn.equals(MALAGA)) {
-                    textAreaDepart.appendText("\n" + MAD_AGP_1);
+                    flightTime1 = MAD_AGP_1;
+                    flightTime2 = null;
                 } else if (flightDepart.equals(ST_BRIEUC) && flightReturn.equals(CORK)) {
-                    textAreaDepart.appendText("\n" + SBK_ORK_1);
+                    flightTime1 = SBK_ORK_1;
+                    flightTime2 = null;
                 } else if (flightDepart.equals(ST_BRIEUC) && flightReturn.equals(MADRID)) {
-                    textAreaDepart.appendText("\n" + SBK_MAD_1);
+                    flightTime1 = SBK_MAD_1;
+                    flightTime2 = null;
                 } else if (flightDepart.equals(ST_BRIEUC) && flightReturn.equals(JERSEY)) {
-                    textAreaDepart.appendText("\n" + SBK_JER_1);
+                    flightTime1 = SBK_JER_1;
+                    flightTime2 = null;
                 } else if (flightDepart.equals(ST_BRIEUC) && flightReturn.equals(PARIS)) {
-                    textAreaDepart.appendText("\n" + STN_CDG_1);
+                    flightTime1 = SBK_CDG_1;
+                    flightTime2 = null;
                 } else if (flightDepart.equals(ST_BRIEUC) && flightReturn.equals(STANSTED)) {
-                    textAreaDepart.appendText("\n" + SBK_STN_1);
+                    flightTime1 = SBK_STN_1;
+                    flightTime2 = null;
                 } else if (flightDepart.equals(ST_BRIEUC) && flightReturn.equals(MALAGA)) {
-                    textAreaDepart.appendText("\n" + SBK_AGP_1);
+                    flightTime1 = SBK_AGP_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(JERSEY) && flightReturn.equals(CORK)) {
+                    flightTime1 = JER_ORK_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(JERSEY) && flightReturn.equals(MADRID)) {
+                    flightTime1 = JER_MAD_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(JERSEY) && flightReturn.equals(PARIS)) {
+                    flightTime1 = JER_CDG_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(JERSEY) && flightReturn.equals(STANSTED)) {
+                    flightTime1 = JER_STN_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(JERSEY) && flightReturn.equals(MALAGA)) {
+                    flightTime1 = JER_AGP_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(PARIS) && flightReturn.equals(CORK)) {
+                    flightTime1 = CDG_ORK_1;
+                    flightTime2 = CDG_ORK_2;
+                } else if (flightDepart.equals(PARIS) && flightReturn.equals(MADRID)) {
+                    flightTime1 = CDG_MAD_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(PARIS) && flightReturn.equals(ST_BRIEUC)) {
+                    flightTime1 = CDG_SBK_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(PARIS) && flightReturn.equals(JERSEY)) {
+                    flightTime1 = CDG_JER_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(PARIS) && flightReturn.equals(STANSTED)) {
+                    flightTime1 = CDG_STN_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(PARIS) && flightReturn.equals(MALAGA)) {
+                    flightTime1 = CDG_AGP_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(STANSTED) && flightReturn.equals(CORK)) {
+                    flightTime1 = STN_ORK_1;
+                    flightTime2 = STN_ORK_2;
+                } else if (flightDepart.equals(STANSTED) && flightReturn.equals(MADRID)) {
+                    flightTime1 = STN_MAD_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(STANSTED) && flightReturn.equals(ST_BRIEUC)) {
+                    flightTime1 = STN_SBK_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(STANSTED) && flightReturn.equals(JERSEY)) {
+                    flightTime1 = STN_JER_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(STANSTED) && flightReturn.equals(PARIS)) {
+                    flightTime1 = STN_CDG_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(STANSTED) && flightReturn.equals(MALAGA)) {
+                    flightTime1 = STN_AGP_1;
+                    flightTime2 = STN_AGP_2;
+                } else if (flightDepart.equals(MALAGA) && flightReturn.equals(CORK)) {
+                    flightTime1 = AGP_ORK_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(MALAGA) && flightReturn.equals(MADRID)) {
+                    flightTime1 = AGP_MAD_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(MALAGA) && flightReturn.equals(ST_BRIEUC)) {
+                    flightTime1 = AGP_SBK_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(MALAGA) && flightReturn.equals(JERSEY)) {
+                    flightTime1 = AGP_JER_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(MALAGA) && flightReturn.equals(PARIS)) {
+                    flightTime1 = AGP_CDG_1;
+                    flightTime2 = null;
+                } else if (flightDepart.equals(MALAGA) && flightReturn.equals(STANSTED)) {
+                    flightTime1 = AGP_STN_1;
+                    flightTime2 = AGP_STN_2;
+
+                    mFlightTimes = AGP_STN_1 + "\n" + AGP_STN_2;
                 }
+
+
+                displayFlightDetails();
+
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
     }
+
+
+    private String displayFlightDetails() {
+
+        // setting times for Departure radio buttons
+        radioButtonDeptTime1.setText(flight.displayDeptDetails() + "\n" + flightTime1);
+        radioButtonReturnTime1.setText(flight.displayReturnDetails() + "\n" + flightTime1);
+
+        radioButtonDeptTime1.setToggleGroup(toggleGroupFlightTimes_1);
+        radioButtonDeptTime2.setToggleGroup(toggleGroupFlightTimes_1);
+
+        toggleGroupFlightTimes_1.selectedToggleProperty().addListener(observable -> {
+
+            if(toggleGroupFlightTimes_1.getSelectedToggle() == radioButtonDeptTime1) {
+                selectedDeptTime = flightTime1;
+
+            } else if(toggleGroupFlightTimes_1.getSelectedToggle() == radioButtonDeptTime2) {
+                selectedDeptTime = flightTime2;
+            }
+
+        });
+
+        if(flightTime2 != null) {
+
+            // setting times for Return radio buttons
+            radioButtonDeptTime2.setText(flight.displayDeptDetails() + "\n" + flightTime2);
+            radioButtonReturnTime2.setText(flight.displayReturnDetails() + "\n" + flightTime2);
+
+            radioButtonDeptTime2.setVisible(true);
+            radioButtonReturnTime2.setVisible(true);
+
+
+            radioButtonReturnTime1.setToggleGroup(toggleGroupFlightTimes_2);
+            radioButtonReturnTime2.setToggleGroup(toggleGroupFlightTimes_2);
+            toggleGroupFlightTimes_2.selectedToggleProperty().addListener(observable -> {
+
+                if(toggleGroupFlightTimes_2.getSelectedToggle() == radioButtonReturnTime1) {
+                    selectedReturnTime =flightTime1;
+                } else if(toggleGroupFlightTimes_2.getSelectedToggle() == radioButtonReturnTime2) {
+                    selectedReturnTime = flightTime2;
+                }
+
+            });
+
+
+        } else {
+            radioButtonDeptTime2.setVisible(false);
+            radioButtonReturnTime2.setVisible(false);
+        }
+
+        return selectedDeptTime;
+
+    }
+
+
 
     private GridPane createMiddleGridPane() {
         Button buttonFlightSelect = new Button("Select Flight");
@@ -582,9 +750,28 @@ public class MainScene extends Application {
         textAreaReturn.setEditable(false);
         textAreaReturn.setMaxWidth(200);
 
-        gridPaneMiddle.add(textAreaDepart, 0, 2);
+        imageViewDept = new ImageView();
+        Image imageDept = new Image("departures.png");
+        imageViewDept.setImage(imageDept);
+        imageViewDept.setFitWidth(100);
+        imageViewDept.setFitHeight(100);
+        imageViewDept.setSmooth(true);
+        imageViewDept.setCache(true);
+
+        imageViewReturn = new ImageView();
+        Image imageReturn = new Image("arrivals.png");
+        imageViewReturn.setImage(imageReturn);
+        imageViewReturn.setFitWidth(100);
+        imageViewReturn.setFitHeight(100);
+        imageViewReturn.setSmooth(true);
+        imageViewReturn.setCache(true);
+
+        gridPaneMiddle.add(imageViewDept, 0, 2);
         gridPaneMiddle.add(buttonFlightSelect, 0, 3);
-        gridPaneMiddle.add(textAreaReturn, 2, 2);
+        gridPaneMiddle.add(imageViewReturn, 2, 2);
+        gridPaneMiddle.add(vBoxRadioBtns1, 0, 3);
+        gridPaneMiddle.add(vBoxRadioBtns2, 2, 3);
+
 
         // .add(Node, colIndex, rowIndex, colSpan, rowSpan):
         gridPaneMiddle.add(new Separator(), 0, 5, 3, 1);
@@ -680,31 +867,31 @@ public class MainScene extends Application {
         fName8.setDisable(true);
         lName8 = new TextField();
         lName8.setDisable(true);
-        dateoFBirth1 = new DatePicker();
-        dateoFBirth1.setDisable(true); dateoFBirth1.setValue(LocalDate.now().minusYears(19));
-        dateoFBirth1.setPromptText("dd/mm/yyyy");
-        dateoFBirth1.getStyleClass().add("myDatePicker");
-        dateoFBirth2 = new DatePicker();
-        dateoFBirth2.setDisable(true);
-        dateoFBirth2.getStyleClass().add("myDatePicker");
-        dateoFBirth3 = new DatePicker();
-        dateoFBirth3.setDisable(true);
-        dateoFBirth3.getStyleClass().add("myDatePicker");
-        dateoFBirth4 = new DatePicker();
-        dateoFBirth4.setDisable(true);
-        dateoFBirth4.getStyleClass().add("myDatePicker");
-        dateoFBirth5 = new DatePicker();
-        dateoFBirth5.setDisable(true);
-        dateoFBirth5.getStyleClass().add("myDatePicker");
-        dateoFBirth6 = new DatePicker();
-        dateoFBirth6.setDisable(true);
-        dateoFBirth6.getStyleClass().add("myDatePicker");
-        dateoFBirth7 = new DatePicker();
-        dateoFBirth7.setDisable(true);
-        dateoFBirth7.getStyleClass().add("myDatePicker");
-        dateoFBirth8 = new DatePicker();
-        dateoFBirth8.setDisable(true);
-        dateoFBirth8.getStyleClass().add("myDatePicker");
+        dateOfBirth1 = new DatePicker();
+        dateOfBirth1.setDisable(true); dateOfBirth1.setValue(LocalDate.now().minusYears(19)); // FOR TESTING
+        dateOfBirth1.setPromptText("dd/mm/yyyy");
+        dateOfBirth1.getStyleClass().add("myDatePicker");
+        dateOfBirth2 = new DatePicker();
+        dateOfBirth2.setDisable(true);
+        dateOfBirth2.getStyleClass().add("myDatePicker");
+        dateOfBirth3 = new DatePicker();
+        dateOfBirth3.setDisable(true);
+        dateOfBirth3.getStyleClass().add("myDatePicker");
+        dateOfBirth4 = new DatePicker();
+        dateOfBirth4.setDisable(true);
+        dateOfBirth4.getStyleClass().add("myDatePicker");
+        dateOfBirth5 = new DatePicker();
+        dateOfBirth5.setDisable(true);
+        dateOfBirth5.getStyleClass().add("myDatePicker");
+        dateOfBirth6 = new DatePicker();
+        dateOfBirth6.setDisable(true);
+        dateOfBirth6.getStyleClass().add("myDatePicker");
+        dateOfBirth7 = new DatePicker();
+        dateOfBirth7.setDisable(true);
+        dateOfBirth7.getStyleClass().add("myDatePicker");
+        dateOfBirth8 = new DatePicker();
+        dateOfBirth8.setDisable(true);
+        dateOfBirth8.getStyleClass().add("myDatePicker");
 
 
         radioBtn1 = new RadioButton();
@@ -718,7 +905,7 @@ public class MainScene extends Application {
         radioBtnList.addAll(radioBtn1, radioBtn2, radioBtn3, radioBtn4, radioBtn5, radioBtn6, radioBtn7, radioBtn8);
 
 
-        dpDateOfBirthList.addAll(dateoFBirth1, dateoFBirth2, dateoFBirth3, dateoFBirth4, dateoFBirth5, dateoFBirth6, dateoFBirth7, dateoFBirth8);
+        dpDateOfBirthList.addAll(dateOfBirth1, dateOfBirth2, dateOfBirth3, dateOfBirth4, dateOfBirth5, dateOfBirth6, dateOfBirth7, dateOfBirth8);
 
 
         tfFirstNamesList.addAll(fName, fName2, fName3, fName4, fName5, fName6, fName7, fName8);
@@ -730,35 +917,35 @@ public class MainScene extends Application {
         gridPane.setPadding(new Insets(20, 0, 0, 0));
         gridPane.add(fName, 1, 0);
         gridPane.add(lName, 2, 0);
-        gridPane.add(dateoFBirth1, 3, 0);
+        gridPane.add(dateOfBirth1, 3, 0);
         gridPane.add(radioBtn1, 4, 0);
         gridPane.add(fName2, 1, 1);
         gridPane.add(lName2, 2, 1);
-        gridPane.add(dateoFBirth2, 3, 1);
+        gridPane.add(dateOfBirth2, 3, 1);
         gridPane.add(radioBtn2, 4, 1);
         gridPane.add(fName3, 1, 2);
         gridPane.add(lName3, 2, 2);
-        gridPane.add(dateoFBirth3, 3, 2);
+        gridPane.add(dateOfBirth3, 3, 2);
         gridPane.add(radioBtn3, 4, 2);
         gridPane.add(fName4, 1, 3);
         gridPane.add(lName4, 2, 3);
-        gridPane.add(dateoFBirth4, 3, 3);
+        gridPane.add(dateOfBirth4, 3, 3);
         gridPane.add(radioBtn4, 4, 3);
         gridPane.add(fName5, 1, 4);
         gridPane.add(lName5, 2, 4);
-        gridPane.add(dateoFBirth5, 3, 4);
+        gridPane.add(dateOfBirth5, 3, 4);
         gridPane.add(radioBtn5, 4, 4);
         gridPane.add(fName6, 1, 5);
         gridPane.add(lName6, 2, 5);
-        gridPane.add(dateoFBirth6, 3, 5);
+        gridPane.add(dateOfBirth6, 3, 5);
         gridPane.add(radioBtn6, 4, 5);
         gridPane.add(fName7, 1, 6);
         gridPane.add(lName7, 2, 6);
-        gridPane.add(dateoFBirth7, 3, 6);
+        gridPane.add(dateOfBirth7, 3, 6);
         gridPane.add(radioBtn7, 4, 6);
         gridPane.add(fName8, 1, 7);
         gridPane.add(lName8, 2, 7);
-        gridPane.add(dateoFBirth8, 3, 7);
+        gridPane.add(dateOfBirth8, 3, 7);
         gridPane.add(radioBtn8, 4, 7);
 
         disableBagSelectionForBabyPassengers();
@@ -784,94 +971,94 @@ public class MainScene extends Application {
         LocalDate nowMinus5yrs = now.minusYears(5);
         LocalDate nowMinus1yr = now.minusYears(1);
 
-            dateoFBirth1.valueProperty().addListener((observable, oldValue, newValue) -> {
-                if(newValue != null) {
-                    if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
-                        radioBtnList.get(0).setDisable(true);
-                    } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
-                        radioBtnList.get(0).setDisable(false);
-                    } else if (newValue.isAfter(now)) {
-                        UtilityClass.errorMessageDatesNotPossible();
-                    }
+        dateOfBirth1.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null) {
+                if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
+                    radioBtnList.get(0).setDisable(true);
+                } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
+                    radioBtnList.get(0).setDisable(false);
+                } else if (newValue.isAfter(now)) {
+                    UtilityClass.errorMessageDatesNotPossible();
                 }
-            });
-            dateoFBirth2.valueProperty().addListener((observable, oldValue, newValue) -> {
-                if(newValue != null) {
-                    if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
-                        radioBtnList.get(1).setDisable(true);
-                    } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
-                        radioBtnList.get(1).setDisable(false);
-                    } else if (newValue.isAfter(now)) {
-                        UtilityClass.errorMessageDatesNotPossible();
-                    }
+            }
+        });
+        dateOfBirth2.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null) {
+                if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
+                    radioBtnList.get(1).setDisable(true);
+                } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
+                    radioBtnList.get(1).setDisable(false);
+                } else if (newValue.isAfter(now)) {
+                    UtilityClass.errorMessageDatesNotPossible();
                 }
-            });
-            dateoFBirth3.valueProperty().addListener((observable, oldValue, newValue) -> {
-                if(newValue != null) {
-                    if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
-                        radioBtnList.get(2).setDisable(true);
-                    } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
-                        radioBtnList.get(2).setDisable(false);
-                    } else if (newValue.isAfter(now)) {
-                        UtilityClass.errorMessageDatesNotPossible();
-                    }
+            }
+        });
+        dateOfBirth3.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null) {
+                if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
+                    radioBtnList.get(2).setDisable(true);
+                } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
+                    radioBtnList.get(2).setDisable(false);
+                } else if (newValue.isAfter(now)) {
+                    UtilityClass.errorMessageDatesNotPossible();
                 }
-            });
-            dateoFBirth4.valueProperty().addListener((observable, oldValue, newValue) -> {
-                if(newValue != null) {
-                    if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
-                        radioBtnList.get(3).setDisable(true);
-                    } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
-                        radioBtnList.get(3).setDisable(false);
-                    } else if (newValue.isAfter(now)) {
-                        UtilityClass.errorMessageDatesNotPossible();
-                    }
+            }
+        });
+        dateOfBirth4.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null) {
+                if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
+                    radioBtnList.get(3).setDisable(true);
+                } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
+                    radioBtnList.get(3).setDisable(false);
+                } else if (newValue.isAfter(now)) {
+                    UtilityClass.errorMessageDatesNotPossible();
                 }
-            });
-            dateoFBirth5.valueProperty().addListener((observable, oldValue, newValue) -> {
-                if(newValue != null) {
-                    if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
-                        radioBtnList.get(4).setDisable(true);
-                    } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
-                        radioBtnList.get(4).setDisable(false);
-                    } else if (newValue.isAfter(now)) {
-                        UtilityClass.errorMessageDatesNotPossible();
-                    }
+            }
+        });
+        dateOfBirth5.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null) {
+                if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
+                    radioBtnList.get(4).setDisable(true);
+                } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
+                    radioBtnList.get(4).setDisable(false);
+                } else if (newValue.isAfter(now)) {
+                    UtilityClass.errorMessageDatesNotPossible();
                 }
-            });
-            dateoFBirth6.valueProperty().addListener((observable, oldValue, newValue) -> {
-                if(newValue != null) {
-                    if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
-                        radioBtnList.get(5).setDisable(true);
-                    } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
-                        radioBtnList.get(5).setDisable(false);
-                    } else if (newValue.isAfter(now)) {
-                        UtilityClass.errorMessageDatesNotPossible();
-                    }
+            }
+        });
+        dateOfBirth6.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null) {
+                if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
+                    radioBtnList.get(5).setDisable(true);
+                } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
+                    radioBtnList.get(5).setDisable(false);
+                } else if (newValue.isAfter(now)) {
+                    UtilityClass.errorMessageDatesNotPossible();
                 }
-            });
-            dateoFBirth7.valueProperty().addListener((observable, oldValue, newValue) -> {
-                if(newValue != null) {
-                    if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
-                        radioBtnList.get(6).setDisable(true);
-                    } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
-                        radioBtnList.get(6).setDisable(false);
-                    } else if (newValue.isAfter(now)) {
-                        UtilityClass.errorMessageDatesNotPossible();
-                    }
+            }
+        });
+        dateOfBirth7.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null) {
+                if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
+                    radioBtnList.get(6).setDisable(true);
+                } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
+                    radioBtnList.get(6).setDisable(false);
+                } else if (newValue.isAfter(now)) {
+                    UtilityClass.errorMessageDatesNotPossible();
                 }
-            });
-            dateoFBirth8.valueProperty().addListener((observable, oldValue, newValue) -> {
-                if(newValue != null) {
-                    if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
-                        radioBtnList.get(7).setDisable(true);
-                    } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
-                        radioBtnList.get(7).setDisable(false);
-                    } else if (newValue.isAfter(now)) {
-                        UtilityClass.errorMessageDatesNotPossible();
-                    }
+            }
+        });
+        dateOfBirth8.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null) {
+                if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
+                    radioBtnList.get(7).setDisable(true);
+                } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
+                    radioBtnList.get(7).setDisable(false);
+                } else if (newValue.isAfter(now)) {
+                    UtilityClass.errorMessageDatesNotPossible();
                 }
-            });
+            }
+        });
     }
 
 
@@ -882,62 +1069,78 @@ public class MainScene extends Application {
         if (spinnerPassengerNo.getValue() == 0) {
             fName.setDisable(true);
             lName.setDisable(true);
-            dateoFBirth1.setDisable(true);
+            dateOfBirth1.setDisable(true);
         } else if (spinnerPassengerNo.getValue() == 1) {
             fName.setVisible(true);
             fName.setDisable(false);
             lName.setDisable(false);
-            dateoFBirth1.setDisable(false);
+            dateOfBirth1.setDisable(false);
             fName2.setDisable(true);
             lName2.setDisable(true);
-            dateoFBirth2.setDisable(true);
+            dateOfBirth2.setDisable(true);
         } else if (spinnerPassengerNo.getValue() == 2) {
             fName2.setDisable(false);
             lName2.setDisable(false);
-            dateoFBirth2.setDisable(false);
+            dateOfBirth2.setDisable(false);
             fName3.setDisable(true);
             lName3.setDisable(true);
-            dateoFBirth3.setDisable(true);
+            dateOfBirth3.setDisable(true);
         } else if (spinnerPassengerNo.getValue() == 3) {
             fName3.setDisable(false);
             lName3.setDisable(false);
-            dateoFBirth3.setDisable(false);
+            dateOfBirth3.setDisable(false);
             fName4.setDisable(true);
             lName4.setDisable(true);
-            dateoFBirth4.setDisable(true);
+            dateOfBirth4.setDisable(true);
         } else if (spinnerPassengerNo.getValue() == 4) {
             fName4.setDisable(false);
             lName4.setDisable(false);
-            dateoFBirth4.setDisable(false);
+            dateOfBirth4.setDisable(false);
             fName5.setDisable(true);
             lName5.setDisable(true);
-            dateoFBirth5.setDisable(true);
+            dateOfBirth5.setDisable(true);
         } else if (spinnerPassengerNo.getValue() == 5) {
             fName5.setDisable(false);
             lName5.setDisable(false);
-            dateoFBirth5.setDisable(false);
+            dateOfBirth5.setDisable(false);
             fName6.setDisable(true);
             lName6.setDisable(true);
-            dateoFBirth6.setDisable(true);
+            dateOfBirth6.setDisable(true);
         } else if (spinnerPassengerNo.getValue() == 6) {
             fName6.setDisable(false);
             lName6.setDisable(false);
-            dateoFBirth6.setDisable(false);
+            dateOfBirth6.setDisable(false);
             fName7.setDisable(true);
             lName7.setDisable(true);
-            dateoFBirth7.setDisable(true);
+            dateOfBirth7.setDisable(true);
         } else if (spinnerPassengerNo.getValue() == 7) {
             fName7.setDisable(false);
             lName7.setDisable(false);
-            dateoFBirth7.setDisable(false);
+            dateOfBirth7.setDisable(false);
             fName8.setDisable(true);
             lName8.setDisable(true);
-            dateoFBirth8.setDisable(true);
+            dateOfBirth8.setDisable(true);
         } else if (spinnerPassengerNo.getValue() == 8) {
             fName8.setDisable(false);
             lName8.setDisable(false);
-            dateoFBirth8.setDisable(false);
+            dateOfBirth8.setDisable(false);
         }
+    }
+
+
+    private void setFlightPriceAdult() {
+        String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
+        String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
+
+        // constructor
+        flight = new Flight(
+                flightDepart,       // setOrigin() from variable in this method
+                flightReturn,       // setDestination() from variable in this method
+                dateDepartPrice,    // setDepartPrice() from the return of getSelectDate()
+                dateReturnPrice,    // setReturnPrice() from the return of getSelectDate()
+                currentPrice,       // setPrice() from the return of getSelectedFlightPrice()
+                selectedDeptTime,
+                selectedReturnTime);
     }
 
     public void setFlightPriceChild() {
@@ -948,8 +1151,7 @@ public class MainScene extends Application {
         flightForChild = new Flight(flightDepart, flightReturn, CHILD_PRICE, CHILD_PRICE, CHILD_TOTAL_PRICE);
     }
 
-
-    private void setFlightPriceBaby() {
+    private void setFlightPriceInfants() {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
         String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
 
@@ -958,33 +1160,17 @@ public class MainScene extends Application {
     }
 
 
-    private void setFlightPriceAdult() {
-        String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
-        String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
-
-
-        // constructor
-        flight = new Flight(
-                flightDepart,       // setOrigin() from variable in this method
-                flightReturn,       // setDestination() from variable in this method
-                dateDepartPrice,    // setDepartPrice() from the return of getSelectDate()
-                dateReturnPrice,    // setReturnPrice() from the return of getSelectDate()
-                currentPrice);      // setPrice() from the return of getSelectedFlightPrice()
-    }
-
-
-
 
     private void addPassengers() {
         passengerList = new ArrayList<>();
-        passenger1 = new Passenger(fName.getText(), lName.getText(), dateoFBirth1.getValue(), radioBtn1.isSelected());
-        passenger2 = new Passenger(fName2.getText(), lName2.getText(), dateoFBirth2.getValue(), radioBtn2.isSelected());
-        passenger3 = new Passenger(fName3.getText(), lName3.getText(), dateoFBirth3.getValue(), radioBtn3.isSelected());
-        passenger4 = new Passenger(fName4.getText(), lName4.getText(), dateoFBirth4.getValue(), radioBtn4.isSelected());
-        passenger5 = new Passenger(fName5.getText(), lName5.getText(), dateoFBirth5.getValue(), radioBtn5.isSelected());
-        passenger6 = new Passenger(fName6.getText(), lName6.getText(), dateoFBirth6.getValue(), radioBtn6.isSelected());
-        passenger7 = new Passenger(fName7.getText(), lName7.getText(), dateoFBirth7.getValue(), radioBtn7.isSelected());
-        passenger8 = new Passenger(fName8.getText(), lName8.getText(), dateoFBirth8.getValue(), radioBtn8.isSelected());
+        passenger1 = new Passenger(fName.getText(), lName.getText(), dateOfBirth1.getValue(), radioBtn1.isSelected());
+        passenger2 = new Passenger(fName2.getText(), lName2.getText(), dateOfBirth2.getValue(), radioBtn2.isSelected());
+        passenger3 = new Passenger(fName3.getText(), lName3.getText(), dateOfBirth3.getValue(), radioBtn3.isSelected());
+        passenger4 = new Passenger(fName4.getText(), lName4.getText(), dateOfBirth4.getValue(), radioBtn4.isSelected());
+        passenger5 = new Passenger(fName5.getText(), lName5.getText(), dateOfBirth5.getValue(), radioBtn5.isSelected());
+        passenger6 = new Passenger(fName6.getText(), lName6.getText(), dateOfBirth6.getValue(), radioBtn6.isSelected());
+        passenger7 = new Passenger(fName7.getText(), lName7.getText(), dateOfBirth7.getValue(), radioBtn7.isSelected());
+        passenger8 = new Passenger(fName8.getText(), lName8.getText(), dateOfBirth8.getValue(), radioBtn8.isSelected());
         passengerList.add(passenger1);
         passengerList.add(passenger2);
         passengerList.add(passenger3);
@@ -1014,13 +1200,13 @@ public class MainScene extends Application {
                     mCounter++;
 
 
-                    // OFF for Testing
+                    // OFF for Testing the UI
 //                    if(mPassenger.getDateOfBirth().isBefore(now) && mPassenger.getDateOfBirth().isAfter(nowMinus18yrs)){
 //                        UtilityClass.errorMessageUnder18();
 //                        listView.getItems().remove(mCounter + 1); // removes the incorrect entry
 //                    }
 //                    else{
-                        window.setScene(scene2);
+                    window.setScene(scene2);
 //                    }
 
 
@@ -1037,12 +1223,12 @@ public class MainScene extends Application {
                     double childPrice = bagPrice + CHILD_TOTAL_PRICE;
 
 
-                    // add Passanger and Flight objects to the ListView displayed in the next scene (after Continue button is selected)
+                    // add Passenger and Flight objects to the ListView displayed in the next scene (after Continue button is selected)
                     if (mPassenger.getDateOfBirth().isAfter(nowMinus1yr)) {
 
-                        setFlightPriceBaby();
-                        // add each flight from the observablelist, using a counter as the index
-                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flightForBaby);
+                        setFlightPriceInfants();
+                        listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flightForBaby,
+                                "\tTotal: \t\t\t\t\t = €" + BABY_PRICE + " (Babies fly free, but do not get a seat nor a checked bag)");
 
 
                     } else if (mPassenger.getDateOfBirth().isAfter(nowMinus5yrs) && mPassenger.getDateOfBirth().isBefore(nowMinus1yr)) {
@@ -1085,25 +1271,25 @@ public class MainScene extends Application {
 //        if (comboOrigin.getValue() != null || comboDestination.getValue() != null) {
 //            if (datePickerDeparture.getValue() != null || datePickerReturn.getValue() != null) {
 
-            try {
+        try {
 
-                for(int i = 0; i <= MAX_PASSENGER_NO; i++) {
+            for(int i = 0; i <= MAX_PASSENGER_NO; i++) {
 
-                    if(spinnerPassengerNo.getValue() == i+1) {
+                if(spinnerPassengerNo.getValue() == i+1) {
 
-                        if(passengerList.get(i).getFirstName().isEmpty() ||
-                                passengerList.get(i).getLastName().isEmpty() ||
-                                passengerList.get(i).getDateOfBirth() == null)
-                        {
-                            UtilityClass.errorMessageAddCustomer();
-                        } else {
-                            getDetails();
-                        }
+                    if(passengerList.get(i).getFirstName().isEmpty() ||
+                            passengerList.get(i).getLastName().isEmpty() ||
+                            passengerList.get(i).getDateOfBirth() == null)
+                    {
+                        UtilityClass.errorMessageAddCustomer();
+                    } else {
+                        getDetails();
                     }
                 }
-            }catch (Exception e){
-                e.getMessage();
             }
+        }catch (Exception e){
+            e.getMessage();
+        }
 
 //            } else {
 //                UtilityClass.errorMessageDate();
@@ -1123,7 +1309,6 @@ public class MainScene extends Application {
         buttonContinue.setOnAction(event -> {
 
             validateForEmptyFields();
-
         });
 
 

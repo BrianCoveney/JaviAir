@@ -9,14 +9,14 @@ public class Passenger {
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
-    private boolean baggageSelect;
+    private boolean baggageSelected;
     private double baggagePrice;
 
     public Passenger(String firstName, String lastName, LocalDate dateOfBirth, boolean baggageSelect) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
-        this.baggageSelect = baggageSelect;
+        this.baggageSelected = baggageSelect;
 
     }
 
@@ -24,12 +24,12 @@ public class Passenger {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
-        this.baggageSelect = baggageSelect;
+        this.baggageSelected = baggageSelect;
         this.baggagePrice = baggagePrice;
     }
 
-    public boolean isBaggageSelect() {
-        return baggageSelect;
+    public boolean isBaggageSelected() {
+        return baggageSelected;
     }
 
     public double getBaggagePrice() {
@@ -44,18 +44,18 @@ public class Passenger {
 
         double bagPrice = 0.0;
 
-        if(isBaggageSelect() == true) {
+        if(isBaggageSelected() == true) {
             bagPrice = bagPrice + 15;
         }
         return bagPrice;
     }
 
     public boolean getBaggageSelect() {
-        return baggageSelect;
+        return baggageSelected;
     }
 
-    public void setBaggageSelect(boolean baggageSelect) {
-        this.baggageSelect = baggageSelect;
+    public void setBaggageSelected(boolean baggageSelected) {
+        this.baggageSelected = baggageSelected;
     }
 
     public String getFirstName() {
