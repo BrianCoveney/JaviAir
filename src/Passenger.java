@@ -11,12 +11,16 @@ public class Passenger {
     private LocalDate dateOfBirth;
     private boolean baggageSelected;
     private double baggagePrice;
+    private static int counter;
+
+
 
     public Passenger(String firstName, String lastName, LocalDate dateOfBirth, boolean baggageSelect) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.baggageSelected = baggageSelect;
+
 
     }
 
@@ -27,6 +31,7 @@ public class Passenger {
         this.baggageSelected = baggageSelect;
         this.baggagePrice = baggagePrice;
     }
+
 
     public boolean isBaggageSelected() {
         return baggageSelected;
@@ -50,6 +55,23 @@ public class Passenger {
         return bagPrice;
     }
 
+
+    public boolean checkForMaxChildPass() {
+
+
+        boolean childPass = false;
+
+        if(this.getDateOfBirth().isAfter(LocalDate.now().minusYears(5))){
+            childPass = true;
+
+        }
+
+        return childPass;
+    }
+
+
+
+
     public boolean getBaggageSelect() {
         return baggageSelected;
     }
@@ -64,6 +86,7 @@ public class Passenger {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+
     }
 
     public String getLastName() {

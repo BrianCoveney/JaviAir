@@ -103,6 +103,7 @@ public class MainScene extends Application {
     private static String AGP_STN_2 = "2035-2105";
     private VBox vBoxRadioBtns1, vBoxRadioBtns2;
     private String mFlightTimes, flightTime1, flightTime2, selectedDeptTime, selectedReturnTime;
+    private int numberOfChildren, numberOfAdults;
     private final ToggleGroup toggleGroupFlights = new ToggleGroup();
     private final ToggleGroup toggleGroupFlightTimes_1 = new ToggleGroup();
     private final ToggleGroup toggleGroupFlightTimes_2 = new ToggleGroup();
@@ -132,16 +133,16 @@ public class MainScene extends Application {
     private ObservableList<TextField> tfFirstNamesList = FXCollections.observableArrayList();
     private ObservableList<DatePicker> dpDateOfBirthList = FXCollections.observableArrayList();
     private ObservableList<RadioButton> radioBtnList = FXCollections.observableArrayList();
-    private TextField fName, fName2, fName3, fName4, fName5, fName6, fName7, fName8,
+    public TextField fName, fName2, fName3, fName4, fName5, fName6, fName7, fName8,
             lName, lName2, lName3, lName4, lName5, lName6, lName7, lName8;
     private DatePicker dateOfBirth1, dateOfBirth2, dateOfBirth3, dateOfBirth4, dateOfBirth5, dateOfBirth6, dateOfBirth7, dateOfBirth8;
     private Spinner<Integer> spinnerPassengerNo;
     // reference to the Passenger and FLight objects
     private List<Passenger> passengerList = FXCollections.observableArrayList();
+    private List<LocalDate> dobList = FXCollections.observableArrayList();
     private List<Flight> flightList = FXCollections.observableArrayList();
     private Passenger passenger1, passenger2, passenger3, passenger4, passenger5, passenger6, passenger7, passenger8;
     private Flight flight, flightForChild, flightForBaby;
-
 
 
     public static void main(String[] args) {
@@ -541,7 +542,7 @@ public class MainScene extends Application {
                     flightTime1 = ORK_MAD_1;
                     flightTime2 = null;
                 } else if (flightDepart.equals(CORK) && flightReturn.equals(ST_BRIEUC)) {
-                    flightTime1 =ORK_SBK_1;
+                    flightTime1 = ORK_SBK_1;
                     flightTime2 = null;
                 } else if (flightDepart.equals(CORK) && flightReturn.equals(JERSEY)) {
                     flightTime1 = ORK_JER_1;
@@ -675,7 +676,7 @@ public class MainScene extends Application {
     }
 
 
-    private String displayFlightDetails() {
+    private void displayFlightDetails() {
 
         // setting times for Departure radio buttons
         radioButtonDeptTime1.setText(flight.displayDeptDetails() + "\n" + flightTime1);
@@ -686,16 +687,16 @@ public class MainScene extends Application {
 
         toggleGroupFlightTimes_1.selectedToggleProperty().addListener(observable -> {
 
-            if(toggleGroupFlightTimes_1.getSelectedToggle() == radioButtonDeptTime1) {
+            if (toggleGroupFlightTimes_1.getSelectedToggle() == radioButtonDeptTime1) {
                 selectedDeptTime = flightTime1;
 
-            } else if(toggleGroupFlightTimes_1.getSelectedToggle() == radioButtonDeptTime2) {
+            } else if (toggleGroupFlightTimes_1.getSelectedToggle() == radioButtonDeptTime2) {
                 selectedDeptTime = flightTime2;
             }
 
         });
 
-        if(flightTime2 != null) {
+        if (flightTime2 != null) {
 
             // setting times for Return radio buttons
             radioButtonDeptTime2.setText(flight.displayDeptDetails() + "\n" + flightTime2);
@@ -709,24 +710,21 @@ public class MainScene extends Application {
             radioButtonReturnTime2.setToggleGroup(toggleGroupFlightTimes_2);
             toggleGroupFlightTimes_2.selectedToggleProperty().addListener(observable -> {
 
-                if(toggleGroupFlightTimes_2.getSelectedToggle() == radioButtonReturnTime1) {
-                    selectedReturnTime =flightTime1;
-                } else if(toggleGroupFlightTimes_2.getSelectedToggle() == radioButtonReturnTime2) {
+                if (toggleGroupFlightTimes_2.getSelectedToggle() == radioButtonReturnTime1) {
+                    selectedReturnTime = flightTime1;
+                } else if (toggleGroupFlightTimes_2.getSelectedToggle() == radioButtonReturnTime2) {
                     selectedReturnTime = flightTime2;
                 }
 
             });
-
 
         } else {
             radioButtonDeptTime2.setVisible(false);
             radioButtonReturnTime2.setVisible(false);
         }
 
-        return selectedDeptTime;
 
     }
-
 
 
     private GridPane createMiddleGridPane() {
@@ -868,7 +866,8 @@ public class MainScene extends Application {
         lName8 = new TextField();
         lName8.setDisable(true);
         dateOfBirth1 = new DatePicker();
-        dateOfBirth1.setDisable(true); dateOfBirth1.setValue(LocalDate.now().minusYears(19)); // FOR TESTING
+        dateOfBirth1.setDisable(true);
+        dateOfBirth1.setValue(LocalDate.now().minusYears(2)); // FOR TESTING
         dateOfBirth1.setPromptText("dd/mm/yyyy");
         dateOfBirth1.getStyleClass().add("myDatePicker");
         dateOfBirth2 = new DatePicker();
@@ -972,7 +971,7 @@ public class MainScene extends Application {
         LocalDate nowMinus1yr = now.minusYears(1);
 
         dateOfBirth1.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null) {
+            if (newValue != null) {
                 if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
                     radioBtnList.get(0).setDisable(true);
                 } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
@@ -983,7 +982,7 @@ public class MainScene extends Application {
             }
         });
         dateOfBirth2.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null) {
+            if (newValue != null) {
                 if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
                     radioBtnList.get(1).setDisable(true);
                 } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
@@ -994,7 +993,7 @@ public class MainScene extends Application {
             }
         });
         dateOfBirth3.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null) {
+            if (newValue != null) {
                 if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
                     radioBtnList.get(2).setDisable(true);
                 } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
@@ -1005,7 +1004,7 @@ public class MainScene extends Application {
             }
         });
         dateOfBirth4.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null) {
+            if (newValue != null) {
                 if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
                     radioBtnList.get(3).setDisable(true);
                 } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
@@ -1016,7 +1015,7 @@ public class MainScene extends Application {
             }
         });
         dateOfBirth5.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null) {
+            if (newValue != null) {
                 if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
                     radioBtnList.get(4).setDisable(true);
                 } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
@@ -1027,7 +1026,7 @@ public class MainScene extends Application {
             }
         });
         dateOfBirth6.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null) {
+            if (newValue != null) {
                 if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
                     radioBtnList.get(5).setDisable(true);
                 } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
@@ -1038,7 +1037,7 @@ public class MainScene extends Application {
             }
         });
         dateOfBirth7.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null) {
+            if (newValue != null) {
                 if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
                     radioBtnList.get(6).setDisable(true);
                 } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
@@ -1049,7 +1048,7 @@ public class MainScene extends Application {
             }
         });
         dateOfBirth8.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null) {
+            if (newValue != null) {
                 if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
                     radioBtnList.get(7).setDisable(true);
                 } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
@@ -1060,8 +1059,6 @@ public class MainScene extends Application {
             }
         });
     }
-
-
 
 
     private void getSelectedNumOfPassengers() {
@@ -1149,6 +1146,8 @@ public class MainScene extends Application {
 
         // constructor
         flightForChild = new Flight(flightDepart, flightReturn, CHILD_PRICE, CHILD_PRICE, CHILD_TOTAL_PRICE);
+
+
     }
 
     private void setFlightPriceInfants() {
@@ -1160,9 +1159,9 @@ public class MainScene extends Application {
     }
 
 
-
     private void addPassengers() {
         passengerList = new ArrayList<>();
+
         passenger1 = new Passenger(fName.getText(), lName.getText(), dateOfBirth1.getValue(), radioBtn1.isSelected());
         passenger2 = new Passenger(fName2.getText(), lName2.getText(), dateOfBirth2.getValue(), radioBtn2.isSelected());
         passenger3 = new Passenger(fName3.getText(), lName3.getText(), dateOfBirth3.getValue(), radioBtn3.isSelected());
@@ -1179,7 +1178,9 @@ public class MainScene extends Application {
         passengerList.add(passenger6);
         passengerList.add(passenger7);
         passengerList.add(passenger8);
+
     }
+
 
     private void getDetails() {
 
@@ -1192,22 +1193,36 @@ public class MainScene extends Application {
         LocalDate nowMinus18yrs = now.minusYears(18);
 
 
+        int countChildren = 0;
         int mCounter = 0;
-        for (Passenger mPassenger : passengerList) {
+        for (int i = 0; i < MAX_PASSENGER_NO; i++) {
 
             try {
-                if (mPassenger != null) {
+                if (passengerList != null) {
                     mCounter++;
 
 
                     // OFF for Testing the UI
-//                    if(mPassenger.getDateOfBirth().isBefore(now) && mPassenger.getDateOfBirth().isAfter(nowMinus18yrs)){
-//                        UtilityClass.errorMessageUnder18();
-//                        listView.getItems().remove(mCounter + 1); // removes the incorrect entry
-//                    }
-//                    else{
-                    window.setScene(scene2);
-//                    }
+//                    if (passengerList.get(i).getDateOfBirth().isAfter(nowMinus18yrs) && passengerList.get(i+1).getDateOfBirth().isAfter(nowMinus18yrs) ) {
+
+                    if (passengerList.get(i).checkForMaxChildPass()) {
+                        countChildren++;
+
+
+                        if(countChildren > 2) {
+                            UtilityClass.errorMessageUnder18();
+                            listView.getSelectionModel().clearSelection();
+
+                            System.out.println(countChildren); // 3 selected 3 returned
+                        }
+                    }
+
+
+
+                    else {
+                        window.setScene(scene2);
+                        System.out.println(countChildren); // change one dob, the var = 0
+                    }
 
 
                     // setting variable equal to the current passenger, then getting returned value for the Flight object method
@@ -1224,20 +1239,23 @@ public class MainScene extends Application {
 
 
                     // add Passenger and Flight objects to the ListView displayed in the next scene (after Continue button is selected)
-                    if (mPassenger.getDateOfBirth().isAfter(nowMinus1yr)) {
+                    if (passengerList.get(i).getDateOfBirth().isAfter(nowMinus1yr)) {
 
                         setFlightPriceInfants();
                         listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flightForBaby,
                                 "\tTotal: \t\t\t\t\t = €" + BABY_PRICE + " (Babies fly free, but do not get a seat nor a checked bag)");
 
 
-                    } else if (mPassenger.getDateOfBirth().isAfter(nowMinus5yrs) && mPassenger.getDateOfBirth().isBefore(nowMinus1yr)) {
+                    } else if (passengerList.get(i).getDateOfBirth().isAfter(nowMinus5yrs) && passengerList.get(i).getDateOfBirth().isBefore(nowMinus1yr)) {
 
                         setFlightPriceChild();
                         listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flightForChild,
                                 "\tTotal: \t\t\t\t\t = €" + childPrice + " (incl baggage cost, if selected)");
 
-                    } else if (mPassenger.getDateOfBirth().isBefore(nowMinus5yrs)) {
+//                        numberOfChildren++;
+
+
+                    } else if (passengerList.get(i).getDateOfBirth().isBefore(nowMinus5yrs)) {
 
                         setFlightPriceAdult();
                         listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flight,
@@ -1248,8 +1266,9 @@ public class MainScene extends Application {
             } catch (Exception e) {
                 e.getMessage();
             }
-        }
 
+
+        }
 
         try {
             Button buttonBack = new Button("Back");
@@ -1257,46 +1276,80 @@ public class MainScene extends Application {
             buttonBack.setOnAction(event -> {
                 listView.getItems().clear();
                 window.setScene(scene1);
+
+
             });
         } catch (IllegalArgumentException iae) {
             iae.getMessage();
         }
     }
 
+
+//    private void checkTwoChildMax() {
+//
+//        try {
+//            for (int j = 0; j <= MAX_PASSENGER_NO; j++) {
+//                if (passengerList.get(j).getDateOfBirth().isAfter(LocalDate.now().minusYears(5)) &&
+//                        passengerList.get(j).getDateOfBirth().isBefore(LocalDate.now())) {
+//
+//                    numberOfChildren++;
+//                }
+//
+//                if (numberOfChildren > 2) {
+//                    UtilityClass.errorMessageLastName();
+//
+//                }
+//            }
+//        }catch (Exception e) {
+//            e.getMessage();
+//        }
+//    }
+
+
     public void validateForEmptyFields() {
 
         addPassengers();
 
         // OFF for Testing
-//        if (comboOrigin.getValue() != null || comboDestination.getValue() != null) {
-//            if (datePickerDeparture.getValue() != null || datePickerReturn.getValue() != null) {
+        if (comboOrigin.getValue() != null || comboDestination.getValue() != null) {
+            if (datePickerDeparture.getValue() != null || datePickerReturn.getValue() != null) {
 
-        try {
+                try {
 
-            for(int i = 0; i <= MAX_PASSENGER_NO; i++) {
 
-                if(spinnerPassengerNo.getValue() == i+1) {
+                    String validText = "^[\\p{L} .'-]+$";
+                    int i = 0;
 
-                    if(passengerList.get(i).getFirstName().isEmpty() ||
-                            passengerList.get(i).getLastName().isEmpty() ||
-                            passengerList.get(i).getDateOfBirth() == null)
-                    {
-                        UtilityClass.errorMessageAddCustomer();
-                    } else {
-                        getDetails();
+                    for (Passenger mPassenger : passengerList) {
+                        i++;
+
+
+                        if (spinnerPassengerNo.getValue() == i) {
+
+
+                            if (mPassenger.getFirstName().isEmpty() || mPassenger.getLastName().isEmpty() || mPassenger.getDateOfBirth() == null) {
+
+                                UtilityClass.errorMessageAddCustomer();
+
+                            } else if (!mPassenger.getFirstName().matches(validText)) {
+                                UtilityClass.errorMessageFirstName();
+                            } else if (!mPassenger.getLastName().matches(validText)) {
+                                UtilityClass.errorMessageLastName();
+                            } else {
+                                getDetails();
+                            }
+                        }
                     }
+                } catch (Exception e) {
+                    e.getMessage();
                 }
-            }
-        }catch (Exception e){
-            e.getMessage();
-        }
 
-//            } else {
-//                UtilityClass.errorMessageDate();
-//            }
-//        } else {
-//            UtilityClass.errorMessageFlight();
-//        }
+            } else {
+                UtilityClass.errorMessageDate();
+            }
+        } else {
+            UtilityClass.errorMessageFlight();
+        }
     }
 
 
@@ -1308,7 +1361,10 @@ public class MainScene extends Application {
         buttonContinue = new Button("Continue");
         buttonContinue.setOnAction(event -> {
 
+
             validateForEmptyFields();
+
+
         });
 
 

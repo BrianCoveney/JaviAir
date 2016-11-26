@@ -62,11 +62,25 @@ public final class UtilityClass {
         alert.showAndWait();
     }
 
+    public static void errorMessageFirstName() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Input Error");
+        alert.setContentText("Please check your first name entry");
+        alert.showAndWait();
+    }
+
+    public static void errorMessageLastName() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Input Error");
+        alert.setContentText("Please check your last name entry");
+        alert.showAndWait();
+    }
+
     // user enters incorrect format
     public static void errorMessageAddCustomer() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Input Error");
-        alert.setContentText("No passenger details entered");
+        alert.setContentText("Passenger details cannot be empty");
         alert.showAndWait();
     }
 
@@ -95,6 +109,15 @@ public final class UtilityClass {
     }
 
 
+    // user enters incorrect format
+    public static void errorMessageMaxTwoChildren() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Input Error");
+        alert.setContentText("Maximium of two childern per booking.");
+        alert.showAndWait();
+    }
+
+
 
     public static void confirmBoxCloseApp() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -108,6 +131,10 @@ public final class UtilityClass {
         } else if (choice.isPresent() && choice.get().equals(ButtonType.CANCEL)) {
             alert.close();
         }
-
     }
+
+
+
+
+
 }
