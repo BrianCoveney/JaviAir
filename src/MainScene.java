@@ -1193,7 +1193,6 @@ public class MainScene extends Application {
         LocalDate nowMinus18yrs = now.minusYears(18);
 
 
-        int countChildren = 0;
         int mCounter = 0;
         for (int i = 0; i < MAX_PASSENGER_NO; i++) {
 
@@ -1201,28 +1200,7 @@ public class MainScene extends Application {
                 if (passengerList != null) {
                     mCounter++;
 
-
-                    // OFF for Testing the UI
-//                    if (passengerList.get(i).getDateOfBirth().isAfter(nowMinus18yrs) && passengerList.get(i+1).getDateOfBirth().isAfter(nowMinus18yrs) ) {
-
-                    if (passengerList.get(i).checkForMaxChildPass()) {
-                        countChildren++;
-
-
-                        if(countChildren > 2) {
-                            UtilityClass.errorMessageUnder18();
-                            listView.getSelectionModel().clearSelection();
-
-                            System.out.println(countChildren); // 3 selected 3 returned
-                        }
-                    }
-
-
-
-                    else {
-                        window.setScene(scene2);
-                        System.out.println(countChildren); // change one dob, the var = 0
-                    }
+                    window.setScene(scene2);
 
 
                     // setting variable equal to the current passenger, then getting returned value for the Flight object method
@@ -1285,25 +1263,6 @@ public class MainScene extends Application {
     }
 
 
-//    private void checkTwoChildMax() {
-//
-//        try {
-//            for (int j = 0; j <= MAX_PASSENGER_NO; j++) {
-//                if (passengerList.get(j).getDateOfBirth().isAfter(LocalDate.now().minusYears(5)) &&
-//                        passengerList.get(j).getDateOfBirth().isBefore(LocalDate.now())) {
-//
-//                    numberOfChildren++;
-//                }
-//
-//                if (numberOfChildren > 2) {
-//                    UtilityClass.errorMessageLastName();
-//
-//                }
-//            }
-//        }catch (Exception e) {
-//            e.getMessage();
-//        }
-//    }
 
 
     public void validateForEmptyFields() {
@@ -1319,10 +1278,16 @@ public class MainScene extends Application {
 
                     String validText = "^[\\p{L} .'-]+$";
                     int i = 0;
+                    int countChildren = 0;
+
 
                     for (Passenger mPassenger : passengerList) {
                         i++;
 
+
+                        if (passengerList.get(i - 1).checkForMaxChildPass()) {
+                            countChildren++;
+                        }
 
                         if (spinnerPassengerNo.getValue() == i) {
 
@@ -1335,8 +1300,14 @@ public class MainScene extends Application {
                                 UtilityClass.errorMessageFirstName();
                             } else if (!mPassenger.getLastName().matches(validText)) {
                                 UtilityClass.errorMessageLastName();
+
+                            } else if (countChildren >= 3) {
+                                UtilityClass.errorMessageMaxTwoChildren();
+
                             } else {
                                 getDetails();
+
+
                             }
                         }
                     }
