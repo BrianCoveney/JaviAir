@@ -539,7 +539,6 @@ public class MainScene extends Application {
                 setFlightPriceAdult();
 
 
-
                 if (flightDepart.equals(CORK) && flightReturn.equals(MADRID)) {
                     flightTime1 = ORK_MAD_1;
                     flightTime2 = null;
@@ -698,6 +697,7 @@ public class MainScene extends Application {
 
         });
 
+        // Flght has two time slots
         if (flightTime2 != null) {
 
             // setting times for Return radio buttons
@@ -710,6 +710,7 @@ public class MainScene extends Application {
 
 
             if(radioButtonReturn.isSelected()) {
+                radioButtonReturnTime1.setVisible(true);
                 radioButtonReturnTime2.setVisible(true);
             }
 
@@ -725,10 +726,12 @@ public class MainScene extends Application {
 
             });
 
+        }
 
-
-
-
+        //  Flight has only one time slot
+        else {
+            radioButtonReturnTime2.setVisible(false);
+            radioButtonDeptTime2.setVisible(false);
         }
     }
 
@@ -953,7 +956,7 @@ public class MainScene extends Application {
         gridPane.add(dateOfBirth8, 3, 7);
         gridPane.add(radioBtn8, 4, 7);
 
-        disableBagSelectionForBabyPassengers();
+        disableBaggageOptionForInfants();
 
 
         StackPane.setAlignment(gridPane, Pos.TOP_LEFT);
@@ -970,100 +973,33 @@ public class MainScene extends Application {
     }
 
 
-    private void disableBagSelectionForBabyPassengers() {
 
-        LocalDate now = LocalDate.now();
-        LocalDate nowMinus5yrs = now.minusYears(5);
-        LocalDate nowMinus1yr = now.minusYears(1);
+    private void disableBaggageOptionForInfants() {
 
-        dateOfBirth1.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
-                    radioBtnList.get(0).setDisable(true);
-                } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
-                    radioBtnList.get(0).setDisable(false);
-                } else if (newValue.isAfter(now)) {
-                    UtilityClass.errorMessageDatesNotPossible();
+
+        for (int i = 0; i < MAX_PASSENGER_NO; i++) {
+
+            dpDateOfBirthList.get(i).valueProperty().addListener((observable, oldValue, newValue) -> {
+
+                try {
+
+                    for (int j = 0; j < MAX_PASSENGER_NO; j++) {
+
+                        if (dpDateOfBirthList.get(j).getValue().isAfter(LocalDate.now().minusYears(1))) {
+                            radioBtnList.get(j).setDisable(true);
+                        } else {
+                            radioBtnList.get(j).setDisable(false);
+                        }
+
+                    }
+                } catch (Exception ex) {
+                    ex.getMessage();
                 }
-            }
-        });
-        dateOfBirth2.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
-                    radioBtnList.get(1).setDisable(true);
-                } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
-                    radioBtnList.get(1).setDisable(false);
-                } else if (newValue.isAfter(now)) {
-                    UtilityClass.errorMessageDatesNotPossible();
-                }
-            }
-        });
-        dateOfBirth3.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
-                    radioBtnList.get(2).setDisable(true);
-                } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
-                    radioBtnList.get(2).setDisable(false);
-                } else if (newValue.isAfter(now)) {
-                    UtilityClass.errorMessageDatesNotPossible();
-                }
-            }
-        });
-        dateOfBirth4.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
-                    radioBtnList.get(3).setDisable(true);
-                } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
-                    radioBtnList.get(3).setDisable(false);
-                } else if (newValue.isAfter(now)) {
-                    UtilityClass.errorMessageDatesNotPossible();
-                }
-            }
-        });
-        dateOfBirth5.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
-                    radioBtnList.get(4).setDisable(true);
-                } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
-                    radioBtnList.get(4).setDisable(false);
-                } else if (newValue.isAfter(now)) {
-                    UtilityClass.errorMessageDatesNotPossible();
-                }
-            }
-        });
-        dateOfBirth6.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
-                    radioBtnList.get(5).setDisable(true);
-                } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
-                    radioBtnList.get(5).setDisable(false);
-                } else if (newValue.isAfter(now)) {
-                    UtilityClass.errorMessageDatesNotPossible();
-                }
-            }
-        });
-        dateOfBirth7.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
-                    radioBtnList.get(6).setDisable(true);
-                } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
-                    radioBtnList.get(6).setDisable(false);
-                } else if (newValue.isAfter(now)) {
-                    UtilityClass.errorMessageDatesNotPossible();
-                }
-            }
-        });
-        dateOfBirth8.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
-                    radioBtnList.get(7).setDisable(true);
-                } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
-                    radioBtnList.get(7).setDisable(false);
-                } else if (newValue.isAfter(now)) {
-                    UtilityClass.errorMessageDatesNotPossible();
-                }
-            }
-        });
+
+            });
+        }
+
+
     }
 
 
@@ -1275,6 +1211,43 @@ public class MainScene extends Application {
                         }
 
                     }
+
+
+
+
+
+
+
+
+
+//                    dateOfBirth8.valueProperty().addListener((observable, oldValue, newValue) -> {
+//                        if (newValue != null) {
+//                            if (newValue.isAfter(nowMinus1yr) && newValue.isBefore(now)) {
+//                                radioBtnList.get(7).setDisable(true);
+//                            } else if (newValue.isAfter(nowMinus5yrs) && newValue.isBefore(nowMinus1yr)) {
+//                                radioBtnList.get(7).setDisable(false);
+//                            } else if (newValue.isAfter(now)) {
+//                                UtilityClass.errorMessageDatesNotPossible();
+//                            }
+//                        }
+//                    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 }
             } catch (Exception e) {
                 e.getMessage();
