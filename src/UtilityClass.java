@@ -104,7 +104,7 @@ public final class UtilityClass {
     public static void errorMessageUnder18() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Input Error");
-        alert.setContentText("Booking cannot be made without an Adult. \n Please add Adult passenger first.");
+        alert.setContentText("Booking cannot be made without an Adult. \nPlease add Adult passenger first.");
         alert.showAndWait();
     }
 

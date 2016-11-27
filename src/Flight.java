@@ -14,15 +14,6 @@ public class Flight{
     public Flight(){}
 
 
-    public Flight (String origin, String destination, Double deapartPrice, Double returnPrice, Double price) {
-        this.origin = origin;
-        this.destination = destination;
-        this.deapartPrice = deapartPrice;
-        this.returnPrice = returnPrice;
-        this.price = price;
-    }
-
-
     public Flight (String origin, String destination, Double deapartPrice, Double returnPrice, Double price, String flightTime, String returnTime) {
         this.origin = origin;
         this.destination = destination;
@@ -94,6 +85,12 @@ public class Flight{
                 "\n\tReturn: \t\t"+ displayReturnDetails() +
                 "\n\tDepart Time: \t"+ this.departTime + "\n\tReturn Time: \t" + this.returnTime +
                        "\n\tFlight Price: \t\t"+ displayTotalPrice() + "\n";
+    }
+
+    public String toStringSingleFlight() {
+        return "\tDepart: \t\t" + displayDeptDetails() +
+                "\n\tDepart Time: \t"+ this.departTime +
+                "\n\tFlight Price: \t\t"+ displayTotalPrice() + "\n";
     }
 
 

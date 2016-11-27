@@ -12,6 +12,8 @@ public class Passenger {
     private boolean baggageSelected;
     private double baggagePrice;
     private static int counter;
+    private boolean isChild;
+    private boolean isAdult;
 
 
 
@@ -45,7 +47,8 @@ public class Passenger {
         this.baggagePrice = baggagePrice;
     }
 
-    public double displayPriceFromBagSelected() {
+
+    public double setBaggagePriceSingle() {
 
         double bagPrice = 0.0;
 
@@ -56,17 +59,35 @@ public class Passenger {
     }
 
 
-    public boolean checkForMaxChildPass() {
+    public double setBaggagePriceReturn() {
+
+        double bagPrice = 0.0;
+
+        if(isBaggageSelected() == true) {
+            bagPrice = bagPrice + 30;
+        }
+        return bagPrice;
+    }
 
 
-        boolean childPass = false;
+    public boolean isPassengerUnder5() {
+
+        isChild = false;
 
         if(this.getDateOfBirth().isAfter(LocalDate.now().minusYears(5))){
-            childPass = true;
-
+            isChild = true;
         }
+        return isChild;
+    }
 
-        return childPass;
+
+    public boolean isPassengerOver18() {
+        isAdult = false;
+
+        if(this.getDateOfBirth().isBefore(LocalDate.now().minusYears(18))) {
+            isAdult = true;
+        }
+        return isAdult;
     }
 
 
@@ -119,7 +140,7 @@ public class Passenger {
                 "\tLast name:\t " + this.lastName +
                 "\n" +
                 "\tDate of birth:\t " + formattedDob +
-                "\n\t" + "Baggage: \t €" + displayPriceFromBagSelected();
+                "\n\t" + "Baggage: \t €" + setBaggagePriceSingle();
     }
 
 }
