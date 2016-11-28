@@ -10,33 +10,63 @@ public class CreditCard {
     private String address2;
     private String address3;
     private String cardType;
-    private int cardNumber;
+    private String cardNumber;
     private LocalDate expiryDate;
-    private int cardCCVNumber;
+    private String ccvNumber;
 
 
-    public CreditCard(String name, String address1, String address2, String address3, String cardType, int cardNumber,
-                      LocalDate expiryDate, int cardCCVNumber ) {
-        this.name = name;
-        this.address1 = address1;
-        this.address2 = address2;
-        this.address3 = address3;
-        this.cardType = cardType;
-        this.cardNumber = cardNumber;
-        this.expiryDate = expiryDate;
-        this.cardCCVNumber = cardCCVNumber;
-
-
+    public CreditCard(String name, String address1, String address2, String address3, String cardType, String cardNumber,
+                      LocalDate expiryDate, String ccvNumber ) {
+        setName(name);
+        setAddress1(address1);
+        setAddress2(address2);
+        setAddress3(address3);
+        setCardType(cardType);
+        setCardNumber(cardNumber);
+        setExpiryDate(expiryDate);
+        setCCVNumber(ccvNumber);
     }
 
 
-    public String ValidateString(String input) {
+    public String validateName(String input) {
         String validText = "^[\\p{L} .'-]+$";
 
-        if(!input.matches(validText)) {
-            UtilityClass.errorMessageName();
+        try {
+            if (!input.matches(validText)) {
+                UtilityClass.errorMessageName();
+            }
+        }catch (Exception e) {
+            e.getMessage();
         }
         return input;
+    }
+
+    public String validateCreditCardNumber(String inputCCNum) {
+
+        // any number between 0-9 and of 8 digits
+        String validCCInt = "[0-9]{8}";
+        try {
+            if (!inputCCNum.matches(validCCInt)) {
+                UtilityClass.errorMessageCreditCardNumber();
+            }
+        }catch (Exception e) {
+            e.getMessage();
+        }
+        return inputCCNum;
+    }
+
+    public String validateCCVNumber(String inputCCV) {
+
+        // is numeric and 3 digits in length
+        String validCCVInt = "[0-9]{3}";
+        try {
+            if (!inputCCV.matches(validCCVInt)) {
+                UtilityClass.errorMessageCreditCardCCVNumber();
+            }
+        }catch (Exception e) {
+            e.getMessage();
+        }
+        return inputCCV;
     }
 
 
@@ -46,65 +76,39 @@ public class CreditCard {
 
     public void setName(String name) {
         this.name = name;
+        validateName(name);
 
-    }
-
-    public String getAddress1() {
-        return address1;
     }
 
     public void setAddress1(String address1) {
         this.address1 = address1;
     }
 
-    public String getAddress2() {
-        return address2;
-    }
-
     public void setAddress2(String address2) {
         this.address2 = address2;
-    }
-
-    public String getAddress3() {
-        return address3;
     }
 
     public void setAddress3(String address3) {
         this.address3 = address3;
     }
 
-    public String getCardType() {
-        return cardType;
-    }
-
     public void setCardType(String cardType) {
         this.cardType = cardType;
     }
 
-    public int getCardNumber() {
-        return cardNumber;
-    }
-
-    public void setCardNumber(int cardNumber) {
+    public void setCardNumber(String cardNumber) {
+        validateCreditCardNumber(cardNumber);
         this.cardNumber = cardNumber;
-    }
-
-    public LocalDate getExpiryDate() {
-        return expiryDate;
     }
 
     public void setExpiryDate(LocalDate expiryDate) {
         this.expiryDate = expiryDate;
     }
 
-    public int getCardCCVNumber() {
-        return cardCCVNumber;
+    public void setCCVNumber(String ccvNumber) {
+        validateCCVNumber(ccvNumber);
+        this.ccvNumber = ccvNumber;
     }
-
-    public void setCardCCVNumber(int cardCCVNumber) {
-        this.cardCCVNumber = cardCCVNumber;
-    }
-
 
     @Override
     public String toString() {
@@ -116,7 +120,7 @@ public class CreditCard {
                 ", cardType='" + cardType + '\'' +
                 ", cardNumber=" + cardNumber +
                 ", expiryDate=" + expiryDate +
-                ", cardCCVNumber=" + cardCCVNumber +
+                ", cardCCVNumber=" + ccvNumber +
                 '}';
     }
 }

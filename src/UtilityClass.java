@@ -124,6 +124,23 @@ public final class UtilityClass {
         alert.showAndWait();
     }
 
+    // user enters incorrect format
+    public static void errorMessageCreditCardNumber() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Input Error");
+        alert.setContentText("CC Number");
+        alert.showAndWait();
+    }
+
+
+    // user enters incorrect format
+    public static void errorMessageCreditCardCCVNumber() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Input Error");
+        alert.setContentText("Credit Card CCV Number");
+        alert.showAndWait();
+    }
+
 
 
     // user enters incorrect format

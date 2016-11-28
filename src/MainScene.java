@@ -135,7 +135,7 @@ public class MainScene extends Application {
     private ObservableList<RadioButton> radioBtnList = FXCollections.observableArrayList();
     public TextField fName, fName2, fName3, fName4, fName5, fName6, fName7, fName8,
             lName, lName2, lName3, lName4, lName5, lName6, lName7, lName8;
-    protected TextField tfCCName,tfCCAddress1, tfCCAddress2, tfCCAddress3, tfCCType, tfCCNumber, tfCCNumberCCV;
+    protected TextField tfCCName,tfCCAddress1, tfCCAddress2, tfCCAddress3, tfCCType, tfCCNumber, tfCCVNumber;
     private DatePicker dateOfBirth1, dateOfBirth2, dateOfBirth3, dateOfBirth4, dateOfBirth5, dateOfBirth6, dateOfBirth7, dateOfBirth8, dpCCExpiryDate;
     private Spinner<Integer> spinnerPassengerNo;
     // reference to the Passenger and FLight objects
@@ -206,14 +206,13 @@ public class MainScene extends Application {
         tfCCNumber.setPromptText("Card Number");
         dpCCExpiryDate = new DatePicker();
         dpCCExpiryDate.setPromptText("Expiry Date");
-        tfCCNumberCCV = new TextField();
-        tfCCNumberCCV.setPromptText("CCV Number");
+        tfCCVNumber = new TextField();
+        tfCCVNumber.setPromptText("CCV Number");
 
 
         buttonPurchase = new Button("Purchase Now");
         buttonPurchase.setOnAction(event -> {
             createCreditCard();
-            mCreditCard.ValidateString(mCreditCard.getName());
 
         });
 
@@ -226,7 +225,7 @@ public class MainScene extends Application {
         gridPane.add(tfCCType, 1, 1);
         gridPane.add(tfCCNumber, 1, 2);
         gridPane.add(dpCCExpiryDate, 1, 3);
-        gridPane.add(tfCCNumberCCV, 1, 4);
+        gridPane.add(tfCCVNumber, 1, 4);
 
         gridPane.add(buttonPurchase, 0, 6, 3, 3);
         GridPane.setMargin(buttonPurchase, new Insets(0, 0, 0, 155));
@@ -242,8 +241,15 @@ public class MainScene extends Application {
 
     private void createCreditCard() {
 
-        mCreditCard = new CreditCard(tfCCName.getText(), tfCCAddress1.getText(), tfCCAddress2.getText(), tfCCAddress3.getText(), tfCCType.getText(),
-                Integer.parseInt(tfCCNumber.getText()), dpCCExpiryDate.getValue(), Integer.parseInt(tfCCNumber.getText()));
+        mCreditCard = new CreditCard(
+                tfCCName.getText(),
+                tfCCAddress1.getText(),
+                tfCCAddress2.getText(),
+                tfCCAddress3.getText(),
+                tfCCType.getText(),
+                tfCCNumber.getText(),
+                dpCCExpiryDate.getValue(),
+                tfCCVNumber.getText());
 
             System.out.println(mCreditCard);
     }
