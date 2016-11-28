@@ -108,7 +108,7 @@ public class MainScene extends Application {
     private final ToggleGroup toggleGroupFlightTimes_2 = new ToggleGroup();
     ObservableList<Integer> spinnerObservableList = FXCollections.observableArrayList();
     private ImageView imageViewReturn, imageViewDept;
-    private Button buttonCancel, buttonContinue;
+    private Button buttonCancel, buttonContinue, buttonBack, buttonPurchase;
     private ComboBox<String> comboOrigin;
     private ComboBox<String> comboDestination;
     private RadioButton radioBtn1, radioBtn2, radioBtn3, radioBtn4, radioBtn5, radioBtn6, radioBtn7, radioBtn8;
@@ -128,7 +128,7 @@ public class MainScene extends Application {
     private GridPane gridPaneLeft;
     private Stage window;
     private Scene scene1, scene2;
-    private VBox vBox;
+    private VBox nextSceneVBox;
     private ObservableList<TextField> tfFirstNamesList = FXCollections.observableArrayList();
     private ObservableList<TextField> tfLastNamesList = FXCollections.observableArrayList();
     private ObservableList<DatePicker> dpDateOfBirthList = FXCollections.observableArrayList();
@@ -140,7 +140,7 @@ public class MainScene extends Application {
     // reference to the Passenger and FLight objects
     private List<Passenger> passengerList = FXCollections.observableArrayList();
     private List<LocalDate> dobList = FXCollections.observableArrayList();
-    private List<Flight> flightList = FXCollections.observableArrayList();
+    private ObservableList<Flight> flightList = FXCollections.observableArrayList();
     private Passenger passenger1, passenger2, passenger3, passenger4, passenger5, passenger6, passenger7, passenger8;
     private Flight flight, flightForChild, flightForBaby;
 
@@ -164,14 +164,69 @@ public class MainScene extends Application {
 
         listView = new ListView();
 
-        this.vBox = new VBox();
-        scene2 = new Scene(this.vBox, 700, 650);
+        this.nextSceneVBox = new VBox();
+        scene2 = new Scene(this.nextSceneVBox, 700, 700);
 
         scene1.getStylesheets().add("/stylesheet.css");
         primaryStage.setScene(scene1);
         primaryStage.setTitle("JaviAir App");
         primaryStage.show();
     }
+
+    private GridPane nextSceneCreditCardContainer() {
+
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        ColumnConstraints column1 = new ColumnConstraints();
+        column1.setPercentWidth(30);
+        ColumnConstraints column2 = new ColumnConstraints();
+        column2.setPercentWidth(30);
+        gridPane.getColumnConstraints().addAll(column1, column2); // each get 30% of width
+
+        gridPane.setHgap(20);
+        gridPane.setVgap(20);
+
+        TextField tfCCName = new TextField();
+        tfCCName.setPromptText("Name");
+        TextField tfCCAddress1 = new TextField();
+        tfCCAddress1.setPromptText("Address Line 1");
+        TextField tfCCAddress2 = new TextField();
+        tfCCAddress2.setPromptText("City/Town");
+        TextField tfCCAddress3 = new TextField();
+        tfCCAddress3.setPromptText("County");
+
+        TextField tfCCType = new TextField();
+        tfCCType.setPromptText("Card Type");
+        TextField tfCCNumber = new TextField();
+        tfCCNumber.setPromptText("Card Number");
+        TextField tfCCExpiryDate = new TextField();
+        tfCCExpiryDate.setPromptText("Expiry Date");
+        TextField tfCCNumberCCV = new TextField();
+        tfCCNumberCCV.setPromptText("CCV Number");
+
+        buttonPurchase = new Button("Purchase Now");
+
+
+        gridPane.add(tfCCName, 0, 1);
+        gridPane.add(tfCCAddress1, 0, 2);
+        gridPane.add(tfCCAddress2, 0, 3);
+        gridPane.add(tfCCAddress3, 0, 4);
+
+        gridPane.add(tfCCType, 1, 1);
+        gridPane.add(tfCCNumber, 1, 2);
+        gridPane.add(tfCCExpiryDate, 1, 3);
+        gridPane.add(tfCCNumberCCV, 1, 4);
+
+        gridPane.add(buttonPurchase, 0, 6, 3, 3);
+        GridPane.setMargin(buttonPurchase, new Insets(0, 0, 0, 155));
+
+
+        return gridPane;
+
+    }
+
+
+
 
     private GridPane createTopGridPane() {
         GridPane gridPane = new GridPane();
@@ -183,6 +238,9 @@ public class MainScene extends Application {
         radioButtonReturn = new RadioButton("Return");
         radioButtonReturn.setToggleGroup(toggleGroupFlights);
         radioButtonReturn.fire(); // return btn on by default
+
+
+
 
         toggleGroupFlights.selectedToggleProperty().addListener(observable -> {
             if (toggleGroupFlights.getSelectedToggle() == radioButtonOneWay) {
@@ -212,6 +270,7 @@ public class MainScene extends Application {
         radioButtonDeptTime2 = new RadioButton();
         radioButtonReturnTime1 = new RadioButton();
         radioButtonReturnTime2 = new RadioButton();
+
 
 
         vBoxRadioBtns1 = new VBox(10);
@@ -457,21 +516,21 @@ public class MainScene extends Application {
                             setStyle("-fx-background-color: #ffc0cb;");
                         }
 
-                        if (item != null) {
-                            if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(ST_BRIEUC)) {
-                                // Disable March and April
-                                if (item.getMonth().equals(Month.APRIL) || item.getMonth().equals(Month.MARCH)) {
-                                    setDisable(true);
-                                    setStyle("-fx-background-color: #ffc0cb;");
-                                }
-                            } else if (dptFlight.equals(PARIS) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(PARIS)) {
-                                // Disable April
-                                if (item.getMonth().equals(Month.APRIL)) {
-                                    setDisable(true);
-                                    setStyle("-fx-background-color: #ffc0cb;");
-                                }
+
+                        if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(ST_BRIEUC)) {
+                            // Disable March and April
+                            if (item.getMonth().equals(Month.APRIL) || item.getMonth().equals(Month.MARCH)) {
+                                setDisable(true);
+                                setStyle("-fx-background-color: #ffc0cb;");
+                            }
+                        } else if (dptFlight.equals(PARIS) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(PARIS)) {
+                            // Disable April
+                            if (item.getMonth().equals(Month.APRIL)) {
+                                setDisable(true);
+                                setStyle("-fx-background-color: #ffc0cb;");
                             }
                         }
+
                     }
                 };
             }
@@ -1025,7 +1084,7 @@ public class MainScene extends Application {
                 selectedReturnTime);// returned from displayFlightDetails()
     }
 
-    public void setFlightPriceChild() {
+    private void setFlightPriceChild() {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
         String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
 
@@ -1067,15 +1126,13 @@ public class MainScene extends Application {
     }
 
 
-    private void getDetails() {
+    protected void getDetails() {
 
         addPassengers();
-
 
         LocalDate now = LocalDate.now();
         LocalDate nowMinus1yr = now.minusYears(1);
         LocalDate nowMinus5yrs = now.minusYears(5);
-        LocalDate nowMinus18yrs = now.minusYears(18);
 
 
         int mCounter = 0;
@@ -1164,9 +1221,11 @@ public class MainScene extends Application {
 
         }
 
+
         try {
             Button buttonBack = new Button("Back");
-            vBox.getChildren().addAll(listView, buttonBack);
+            // add elements to the next scene
+            nextSceneVBox.getChildren().addAll(listView, buttonBack, nextSceneCreditCardContainer());
             buttonBack.setOnAction(event -> {
                 listView.getItems().clear();
                 window.setScene(scene1);
@@ -1190,7 +1249,6 @@ public class MainScene extends Application {
             if (datePickerDeparture.getValue() != null || datePickerReturn.getValue() != null) {
 
                 try {
-
 
                     String validText = "^[\\p{L} .'-]+$";
                     int i = 0;
@@ -1248,6 +1306,10 @@ public class MainScene extends Application {
     }
 
 
+
+
+
+
     private AnchorPane createAnchorPane() {
         AnchorPane anchorPane = new AnchorPane();
         buttonCancel = new Button("Cancel");
@@ -1262,7 +1324,6 @@ public class MainScene extends Application {
 
         });
 
-
         HBox hBox = new HBox();
         hBox.setSpacing(20);
         hBox.setPadding(new Insets(0, 10, 10, 10));
@@ -1276,6 +1337,7 @@ public class MainScene extends Application {
 
         return anchorPane;
     }
+
 
 
 }

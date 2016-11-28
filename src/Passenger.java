@@ -14,7 +14,7 @@ public class Passenger {
     private static int counter;
     private boolean isChild;
     private boolean isAdult;
-
+    private boolean isMinor;
 
 
     public Passenger(String firstName, String lastName, LocalDate dateOfBirth, boolean baggageSelect) {
@@ -75,6 +75,17 @@ public class Passenger {
         isChild = false;
 
         if(this.getDateOfBirth().isAfter(LocalDate.now().minusYears(5))){
+            isChild = true;
+        }
+        return isChild;
+    }
+
+
+    public boolean isPassengerMinor() {
+
+        isMinor = false;
+
+        if(this.getDateOfBirth().isAfter(LocalDate.now().minusYears(5)) && this.getDateOfBirth().isBefore(LocalDate.now().minusYears(1)) ){
             isChild = true;
         }
         return isChild;
