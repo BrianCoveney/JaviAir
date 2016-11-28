@@ -135,14 +135,19 @@ public class MainScene extends Application {
     private ObservableList<RadioButton> radioBtnList = FXCollections.observableArrayList();
     public TextField fName, fName2, fName3, fName4, fName5, fName6, fName7, fName8,
             lName, lName2, lName3, lName4, lName5, lName6, lName7, lName8;
-    private DatePicker dateOfBirth1, dateOfBirth2, dateOfBirth3, dateOfBirth4, dateOfBirth5, dateOfBirth6, dateOfBirth7, dateOfBirth8;
+    protected TextField tfCCName,tfCCAddress1, tfCCAddress2, tfCCAddress3, tfCCType, tfCCNumber, tfCCNumberCCV;
+    private DatePicker dateOfBirth1, dateOfBirth2, dateOfBirth3, dateOfBirth4, dateOfBirth5, dateOfBirth6, dateOfBirth7, dateOfBirth8, dpCCExpiryDate;
     private Spinner<Integer> spinnerPassengerNo;
     // reference to the Passenger and FLight objects
     private List<Passenger> passengerList = FXCollections.observableArrayList();
     private List<LocalDate> dobList = FXCollections.observableArrayList();
     private ObservableList<Flight> flightList = FXCollections.observableArrayList();
+    private ObservableList<CreditCard> creditCardList = FXCollections.observableArrayList();
     private Passenger passenger1, passenger2, passenger3, passenger4, passenger5, passenger6, passenger7, passenger8;
     private Flight flight, flightForChild, flightForBaby;
+    private CreditCard mCreditCard;
+
+
 
 
     public static void main(String[] args) {
@@ -186,25 +191,31 @@ public class MainScene extends Application {
         gridPane.setHgap(20);
         gridPane.setVgap(20);
 
-        TextField tfCCName = new TextField();
+        tfCCName = new TextField();
         tfCCName.setPromptText("Name");
-        TextField tfCCAddress1 = new TextField();
+        tfCCAddress1 = new TextField();
         tfCCAddress1.setPromptText("Address Line 1");
-        TextField tfCCAddress2 = new TextField();
+        tfCCAddress2 = new TextField();
         tfCCAddress2.setPromptText("City/Town");
-        TextField tfCCAddress3 = new TextField();
+        tfCCAddress3 = new TextField();
         tfCCAddress3.setPromptText("County");
 
-        TextField tfCCType = new TextField();
+        tfCCType = new TextField();
         tfCCType.setPromptText("Card Type");
-        TextField tfCCNumber = new TextField();
+        tfCCNumber = new TextField();
         tfCCNumber.setPromptText("Card Number");
-        TextField tfCCExpiryDate = new TextField();
-        tfCCExpiryDate.setPromptText("Expiry Date");
-        TextField tfCCNumberCCV = new TextField();
+        dpCCExpiryDate = new DatePicker();
+        dpCCExpiryDate.setPromptText("Expiry Date");
+        tfCCNumberCCV = new TextField();
         tfCCNumberCCV.setPromptText("CCV Number");
 
+
         buttonPurchase = new Button("Purchase Now");
+        buttonPurchase.setOnAction(event -> {
+            createCreditCard();
+            mCreditCard.ValidateString(mCreditCard.getName());
+
+        });
 
 
         gridPane.add(tfCCName, 0, 1);
@@ -214,15 +225,27 @@ public class MainScene extends Application {
 
         gridPane.add(tfCCType, 1, 1);
         gridPane.add(tfCCNumber, 1, 2);
-        gridPane.add(tfCCExpiryDate, 1, 3);
+        gridPane.add(dpCCExpiryDate, 1, 3);
         gridPane.add(tfCCNumberCCV, 1, 4);
 
         gridPane.add(buttonPurchase, 0, 6, 3, 3);
         GridPane.setMargin(buttonPurchase, new Insets(0, 0, 0, 155));
 
 
+
+
+
         return gridPane;
 
+    }
+
+
+    private void createCreditCard() {
+
+        mCreditCard = new CreditCard(tfCCName.getText(), tfCCAddress1.getText(), tfCCAddress2.getText(), tfCCAddress3.getText(), tfCCType.getText(),
+                Integer.parseInt(tfCCNumber.getText()), dpCCExpiryDate.getValue(), Integer.parseInt(tfCCNumber.getText()));
+
+            System.out.println(mCreditCard);
     }
 
 
@@ -757,7 +780,7 @@ public class MainScene extends Application {
 
         });
 
-        // Flght has two time slots
+        // Flight has two time slots
         if (flightTime2 != null) {
 
             // setting times for Return radio buttons
@@ -909,7 +932,7 @@ public class MainScene extends Application {
         fName8 = new TextField();
         lName8 = new TextField();
         dateOfBirth1 = new DatePicker();
-        dateOfBirth1.setValue(LocalDate.now().minusYears(2)); // FOR TESTING
+        dateOfBirth1.setValue(LocalDate.now().minusYears(18)); // FOR TESTING
         dateOfBirth1.setPromptText("dd/mm/yyyy");
         dateOfBirth2 = new DatePicker();
         dateOfBirth3 = new DatePicker();
@@ -1090,6 +1113,7 @@ public class MainScene extends Application {
 
         // constructor
         flightForChild = new Flight(flightDepart, flightReturn, CHILD_PRICE, CHILD_PRICE, CHILD_TOTAL_PRICE, selectedDeptTime, selectedReturnTime);
+        System.out.println(flightForChild);
 
 
     }

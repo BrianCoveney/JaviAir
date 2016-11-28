@@ -62,6 +62,13 @@ public final class UtilityClass {
         alert.showAndWait();
     }
 
+    public static void errorMessageName() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Input Error");
+        alert.setContentText("Please check your name entry");
+        alert.showAndWait();
+    }
+
     public static void errorMessageFirstName() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Input Error");
@@ -113,7 +120,17 @@ public final class UtilityClass {
     public static void errorMessageMaxTwoChildren() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Input Error");
-        alert.setContentText("Maximium of two childern per booking.");
+        alert.setContentText("Maximium of two children per booking.");
+        alert.showAndWait();
+    }
+
+
+
+    // user enters incorrect format
+    public static void orderReceived() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Input Error");
+        alert.setContentText("Thank you. Your order has been received.");
         alert.showAndWait();
     }
 
