@@ -10,19 +10,20 @@ public class Passenger {
     private String lastName;
     private LocalDate dateOfBirth;
     private boolean baggageSelected;
+    private boolean spanishSelected;
     private double baggagePrice;
-    private static int counter;
+    private double spanishResidentPrice;
     private boolean isChild;
     private boolean isAdult;
-    private boolean isMinor;
 
 
-    public Passenger(String firstName, String lastName, LocalDate dateOfBirth, boolean baggageSelect) {
+
+    public Passenger(String firstName, String lastName, LocalDate dateOfBirth, boolean baggageSelect, boolean spanishSelected) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.baggageSelected = baggageSelect;
-
+        this.spanishSelected = spanishSelected;
 
     }
 
@@ -35,6 +36,7 @@ public class Passenger {
     }
 
 
+
     public boolean isBaggageSelected() {
         return baggageSelected;
     }
@@ -45,6 +47,16 @@ public class Passenger {
 
     public void setBaggagePrice(double baggagePrice) {
         this.baggagePrice = baggagePrice;
+    }
+
+
+    public double setSpanishPrice() {
+        double spaPrice = 0.0;
+
+        if(isSpanishSelected() == true) {
+            spaPrice = 5;
+        }
+        return spaPrice;
     }
 
 
@@ -81,16 +93,6 @@ public class Passenger {
     }
 
 
-    public boolean isPassengerMinor() {
-
-        isMinor = false;
-
-        if(this.getDateOfBirth().isAfter(LocalDate.now().minusYears(5)) && this.getDateOfBirth().isBefore(LocalDate.now().minusYears(1)) ){
-            isChild = true;
-        }
-        return isChild;
-    }
-
 
     public boolean isPassengerOver18() {
         isAdult = false;
@@ -102,7 +104,13 @@ public class Passenger {
     }
 
 
+    public boolean isSpanishSelected() {
+        return spanishSelected;
+    }
 
+    public void setSpanishSelected(boolean spanishSelected) {
+        this.spanishSelected = spanishSelected;
+    }
 
     public boolean getBaggageSelect() {
         return baggageSelected;

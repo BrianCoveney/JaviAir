@@ -32,10 +32,6 @@
     -fx-background-color: #f7f7f7;
 }
 
-.baggage-title {
-    -fx-text-fill: #848484;
-}
-
 
 .gridPaneLeft{
     -fx-translate-y: 20;
@@ -46,6 +42,12 @@
     -fx-max-width: 120;
 }
 
-.mySpinner, .smCombo {
+.mySpinner, .smCombo, .sm-radio {
     -fx-max-width: 50;
+}
+
+
+.label-header {
+    -fx-text-fill: #848484;
+    -fx-font-size: 10px;
 }
