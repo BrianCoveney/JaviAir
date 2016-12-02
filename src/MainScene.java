@@ -16,7 +16,6 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 public class MainScene extends Application {
@@ -134,20 +133,24 @@ public class MainScene extends Application {
     private VBox nextSceneVBox;
     private ObservableList<TextField> tfFirstNamesList = FXCollections.observableArrayList();
     private ObservableList<TextField> tfLastNamesList = FXCollections.observableArrayList();
+    private ObservableList<TextField> numberDNIList = FXCollections.observableArrayList();
     private ObservableList<DatePicker> dpDateOfBirthList = FXCollections.observableArrayList();
     private ObservableList<RadioButton> radioBtnListBag = FXCollections.observableArrayList();
-    private ObservableList<CheckBox> checkboxListSpa = FXCollections.observableArrayList();
+    private ObservableList<CheckBox> spanishCheckboxList = FXCollections.observableArrayList();
 
     public TextField fName, fName2, fName3, fName4, fName5, fName6, fName7, fName8,
-            lName, lName2, lName3, lName4, lName5, lName6, lName7, lName8;
+            lName, lName2, lName3, lName4, lName5, lName6, lName7, lName8,
+            custDNI1,custDNI2, custDNI3, custDNI4, custDNI5, custDNI6, custDNI7, custDNI8;
     protected TextField tfCCName,tfCCAddress1, tfCCAddress2, tfCCAddress3, tfCCType, tfCCNumber, tfCCVNumber;
     private DatePicker dateOfBirth1, dateOfBirth2, dateOfBirth3, dateOfBirth4, dateOfBirth5, dateOfBirth6, dateOfBirth7, dateOfBirth8, dpCCExpiryDate;
     private Spinner<Integer> spinnerPassengerNo;
     // reference to the Passenger and FLight objects
     private List<Passenger> passengerList = FXCollections.observableArrayList();
+
     private List<LocalDate> dobList = FXCollections.observableArrayList();
     private ObservableList<Flight> flightList = FXCollections.observableArrayList();
     private ObservableList<CreditCard> creditCardList = FXCollections.observableArrayList();
+
     private Passenger passenger1, passenger2, passenger3, passenger4, passenger5, passenger6, passenger7, passenger8;
     private Flight flight, flightForChild, flightForBaby;
     private CreditCard mCreditCard;
@@ -871,13 +874,13 @@ public class MainScene extends Application {
 
         StackPane stackPaneLeft = new StackPane();
         stackPaneLeft.setPrefHeight(300);
-        stackPaneLeft.setMaxWidth(150);
+        stackPaneLeft.setMaxWidth(120);
         stackPaneLeft.getStyleClass().add("stackPaneLeft");
         StackPane.setAlignment(gridPaneLeft, Pos.TOP_LEFT);
         stackPaneLeft.getChildren().addAll(gridPaneLeft);
 
 
-        Label label = new Label("No. of passengers:");
+        Label spinnerLabel = new Label("No. of passengers:");
 
 
         spinnerObservableList.addAll(0, 1, 2, 3, 4, 5, 6, 7, 8);
@@ -898,9 +901,7 @@ public class MainScene extends Application {
         });
 
 
-
-
-        gridPaneLeft.add(label, 1, 2);
+        gridPaneLeft.add(spinnerLabel, 1, 2);
         gridPaneLeft.add(spinnerPassengerNo, 1, 3);
         GridPane.setMargin(spinnerPassengerNo, new Insets(10, 0, 50, 50));
 
@@ -908,7 +909,7 @@ public class MainScene extends Application {
         // RHS Pane
         StackPane stackPaneRight = new StackPane();
         stackPaneRight.setPrefHeight(310);
-        stackPaneRight.setMaxWidth(550);
+        stackPaneRight.setMaxWidth(600);
         stackPaneRight.getStyleClass().add("stackPaneRight");
 
         Label labelBorder = new Label("Passenger Details");
@@ -921,28 +922,37 @@ public class MainScene extends Application {
         labelSpanish.getStyleClass().add("label-header");
         StackPane.setAlignment(labelBag, Pos.TOP_RIGHT);
         StackPane.setAlignment(labelSpanish, Pos.TOP_CENTER);
-        StackPane.setMargin(labelSpanish, new Insets(0,0,0,180));
-        StackPane.setMargin(labelBag, new Insets(0,5,0,0));
+        StackPane.setMargin(labelSpanish, new Insets(0, 0, 0, 180));
+        StackPane.setMargin(labelBag, new Insets(0, 5, 0, 0));
         stackPaneRight.getChildren().addAll(labelBorder, labelBag, labelSpanish);
 
         fName = new TextField();
         fName.setPromptText("first name");
         lName = new TextField();
         lName.setPromptText("last name");
+        custDNI1 = new TextField();
+        custDNI1.setPromptText("DNI number");
         fName2 = new TextField();
         lName2 = new TextField();
+        custDNI2 = new TextField();
         fName3 = new TextField();
         lName3 = new TextField();
+        custDNI3 = new TextField();
         fName4 = new TextField();
         lName4 = new TextField();
+        custDNI4 = new TextField();
         fName5 = new TextField();
         lName5 = new TextField();
+        custDNI5 = new TextField();
         fName6 = new TextField();
         lName6 = new TextField();
+        custDNI6 = new TextField();
         fName7 = new TextField();
         lName7 = new TextField();
+        custDNI7 = new TextField();
         fName8 = new TextField();
         lName8 = new TextField();
+        custDNI8 = new TextField();
         dateOfBirth1 = new DatePicker();
         dateOfBirth1.setValue(LocalDate.now().minusYears(19)); // FOR TESTING
         dateOfBirth1.setPromptText("dd/mm/yyyy");
@@ -971,14 +981,14 @@ public class MainScene extends Application {
         checkboxSpa8 = new CheckBox();
 
 
-
-
         // ObservableLists of above controls
         tfFirstNamesList.addAll(fName, fName2, fName3, fName4, fName5, fName6, fName7, fName8);
         tfLastNamesList.addAll(lName, lName2, lName3, lName4, lName5, lName6, lName7, lName8);
         dpDateOfBirthList.addAll(dateOfBirth1, dateOfBirth2, dateOfBirth3, dateOfBirth4, dateOfBirth5, dateOfBirth6, dateOfBirth7, dateOfBirth8);
         radioBtnListBag.addAll(radioBtn1, radioBtn2, radioBtn3, radioBtn4, radioBtn5, radioBtn6, radioBtn7, radioBtn8);
-        checkboxListSpa.addAll(checkboxSpa1, checkboxSpa2, checkboxSpa3, checkboxSpa4, checkboxSpa5, checkboxSpa6, checkboxSpa7, checkboxSpa8);
+        spanishCheckboxList.addAll(checkboxSpa1, checkboxSpa2, checkboxSpa3, checkboxSpa4, checkboxSpa5, checkboxSpa6, checkboxSpa7, checkboxSpa8);
+        numberDNIList.addAll(custDNI1, custDNI2, custDNI3, custDNI4, custDNI5, custDNI6, custDNI7, custDNI8);
+
 
         try {
             for (int i = 0; i <= MAX_PASSENGER_NO; i++) {
@@ -986,19 +996,18 @@ public class MainScene extends Application {
                 tfFirstNamesList.get(i).getStyleClass().addAll("sm-label");
                 tfLastNamesList.get(i).setDisable(true);
                 tfLastNamesList.get(i).getStyleClass().addAll("sm-label");
+                numberDNIList.get(i).setDisable(true);
+                numberDNIList.get(i).getStyleClass().addAll("sm-label");
                 dpDateOfBirthList.get(i).setDisable(true);
                 dpDateOfBirthList.get(i).getStyleClass().add("myDatePicker");
                 radioBtnListBag.get(i).setDisable(true);
-                checkboxListSpa.get(i).setDisable(true);
+                spanishCheckboxList.get(i).setDisable(true);
+
 
             }
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             ex.getMessage();
         }
-
-
-
-
 
 
         GridPane gridPaneRight = new GridPane();
@@ -1009,49 +1018,60 @@ public class MainScene extends Application {
 
         gridPaneRight.add(fName, 1, 0);
         gridPaneRight.add(lName, 2, 0);
-        gridPaneRight.add(checkboxSpa1, 3, 0);
-        gridPaneRight.add(dateOfBirth1, 4, 0);
-        gridPaneRight.add(radioBtn1, 5, 0);
+        gridPaneRight.add(custDNI1, 3, 0);
+        gridPaneRight.add(checkboxSpa1, 4, 0);
+        gridPaneRight.add(dateOfBirth1, 5, 0);
+        gridPaneRight.add(radioBtn1, 6, 0);
         gridPaneRight.add(fName2, 1, 1);
         gridPaneRight.add(lName2, 2, 1);
-        gridPaneRight.add(checkboxSpa2, 3, 1);
-        gridPaneRight.add(dateOfBirth2, 4, 1);
-        gridPaneRight.add(radioBtn2, 5, 1);
+        gridPaneRight.add(custDNI2, 3, 1);
+        gridPaneRight.add(checkboxSpa2, 4, 1);
+        gridPaneRight.add(dateOfBirth2, 5, 1);
+        gridPaneRight.add(radioBtn2, 6, 1);
         gridPaneRight.add(fName3, 1, 2);
         gridPaneRight.add(lName3, 2, 2);
-        gridPaneRight.add(checkboxSpa3, 3, 2);
-        gridPaneRight.add(dateOfBirth3, 4, 2);
-        gridPaneRight.add(radioBtn3, 5, 2);
+        gridPaneRight.add(custDNI3, 3, 2);
+        gridPaneRight.add(checkboxSpa3, 4, 2);
+        gridPaneRight.add(dateOfBirth3, 5, 2);
+        gridPaneRight.add(radioBtn3, 6, 2);
         gridPaneRight.add(fName4, 1, 3);
         gridPaneRight.add(lName4, 2, 3);
-        gridPaneRight.add(checkboxSpa4, 3, 3);
-        gridPaneRight.add(dateOfBirth4, 4, 3);
-        gridPaneRight.add(radioBtn4, 5, 3);
+        gridPaneRight.add(custDNI4, 3, 3);
+        gridPaneRight.add(checkboxSpa4, 4, 3);
+        gridPaneRight.add(dateOfBirth4, 5, 3);
+        gridPaneRight.add(radioBtn4, 6, 3);
         gridPaneRight.add(fName5, 1, 4);
         gridPaneRight.add(lName5, 2, 4);
-        gridPaneRight.add(checkboxSpa5, 3, 4);
-        gridPaneRight.add(dateOfBirth5, 4, 4);
-        gridPaneRight.add(radioBtn5, 5, 4);
+        gridPaneRight.add(custDNI5, 3, 4);
+        gridPaneRight.add(checkboxSpa5, 4, 4);
+        gridPaneRight.add(dateOfBirth5, 5, 4);
+        gridPaneRight.add(radioBtn5, 6, 4);
         gridPaneRight.add(fName6, 1, 5);
         gridPaneRight.add(lName6, 2, 5);
-        gridPaneRight.add(checkboxSpa6, 3, 5);
-        gridPaneRight.add(dateOfBirth6, 4, 5);
-        gridPaneRight.add(radioBtn6, 5, 5);
+        gridPaneRight.add(custDNI6, 3, 5);
+        gridPaneRight.add(checkboxSpa6, 4, 5);
+        gridPaneRight.add(dateOfBirth6, 5, 5);
+        gridPaneRight.add(radioBtn6, 6, 5);
         gridPaneRight.add(fName7, 1, 6);
         gridPaneRight.add(lName7, 2, 6);
-        gridPaneRight.add(checkboxSpa7, 3, 6);
-        gridPaneRight.add(dateOfBirth7, 4, 6);
-        gridPaneRight.add(radioBtn7, 5, 6);
+        gridPaneRight.add(custDNI7, 3, 6);
+        gridPaneRight.add(checkboxSpa7, 4, 6);
+        gridPaneRight.add(dateOfBirth7, 5, 6);
+        gridPaneRight.add(radioBtn7, 6, 6);
         gridPaneRight.add(fName8, 1, 7);
         gridPaneRight.add(lName8, 2, 7);
-        gridPaneRight.add(checkboxSpa8, 3, 7);
-        gridPaneRight.add(dateOfBirth8, 4, 7);
-        gridPaneRight.add(radioBtn8, 5, 7);
+        gridPaneRight.add(custDNI8, 3, 7);
+        gridPaneRight.add(checkboxSpa8, 4, 7);
+        gridPaneRight.add(dateOfBirth8, 5, 7);
+        gridPaneRight.add(radioBtn8, 6, 7);
 
 
         disableBaggageOptionForInfants();
 
-        setSpanishRebate();
+        enableDNIField();
+
+
+
 
 
         StackPane.setAlignment(gridPaneRight, Pos.TOP_LEFT);
@@ -1093,60 +1113,40 @@ public class MainScene extends Application {
     }
 
 
-    // TODO: fix this mess
-    private double setSpanishRebate() {
+    private void enableDNIField() {
         addPassengers();
         try {
             for (int i = 0; i <= MAX_PASSENGER_NO; i++) {
-                checkboxListSpa.get(i).selectedProperty().addListener((observable, oldValue, newValue) -> {
-                    if (newValue) {
+                spanishCheckboxList.get(i).selectedProperty().addListener((observable, oldValue, newValue) -> {
+                    if(newValue) {
 
-                        TextInputDialog textInputDialog = new TextInputDialog();
-                        textInputDialog.setTitle("Spanish DNI");
-                        textInputDialog.setHeaderText("Do you have a valid DNI?");
-                        textInputDialog.setContentText("Please enter your number:");
+                        try {
+                            for (int j = 0; j <= MAX_PASSENGER_NO; j++) {
 
-                        Optional<String> result = textInputDialog.showAndWait();
-                        if (result.isPresent()) {
-                            String input = result.get().trim();
+                                if(spanishCheckboxList.get(j).isSelected()) {
+                                    numberDNIList.get(j).setDisable(false);
+                                } else if (spanishCheckboxList.get(j).isSelected() == false){
+                                    numberDNIList.get(j).setDisable(true);
 
-
-                            if (input.matches("[0-9]{3}")) {
-
-
-                                try {
-
-                                    for (int j = 0; j < MAX_PASSENGER_NO; j++) {
-                                        spanishResidentRebate = 1000.000;
-
-                                        System.out.println("Price: " + spanishResidentRebate);
-                                    }
-
-                                }catch (Exception e) {
-                                    e.getMessage();
                                 }
 
-                            } else {
-                                System.out.println("false");
                             }
-
+                        } catch (Exception e) {
+                            e.getMessage();
                         }
-
-
                     }
                 });
+
             }
         } catch (Exception e) {
             e.getMessage();
         }
-
-        return spanishResidentRebate;
-
     }
 
 
-    private void spinnerPassengerNumberListener() {
 
+
+    private void spinnerPassengerNumberListener() {
 
         if (spinnerPassengerNo.getValue() == 0) {
             fName.setDisable(true);
@@ -1154,12 +1154,13 @@ public class MainScene extends Application {
             dateOfBirth1.setDisable(true);
             fName.clear();
             lName.clear();
+            custDNI1.clear();
             dateOfBirth1.getEditor().clear();
         }
 
-
         try {
             for (int i = 0; i <= MAX_PASSENGER_NO; i++) {
+
 
                 if (spinnerPassengerNo.getValue() == i) {
 
@@ -1167,18 +1168,21 @@ public class MainScene extends Application {
                     tfLastNamesList.get(i - 1).setDisable(false);
                     dpDateOfBirthList.get(i - 1).setDisable(false);
                     radioBtnListBag.get(i - 1).setDisable(false);
-                    checkboxListSpa.get(i - 1).setDisable(false);
+                    spanishCheckboxList.get(i - 1).setDisable(false);
 
                     tfFirstNamesList.get(i).setDisable(true);
                     tfLastNamesList.get(i).setDisable(true);
+                    numberDNIList.get(i).setDisable(true);
                     dpDateOfBirthList.get(i).setDisable(true);
                     radioBtnListBag.get(i).setDisable(true);
-                    checkboxListSpa.get(i).setDisable(true);
+                    spanishCheckboxList.get(i).setDisable(true);
                     tfFirstNamesList.get(i).clear();
                     tfLastNamesList.get(i).clear();
+                    numberDNIList.get(i).clear();
                     dpDateOfBirthList.get(i).getEditor().clear();
                     radioBtnListBag.get(i).setSelected(false);
-                    checkboxListSpa.get(i).setSelected(false);
+                    spanishCheckboxList.get(i).setSelected(false);
+
                 }
 
             }
@@ -1186,12 +1190,15 @@ public class MainScene extends Application {
             e.getMessage();
         }
 
+
     }
 
 
     private void setFlightPriceAdult() {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
         String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
+
+
 
         // constructor
         flight = new Flight(
@@ -1225,15 +1232,14 @@ public class MainScene extends Application {
 
     private void addPassengers() {
         passengerList = new ArrayList<>();
-
-        passenger1 = new Passenger(fName.getText(), lName.getText(), dateOfBirth1.getValue(), radioBtn1.isSelected(), checkboxSpa1.isSelected());
-        passenger2 = new Passenger(fName2.getText(), lName2.getText(), dateOfBirth2.getValue(), radioBtn2.isSelected(), checkboxSpa2.isSelected());
-        passenger3 = new Passenger(fName3.getText(), lName3.getText(), dateOfBirth3.getValue(), radioBtn3.isSelected(), checkboxSpa3.isSelected());
-        passenger4 = new Passenger(fName4.getText(), lName4.getText(), dateOfBirth4.getValue(), radioBtn4.isSelected(), checkboxSpa4.isSelected());
-        passenger5 = new Passenger(fName5.getText(), lName5.getText(), dateOfBirth5.getValue(), radioBtn5.isSelected(), checkboxSpa5.isSelected());
-        passenger6 = new Passenger(fName6.getText(), lName6.getText(), dateOfBirth6.getValue(), radioBtn6.isSelected(), checkboxSpa6.isSelected());
-        passenger7 = new Passenger(fName7.getText(), lName7.getText(), dateOfBirth7.getValue(), radioBtn7.isSelected(), checkboxSpa7.isSelected());
-        passenger8 = new Passenger(fName8.getText(), lName8.getText(), dateOfBirth8.getValue(), radioBtn8.isSelected(), checkboxSpa8.isSelected());
+        passenger1 = new Passenger(fName.getText(), lName.getText(), custDNI1.getText(), dateOfBirth1.getValue(), radioBtn1.isSelected(), checkboxSpa1.isSelected());
+        passenger2 = new Passenger(fName2.getText(), lName2.getText(), custDNI2.getText(), dateOfBirth2.getValue(), radioBtn2.isSelected(), checkboxSpa2.isSelected());
+        passenger3 = new Passenger(fName3.getText(), lName3.getText(), custDNI3.getText(), dateOfBirth3.getValue(), radioBtn3.isSelected(), checkboxSpa3.isSelected());
+        passenger4 = new Passenger(fName4.getText(), lName4.getText(), custDNI4.getText(), dateOfBirth4.getValue(), radioBtn4.isSelected(), checkboxSpa4.isSelected());
+        passenger5 = new Passenger(fName5.getText(), lName5.getText(), custDNI5.getText(), dateOfBirth5.getValue(), radioBtn5.isSelected(), checkboxSpa5.isSelected());
+        passenger6 = new Passenger(fName6.getText(), lName6.getText(), custDNI6.getText(), dateOfBirth6.getValue(), radioBtn6.isSelected(), checkboxSpa6.isSelected());
+        passenger7 = new Passenger(fName7.getText(), lName7.getText(), custDNI7.getText(), dateOfBirth7.getValue(), radioBtn7.isSelected(), checkboxSpa7.isSelected());
+        passenger8 = new Passenger(fName8.getText(), lName8.getText(), custDNI8.getText(), dateOfBirth8.getValue(), radioBtn8.isSelected(), checkboxSpa8.isSelected());
         passengerList.add(passenger1);
         passengerList.add(passenger2);
         passengerList.add(passenger3);
@@ -1260,6 +1266,8 @@ public class MainScene extends Application {
         double flightPrice;
         double adultPrice;
         double childPrice;
+        String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
+        String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
 
         for (int i = 0; i < MAX_PASSENGER_NO; i++) {
             mCounter++;
@@ -1279,11 +1287,10 @@ public class MainScene extends Application {
                     }
 
 
-                    if (flight.getOrigin().equals(MADRID) && flight.getDestination().equals(MALAGA) ||
-                            flight.getOrigin().equals(MALAGA) && flight.getDestination().equals(MADRID)) {
-                        spaPrice = passengerList.get(mCounter - 1).setSpanishPrice() * 2;
+                    if (flightDepart.equals(MADRID) && flightReturn.equals(MALAGA)) {
+                        spaPrice = passengerList.get(mCounter -1).setSpanishRebate() * 2;
                     } else {
-                        spaPrice = passengerList.get(mCounter -1 ).setSpanishPrice();
+                        spaPrice = passengerList.get(mCounter - 1).setSpanishRebate();
                     }
 
 
@@ -1291,10 +1298,11 @@ public class MainScene extends Application {
                     // setting variable equal to the returned value from getSelectedFlightPrice() in this class
                     flightPrice = currentPrice;
 
-                    adultPrice = bagPrice + flightPrice - spaPrice;
+
+                    adultPrice = flightPrice + bagPrice - spaPrice;
 
                     // setting variable equal to bagPrice plus the constant - child price total
-                    childPrice = bagPrice + CHILD_TOTAL_PRICE - spaPrice;
+                    childPrice = CHILD_TOTAL_PRICE + bagPrice - spaPrice;
 
 
                     // add Passenger and Flight objects to the ListView displayed in the next scene (after Continue button is selected)
@@ -1304,12 +1312,12 @@ public class MainScene extends Application {
 
                         if(radioButtonReturn.isSelected()) {
                             listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flightForBaby.toString(),
-                                    "\tTotal: \t\t\t\t\t = €" + BABY_PRICE + " (Babies fly free, but do not get a seat nor a checked bag)");
+                                    "\tTotal: \t\t\t\t\t\t = €" + BABY_PRICE + " (Babies fly free, but do not get a seat nor a checked bag)");
                         }
                         else if(radioButtonOneWay.isSelected()) {
 
                             listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flightForBaby.toStringSingleFlight(),
-                                    "\tTotal: \t\t\t\t\t = €" + BABY_PRICE + " (Babies fly free, but do not get a seat nor a checked bag)");
+                                    "\tTotal: \t\t\t\t\t\t = €" + BABY_PRICE + " (Babies fly free, but do not get a seat nor a checked bag)");
                         }
 
                     } else if (passengerList.get(i).getDateOfBirth().isAfter(nowMinus5yrs) && passengerList.get(i).getDateOfBirth().isBefore(nowMinus1yr)) {
@@ -1318,16 +1326,12 @@ public class MainScene extends Application {
 
                         if(radioButtonReturn.isSelected()) {
                             listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flightForChild.toString(),
-                                    "\tTotal: \t\t\t\t\t = €" + childPrice +
-                                            " (incl baggage cost of: €" + passengerList.get(mCounter - 1).setBaggagePriceReturn() +
-                                            ", Spanish rebate of: €" + passengerList.get(mCounter -1).setSpanishPrice() +")");
+                                    "\tTotal: \t\t\t\t\t\t = €" + childPrice);
                         }
                         else if(radioButtonOneWay.isSelected()) {
 
                             listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flightForChild.toStringSingleFlight(),
-                                    "\tTotal: \t\t\t\t\t = €" + childPrice + " (incl baggage cost of €" +
-                                            passengerList.get(mCounter - 1).setBaggagePriceSingle() +
-                                            ", Spanish rebate of: €" + passengerList.get(mCounter -1).setSpanishPrice() +")");
+                                    "\tTotal: \t\t\t\t\t\t = €" + childPrice);
                         }
 
 
@@ -1336,16 +1340,16 @@ public class MainScene extends Application {
                         setFlightPriceAdult();
 
                         if(radioButtonReturn.isSelected()) {
-                            listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flight.toString(),
-                                    "\tTotal: \t\t\t\t\t = €" + adultPrice + " (incl baggage cost of €" +
-                                            passengerList.get(mCounter - 1).setBaggagePriceReturn() +
-                                            ", Spanish rebate of: €" + passengerList.get(mCounter -1).setSpanishPrice() +")");
+                            listView.getItems().addAll("\nPassenger " + mCounter +
+                                            passengerList.get(mCounter - 1),
+                                            flight.toString(),
+                                            "\tTotal: \t\t\t\t\t\t = €" + adultPrice);
                         }
                         else if(radioButtonOneWay.isSelected()) {
-                            listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flight.toStringSingleFlight(),
-                                    "\tTotal: \t\t\t\t\t = €" + adultPrice + " (incl baggage cost of €" +
-                                            passengerList.get(mCounter - 1).setBaggagePriceSingle() +
-                                            ", Spanish rebate of: €" + passengerList.get(mCounter -1).setSpanishPrice() +")");
+                            listView.getItems().addAll("\nPassenger " + mCounter
+                                            + passengerList.get(mCounter - 1),
+                                            flight.toStringSingleFlight(),
+                                            "\tTotal: \t\t\t\t\t\t = €" + adultPrice);
                         }
 
                     }
@@ -1380,7 +1384,6 @@ public class MainScene extends Application {
 
         addPassengers();
 
-        // OFF for Testing
         if (comboOrigin.getValue() != null || comboDestination.getValue() != null) {
             if (datePickerDeparture.getValue() != null || datePickerReturn.getValue() != null) {
 
@@ -1454,9 +1457,7 @@ public class MainScene extends Application {
         buttonContinue = new Button("Continue");
         buttonContinue.setOnAction(event -> {
 
-
             validateForEmptyFields();
-
 
         });
 

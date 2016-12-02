@@ -38,7 +38,7 @@
     -fx-translate-x: 10;
 }
 
-.myDatePicker {
+.myDatePicker, .sm-label {
     -fx-max-width: 120;
 }
 

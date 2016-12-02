@@ -81,16 +81,16 @@ public class Flight{
 
     @Override
     public String toString() {
-        return "\tDepart: \t\t" + displayDeptDetails() +
-                "\n\tReturn: \t\t"+ displayReturnDetails() +
-                "\n\tDepart Time: \t"+ this.departTime + "\n\tReturn Time: \t" + this.returnTime +
-                       "\n\tFlight Price: \t\t"+ displayTotalPrice() + "\n";
+        return "\tDepart: \t\t\t" + displayDeptDetails() +
+                "\n\tReturn: \t\t\t"+ displayReturnDetails() +
+                "\n\tDepart Time: \t\t"+ this.departTime + "\n\tReturn Time: \t\t" + this.returnTime +
+                       "\n\tFlight Price: \t\t\t"+ displayTotalPrice() + "\n";
     }
 
     public String toStringSingleFlight() {
-        return "\tDepart: \t\t" + displayDeptDetails() +
-                "\n\tDepart Time: \t"+ this.departTime +
-                "\n\tFlight Price: \t\t"+ displayTotalPrice() + "\n";
+        return "\tDepart: \t\t\t" + displayDeptDetails() +
+                "\n\tDepart Time: \t\t"+ this.departTime +
+                "\n\tFlight Price: \t\t\t"+ displayTotalPrice() + "\n";
     }
 
 

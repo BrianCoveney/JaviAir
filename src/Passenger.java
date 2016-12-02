@@ -13,49 +13,42 @@ public class Passenger {
     private boolean spanishSelected;
     private double baggagePrice;
     private double spanishResidentPrice;
+    private String numberDNI;
     private boolean isChild;
     private boolean isAdult;
 
 
 
-    public Passenger(String firstName, String lastName, LocalDate dateOfBirth, boolean baggageSelect, boolean spanishSelected) {
+    public Passenger(String firstName, String lastName, String numberDNI, LocalDate dateOfBirth, boolean baggageSelect, boolean spanishSelected) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.numberDNI = numberDNI;
         this.dateOfBirth = dateOfBirth;
         this.baggageSelected = baggageSelect;
         this.spanishSelected = spanishSelected;
 
     }
 
-    public Passenger(String firstName, String lastName, LocalDate dateOfBirth, boolean baggageSelect, double baggagePrice) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.baggageSelected = baggageSelect;
-        this.baggagePrice = baggagePrice;
+
+
+    public boolean isSpanishSelected() {
+        return spanishSelected;
     }
-
-
 
     public boolean isBaggageSelected() {
         return baggageSelected;
     }
 
-    public double getBaggagePrice() {
-        return baggagePrice;
-    }
-
-    public void setBaggagePrice(double baggagePrice) {
-        this.baggagePrice = baggagePrice;
-    }
 
 
-    public double setSpanishPrice() {
+
+    public double setSpanishRebate() {
         double spaPrice = 0.0;
 
-        if(isSpanishSelected() == true) {
-            spaPrice = 5;
+        if(isSpanishSelected()){
+            spaPrice = spaPrice + 5;
         }
+
         return spaPrice;
     }
 
@@ -81,6 +74,15 @@ public class Passenger {
         return bagPrice;
     }
 
+    public double removeSpanishRebate() {
+
+        double rebate =  setSpanishRebate();
+
+        double removed = rebate - rebate;
+
+        return removed;
+    }
+
 
     public boolean isPassengerUnder5() {
 
@@ -104,8 +106,12 @@ public class Passenger {
     }
 
 
-    public boolean isSpanishSelected() {
-        return spanishSelected;
+    public String getNumberDNI() {
+        return numberDNI;
+    }
+
+    public void setNumberDNI(String numberDNI) {
+        this.numberDNI = numberDNI;
     }
 
     public void setSpanishSelected(boolean spanishSelected) {
@@ -145,6 +151,25 @@ public class Passenger {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public double getBaggagePrice() {
+        return baggagePrice;
+    }
+
+    public void setBaggagePrice(double baggagePrice) {
+        this.baggagePrice = baggagePrice;
+    }
+
+
+    public String spanishSelectedString() {
+        String value;
+        if (isSpanishSelected() == true) {
+            value = "Yes";
+        } else{
+            value = "No";
+        }
+        return value;
+    }
+
 
     @Override
     public String toString() {
@@ -154,12 +179,13 @@ public class Passenger {
         String formattedDob = date.format(formatter);
 
         return  " Details:"+
-                "\n\n\tFirst name:\t " + this.firstName +
+                "\n\n\tFirst name:\t\t " + this.firstName +
                 "\n" +
-                "\tLast name:\t " + this.lastName +
+                "\tLast name:\t\t " + this.lastName +
                 "\n" +
-                "\tDate of birth:\t " + formattedDob +
-                "\n\t" + "Baggage: \t €" + setBaggagePriceSingle();
+                "\tDate of birth:\t\t " + formattedDob +
+                "\n\t" + "Spanish Repate: \t " + spanishSelectedString() +
+                "\n\t" + "Baggage: \t\t €" + setBaggagePriceSingle();
     }
 
 }
