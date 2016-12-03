@@ -136,7 +136,7 @@ public class MainScene extends Application {
     private ObservableList<TextField> numberDNIList = FXCollections.observableArrayList();
     private ObservableList<DatePicker> dpDateOfBirthList = FXCollections.observableArrayList();
     private ObservableList<RadioButton> radioBtnListBag = FXCollections.observableArrayList();
-    private ObservableList<CheckBox> spanishCheckboxList = FXCollections.observableArrayList();
+    private ObservableList<CheckBox> checkboxListSpanish = FXCollections.observableArrayList();
 
     public TextField fName, fName2, fName3, fName4, fName5, fName6, fName7, fName8,
             lName, lName2, lName3, lName4, lName5, lName6, lName7, lName8,
@@ -954,7 +954,7 @@ public class MainScene extends Application {
         lName8 = new TextField();
         custDNI8 = new TextField();
         dateOfBirth1 = new DatePicker();
-        dateOfBirth1.setValue(LocalDate.now().minusYears(19)); // FOR TESTING
+        dateOfBirth1.setValue(LocalDate.now().minusYears(19));
         dateOfBirth1.setPromptText("dd/mm/yyyy");
         dateOfBirth2 = new DatePicker();
         dateOfBirth3 = new DatePicker();
@@ -986,7 +986,7 @@ public class MainScene extends Application {
         tfLastNamesList.addAll(lName, lName2, lName3, lName4, lName5, lName6, lName7, lName8);
         dpDateOfBirthList.addAll(dateOfBirth1, dateOfBirth2, dateOfBirth3, dateOfBirth4, dateOfBirth5, dateOfBirth6, dateOfBirth7, dateOfBirth8);
         radioBtnListBag.addAll(radioBtn1, radioBtn2, radioBtn3, radioBtn4, radioBtn5, radioBtn6, radioBtn7, radioBtn8);
-        spanishCheckboxList.addAll(checkboxSpa1, checkboxSpa2, checkboxSpa3, checkboxSpa4, checkboxSpa5, checkboxSpa6, checkboxSpa7, checkboxSpa8);
+        checkboxListSpanish.addAll(checkboxSpa1, checkboxSpa2, checkboxSpa3, checkboxSpa4, checkboxSpa5, checkboxSpa6, checkboxSpa7, checkboxSpa8);
         numberDNIList.addAll(custDNI1, custDNI2, custDNI3, custDNI4, custDNI5, custDNI6, custDNI7, custDNI8);
 
 
@@ -1001,7 +1001,7 @@ public class MainScene extends Application {
                 dpDateOfBirthList.get(i).setDisable(true);
                 dpDateOfBirthList.get(i).getStyleClass().add("myDatePicker");
                 radioBtnListBag.get(i).setDisable(true);
-                spanishCheckboxList.get(i).setDisable(true);
+                checkboxListSpanish.get(i).setDisable(true);
 
 
             }
@@ -1071,9 +1071,6 @@ public class MainScene extends Application {
         checkboxSpanishControlsDNINumberField();
 
 
-
-
-
         StackPane.setAlignment(gridPaneRight, Pos.TOP_LEFT);
         stackPaneRight.getChildren().addAll(gridPaneRight);
 
@@ -1118,13 +1115,13 @@ public class MainScene extends Application {
 
         try {
             for (int i = 0; i <= MAX_PASSENGER_NO; i++) {
-                spanishCheckboxList.get(i).selectedProperty().addListener((observable, oldValue, newValue) -> {
+                checkboxListSpanish.get(i).selectedProperty().addListener((observable, oldValue, newValue) -> {
 
                     // checked
                     if(newValue) {
                         try {
                             for (int j = 0; j <= MAX_PASSENGER_NO; j++) {
-                                if(spanishCheckboxList.get(j).isSelected()) {
+                                if(checkboxListSpanish.get(j).isSelected()) {
                                     numberDNIList.get(j).setDisable(false);
                                 }
                             }
@@ -1136,7 +1133,7 @@ public class MainScene extends Application {
                     else {
                         try {
                             for (int k = 0; k <= MAX_PASSENGER_NO; k++) {
-                                if(spanishCheckboxList.get(k).isSelected() == false ) {
+                                if(checkboxListSpanish.get(k).isSelected() == false ) {
                                     numberDNIList.get(k).setDisable(true);
                                 }
                             }
@@ -1150,6 +1147,9 @@ public class MainScene extends Application {
             e.getMessage();
         }
     }
+
+
+
 
 
 
@@ -1179,20 +1179,20 @@ public class MainScene extends Application {
                     tfLastNamesList.get(i - 1).setDisable(false);
                     dpDateOfBirthList.get(i - 1).setDisable(false);
                     radioBtnListBag.get(i - 1).setDisable(false);
-                    spanishCheckboxList.get(i - 1).setDisable(false);
+                    checkboxListSpanish.get(i - 1).setDisable(false);
 
                     tfFirstNamesList.get(i).setDisable(true);
                     tfLastNamesList.get(i).setDisable(true);
                     numberDNIList.get(i).setDisable(true);
                     dpDateOfBirthList.get(i).setDisable(true);
                     radioBtnListBag.get(i).setDisable(true);
-                    spanishCheckboxList.get(i).setDisable(true);
+                    checkboxListSpanish.get(i).setDisable(true);
                     tfFirstNamesList.get(i).clear();
                     tfLastNamesList.get(i).clear();
                     numberDNIList.get(i).clear();
                     dpDateOfBirthList.get(i).getEditor().clear();
                     radioBtnListBag.get(i).setSelected(false);
-                    spanishCheckboxList.get(i).setSelected(false);
+                    checkboxListSpanish.get(i).setSelected(false);
 
                 }
 
@@ -1306,6 +1306,7 @@ public class MainScene extends Application {
 
 
 
+
                     // setting variable equal to the returned value from getSelectedFlightPrice() in this class
                     flightPrice = currentPrice;
 
@@ -1322,13 +1323,17 @@ public class MainScene extends Application {
                         setFlightPriceInfants();
 
                         if(radioButtonReturn.isSelected()) {
-                            listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flightForBaby.toString(),
-                                    "\tTotal: \t\t\t\t\t\t = €" + BABY_PRICE + " (Babies fly free, but do not get a seat nor a checked bag)");
+                            listView.getItems().addAll("\nPassenger " + mCounter +
+                                            passengerList.get(mCounter - 1),
+                                            flightForBaby.toString(),
+                                             "\tTotal: \t\t\t\t\t\t = €" + BABY_PRICE + " (Babies fly free, but do not get a seat nor a checked bag)");
                         }
                         else if(radioButtonOneWay.isSelected()) {
 
-                            listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flightForBaby.toStringSingleFlight(),
-                                    "\tTotal: \t\t\t\t\t\t = €" + BABY_PRICE + " (Babies fly free, but do not get a seat nor a checked bag)");
+                            listView.getItems().addAll("\nPassenger " + mCounter +
+                                            passengerList.get(mCounter - 1),
+                                            flightForBaby.toStringSingleFlight(),
+                                            "\tTotal: \t\t\t\t\t\t = €" + BABY_PRICE + " (Babies fly free, but do not get a seat nor a checked bag)");
                         }
 
                     } else if (passengerList.get(i).getDateOfBirth().isAfter(nowMinus5yrs) && passengerList.get(i).getDateOfBirth().isBefore(nowMinus1yr)) {
@@ -1336,13 +1341,17 @@ public class MainScene extends Application {
                         setFlightPriceChild();
 
                         if(radioButtonReturn.isSelected()) {
-                            listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flightForChild.toString(),
-                                    "\tTotal: \t\t\t\t\t\t = €" + childPrice);
+                            listView.getItems().addAll("\nPassenger " + mCounter +
+                                            passengerList.get(mCounter - 1),
+                                            flightForChild.toString(),
+                                            "\tTotal: \t\t\t\t\t\t = €" + childPrice);
                         }
                         else if(radioButtonOneWay.isSelected()) {
 
-                            listView.getItems().addAll("\nPassenger " + mCounter + passengerList.get(mCounter - 1), flightForChild.toStringSingleFlight(),
-                                    "\tTotal: \t\t\t\t\t\t = €" + childPrice);
+                            listView.getItems().addAll("\nPassenger " + mCounter +
+                                            passengerList.get(mCounter - 1),
+                                            flightForChild.toStringSingleFlight(),
+                                            "\tTotal: \t\t\t\t\t\t = €" + childPrice);
                         }
 
 
@@ -1406,6 +1415,7 @@ public class MainScene extends Application {
                     int countAdult = 0;
 
 
+
                     for (Passenger mPassenger : passengerList) {
                         i++;
 
@@ -1418,28 +1428,43 @@ public class MainScene extends Application {
                             countAdult++;
                         }
 
+
+
+
+
+
+
+
                         if (spinnerPassengerNo.getValue() == i) {
 
 
-                            if (mPassenger.getFirstName().isEmpty() || mPassenger.getLastName().isEmpty() || mPassenger.getDateOfBirth() == null) {
 
+                            // validation
+                            if(mPassenger.isSpanishSelected() == true && mPassenger.validateDNINumber() == false){
+                                UtilityClass.errorMessageDNINumber();
+                            }
+
+
+
+                            else if (mPassenger.getFirstName().isEmpty() || mPassenger.getLastName().isEmpty() || mPassenger.getDateOfBirth() == null) {
                                 UtilityClass.errorMessageAddCustomer();
-
-                            } else if (!mPassenger.getFirstName().matches(validText)) {
+                            }
+                            else if (!mPassenger.getFirstName().matches(validText)) {
                                 UtilityClass.errorMessageFirstName();
-                            } else if (!mPassenger.getLastName().matches(validText)) {
+                            }
+                            else if (!mPassenger.getLastName().matches(validText)) {
                                 UtilityClass.errorMessageLastName();
-
-                            } else if (countChildren >= 3) {
+                            }
+                            else if (countChildren >= 3) {
                                 UtilityClass.errorMessageMaxTwoChildren();
-
-                            } else if (countAdult == 0) {
+                            }
+                            else if (countAdult == 0) {
                                 UtilityClass.errorMessageUnder18();
+                            }
+                            else {
 
-                            } else {
+                                // go to next scene
                                 getDetails();
-
-
                             }
                         }
                     }
@@ -1454,9 +1479,6 @@ public class MainScene extends Application {
             UtilityClass.errorMessageFlight();
         }
     }
-
-
-
 
 
 

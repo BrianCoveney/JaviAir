@@ -22,11 +22,31 @@ public class Passenger {
     public Passenger(String firstName, String lastName, String numberDNI, LocalDate dateOfBirth, boolean baggageSelect, boolean spanishSelected) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.numberDNI = numberDNI;
+        setNumberDNI(numberDNI);
         this.dateOfBirth = dateOfBirth;
         this.baggageSelected = baggageSelect;
         this.spanishSelected = spanishSelected;
 
+    }
+
+
+
+    public boolean validateDNINumber() {
+
+        boolean isValid = true;
+        String validDNI = "[0-9]{3}";
+
+        try {
+
+            if (getNumberDNI() != null && !getNumberDNI().matches(validDNI)) {
+                isValid = false;
+            }
+
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
+        return isValid;
     }
 
 
@@ -106,13 +126,11 @@ public class Passenger {
     }
 
 
-    public String getNumberDNI() {
-        return numberDNI;
-    }
 
-    public void setNumberDNI(String numberDNI) {
-        this.numberDNI = numberDNI;
-    }
+
+    public String getNumberDNI() {return numberDNI;}
+
+    public void setNumberDNI(String numberDNI) {this.numberDNI = numberDNI;}
 
     public void setSpanishSelected(boolean spanishSelected) {
         this.spanishSelected = spanishSelected;
@@ -147,9 +165,7 @@ public class Passenger {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
+    public void setDateOfBirth(LocalDate dateOfBirth) {this.dateOfBirth = dateOfBirth;}
 
     public double getBaggagePrice() {
         return baggagePrice;

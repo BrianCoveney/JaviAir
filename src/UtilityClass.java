@@ -137,10 +137,25 @@ public final class UtilityClass {
     public static void errorMessageCreditCardCCVNumber() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Input Error");
-        alert.setContentText("Credit Card CCV Number");
+        alert.setContentText("Invalid Credit Card CCV Number");
         alert.showAndWait();
     }
 
+    // user enters incorrect format
+    public static void errorMessageDNINumber() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Input Error");
+        alert.setContentText("Invalid DNI Number");
+        alert.showAndWait();
+    }
+
+    // user enters incorrect format
+    public static void errorMessageDateOfBirth() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Input Error");
+        alert.setContentText("Invalid date of birth");
+        alert.showAndWait();
+    }
 
 
     // user enters incorrect format
