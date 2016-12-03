@@ -922,7 +922,7 @@ public class MainScene extends Application {
         labelSpanish.getStyleClass().add("label-header");
         StackPane.setAlignment(labelBag, Pos.TOP_RIGHT);
         StackPane.setAlignment(labelSpanish, Pos.TOP_CENTER);
-        StackPane.setMargin(labelSpanish, new Insets(0, 0, 0, 180));
+        StackPane.setMargin(labelSpanish, new Insets(0, 0, 0, 230));
         StackPane.setMargin(labelBag, new Insets(0, 5, 0, 0));
         stackPaneRight.getChildren().addAll(labelBorder, labelBag, labelSpanish);
 
@@ -1068,7 +1068,7 @@ public class MainScene extends Application {
 
         disableBaggageOptionForInfants();
 
-        enableDNIField();
+        checkboxSpanishControlsDNINumberField();
 
 
 
@@ -1113,30 +1113,38 @@ public class MainScene extends Application {
     }
 
 
-    private void enableDNIField() {
+    private void checkboxSpanishControlsDNINumberField() {
         addPassengers();
+
         try {
             for (int i = 0; i <= MAX_PASSENGER_NO; i++) {
                 spanishCheckboxList.get(i).selectedProperty().addListener((observable, oldValue, newValue) -> {
-                    if(newValue) {
 
+                    // checked
+                    if(newValue) {
                         try {
                             for (int j = 0; j <= MAX_PASSENGER_NO; j++) {
-
                                 if(spanishCheckboxList.get(j).isSelected()) {
                                     numberDNIList.get(j).setDisable(false);
-                                } else if (spanishCheckboxList.get(j).isSelected() == false){
-                                    numberDNIList.get(j).setDisable(true);
-
                                 }
-
+                            }
+                        } catch (Exception e) {
+                            e.getMessage();
+                        }
+                    }
+                    // un-checked
+                    else {
+                        try {
+                            for (int k = 0; k <= MAX_PASSENGER_NO; k++) {
+                                if(spanishCheckboxList.get(k).isSelected() == false ) {
+                                    numberDNIList.get(k).setDisable(true);
+                                }
                             }
                         } catch (Exception e) {
                             e.getMessage();
                         }
                     }
                 });
-
             }
         } catch (Exception e) {
             e.getMessage();
@@ -1152,6 +1160,9 @@ public class MainScene extends Application {
             fName.setDisable(true);
             lName.setDisable(true);
             dateOfBirth1.setDisable(true);
+            custDNI1.setDisable(true);
+            checkboxSpa1.setDisable(true);
+            radioBtn1.setDisable(true);
             fName.clear();
             lName.clear();
             custDNI1.clear();
