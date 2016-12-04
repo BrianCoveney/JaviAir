@@ -15,6 +15,11 @@ public class CreditCard {
     private String ccvNumber;
 
 
+    public CreditCard(String cardNumber){
+        this.cardNumber = cardNumber;
+    }
+
+
     public CreditCard(String name, String address1, String address2, String address3, String cardType, String cardNumber,
                       LocalDate expiryDate, String ccvNumber ) {
         setName(name);
@@ -41,19 +46,28 @@ public class CreditCard {
         return input;
     }
 
+
+
+
     public String validateCreditCardNumber(String inputCCNum) {
 
-        // any number between 0-9 and of 8 digits
-        String validCCInt = "[0-9]{8}";
+        // reference CC regex:
+        // https://www.safaribooksonline.com/library/view/regular-expressions-cookbook/9781449327453/ch04s20.html
+        String visa = "(4[0-9]{12}(?:[0-9]{3})?)";
+
         try {
-            if (!inputCCNum.matches(validCCInt)) {
+
+            if(!inputCCNum.matches(visa)) {
                 UtilityClass.errorMessageCreditCardNumber();
             }
+
         }catch (Exception e) {
             e.getMessage();
         }
         return inputCCNum;
     }
+
+
 
     public String validateCCVNumber(String inputCCV) {
 
