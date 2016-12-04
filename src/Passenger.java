@@ -19,6 +19,9 @@ public class Passenger {
     private boolean isChild;
     private boolean isAdult;
 
+    public Passenger(String numberDNI){
+        this.numberDNI = numberDNI;
+    }
 
 
     public Passenger(String firstName, String lastName, String numberDNI, LocalDate dateOfBirth, boolean baggageSelect, boolean spanishSelected) {
@@ -32,63 +35,49 @@ public class Passenger {
     }
 
 
+
+    // referenced Colin Manning's code here:
+    // http://mcom.cit.ie/staff/Computing/CManning/soft6008-2015/js09/js-09-dni.html
+
     public boolean validateDNINumber() {
+
+        String dniCopy = this.numberDNI;
         String madString = "TRWAGMYFPDXBNJZSQVHLCKE";
-        String dniCopy = getNumberDNI();
-        String dniStriped = "";
         String dniLetter = "";
         char dniLetter2;
-        int dniNum = 0;
-        int dniMod = 0;
-
+        int dniNum;
+        int dniMod;
 
         try {
             if (dniCopy != null) {
 
 
-                if (!(dniCopy.length() == 10)) {
-                    return false;
-                }
-
                 if (!((dniCopy.length() == 9) || dniCopy.length() == 10)) {
                     return false;
                 }
 
-
                 if (dniCopy.length() == 10) {
 
-                    if (dniCopy.charAt(8) == '-') {
-                        dniStriped = dniCopy.replace("-", "");
-                        dniNum = parseInt(dniStriped.substring(0, 8), 10);
-                        dniLetter = dniStriped.substring(8, 9).toUpperCase();
+                    if (this.numberDNI.charAt(8) == '-') {
+                        dniCopy = this.numberDNI.replace("-", "");
 
-                        dniMod = dniNum % 23;
-
-                        dniLetter2 = madString.charAt(dniMod);
-
-
-                        if (!dniLetter.matches(String.valueOf(dniLetter2))) {
-                            return false;
-                        }
                     } else {
                         return false;
                     }
-
                 }
 
-
-                System.out.println(dniNum);
-
-                System.out.println(dniLetter);
+                dniNum = parseInt(dniCopy.substring(0, 8), 10);
+                dniLetter = dniCopy.substring(8, 9).toUpperCase();
                 dniMod = dniNum % 23;
-
-                System.out.println(dniMod);
-
-
                 dniLetter2 = madString.charAt(dniMod);
 
-                System.out.println(dniLetter2);
-
+                if (!dniLetter.matches(String.valueOf(dniLetter2))) {
+                    return false;
+                } else {
+                    // test passes
+//                    System.out.println(dniLetter);
+//                    System.out.println(dniLetter2);
+                }
             }
         } catch (Exception e) {
             e.getMessage();
