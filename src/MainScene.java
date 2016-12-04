@@ -1409,12 +1409,9 @@ public class MainScene extends Application {
 
                 try {
 
-                    String validText = "^[\\p{L} .'-]+$";
                     int i = 0;
                     int countChildren = 0;
                     int countAdult = 0;
-
-
 
                     for (Passenger mPassenger : passengerList) {
                         i++;
@@ -1429,14 +1426,9 @@ public class MainScene extends Application {
                         }
 
 
-
-
-
-
-
-
                         if (spinnerPassengerNo.getValue() == i) {
 
+                            mPassenger.validateFirstName();
 
 
                             // validation
@@ -1444,17 +1436,18 @@ public class MainScene extends Application {
                                 UtilityClass.errorMessageDNINumber();
                             }
 
-
-
                             else if (mPassenger.getFirstName().isEmpty() || mPassenger.getLastName().isEmpty() || mPassenger.getDateOfBirth() == null) {
                                 UtilityClass.errorMessageAddCustomer();
                             }
-                            else if (!mPassenger.getFirstName().matches(validText)) {
+
+                            else if(mPassenger.validateFirstName()) {
                                 UtilityClass.errorMessageFirstName();
                             }
-                            else if (!mPassenger.getLastName().matches(validText)) {
+
+                            else if(mPassenger.validateLastName()) {
                                 UtilityClass.errorMessageLastName();
                             }
+
                             else if (countChildren >= 3) {
                                 UtilityClass.errorMessageMaxTwoChildren();
                             }
