@@ -15,9 +15,8 @@ public class CreditCard {
     private String ccvNumber;
 
 
-    public CreditCard(String cardNumber){
-        this.cardNumber = cardNumber;
-    }
+
+    public CreditCard(){}
 
 
     public CreditCard(String name, String address1, String address2, String address3, String cardType, String cardNumber,
@@ -47,24 +46,43 @@ public class CreditCard {
     }
 
 
-
-
-    public String validateCreditCardNumber(String inputCCNum) {
-
-        // reference CC regex:
-        // https://www.safaribooksonline.com/library/view/regular-expressions-cookbook/9781449327453/ch04s20.html
-        String visa = "(4[0-9]{12}(?:[0-9]{3})?)";
-
+    // validation Credit Card using the Luhn algorithm
+    public boolean validateCreditCardNumber(String inputCCNum) {
+        boolean isValid = false;
         try {
 
-            if(!inputCCNum.matches(visa)) {
-                UtilityClass.errorMessageCreditCardNumber();
+            int total = 0;
+            int ccNumber = 0;
+
+
+            for (int i = 0; i < inputCCNum.length(); i++) {
+
+                ccNumber = Integer.parseInt(inputCCNum.substring(i, i + 1));
+
+                if (i % 2 == 0) {
+
+                    ccNumber = ccNumber * 2;
+
+                    if (ccNumber > 9) {
+                        ccNumber -= 9;
+                    }
+                }
+
+                total += ccNumber;
             }
 
-        }catch (Exception e) {
+            if (total % 10 == 0) {
+                isValid = true;
+            } else {
+                isValid = false;
+            }
+
+        } catch (Exception e) {
             e.getMessage();
         }
-        return inputCCNum;
+
+        return isValid;
+
     }
 
 

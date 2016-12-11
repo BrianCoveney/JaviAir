@@ -128,7 +128,7 @@ public final class UtilityClass {
     public static void errorMessageCreditCardNumber() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Input Error");
-        alert.setContentText("CC Number");
+        alert.setContentText("Invalid Credit Card Number");
         alert.showAndWait();
     }
 

@@ -12,14 +12,14 @@ public class PassengerTest extends TestCase {
     public void testValidateDNINumber() throws Exception {
 
 
-        Passenger passenger1 = new Passenger("0347393-X");
+        Passenger passenger1 = new Passenger("00000010-X");
         boolean result1 = passenger1.validateDNINumber();
 
         assertTrue(result1);
 
 
 
-        Passenger passenger2 = new Passenger("123567-z");
+        Passenger passenger2 = new Passenger("12345678-a");
         boolean result2 = passenger2.validateDNINumber();
 
         assertFalse(result2);

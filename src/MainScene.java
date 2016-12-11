@@ -249,6 +249,8 @@ public class MainScene extends Application {
 
     private void createCreditCard() {
 
+        String cardNum = tfCCNumber.getText();
+
         mCreditCard = new CreditCard(
                 tfCCName.getText(),
                 tfCCAddress1.getText(),
@@ -258,6 +260,12 @@ public class MainScene extends Application {
                 tfCCNumber.getText(),
                 dpCCExpiryDate.getValue(),
                 tfCCVNumber.getText());
+
+        if(mCreditCard.validateCreditCardNumber(cardNum) == true) {
+            UtilityClass.orderReceived();
+        } else {
+            UtilityClass.errorMessageCreditCardNumber();
+        }
 
     }
 
@@ -1298,7 +1306,7 @@ public class MainScene extends Application {
                     }
 
 
-                    if (flightDepart.equals(MADRID) && flightReturn.equals(MALAGA)) {
+                    if (flightDepart.equals(MADRID) && flightReturn.equals(MALAGA) || flightDepart.equals(MALAGA) && flightReturn.equals(MADRID) ) {
                         spaPrice = passengerList.get(mCounter -1).setSpanishRebate() * 2;
                     } else {
                         spaPrice = passengerList.get(mCounter - 1).setSpanishRebate();

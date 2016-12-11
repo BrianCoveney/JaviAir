@@ -73,10 +73,6 @@ public class Passenger {
 
                 if (!dniLetter.matches(String.valueOf(dniLetter2))) {
                     return false;
-                } else {
-                    // test passes
-//                    System.out.println(dniLetter);
-//                    System.out.println(dniLetter2);
                 }
             }
         } catch (Exception e) {
@@ -128,7 +124,7 @@ public class Passenger {
         double spaPrice = 0.0;
 
         if(isSpanishSelected()){
-            spaPrice = spaPrice + 5;
+            spaPrice = 5;
         }
 
         return spaPrice;
@@ -140,7 +136,7 @@ public class Passenger {
         double bagPrice = 0.0;
 
         if(isBaggageSelected() == true) {
-            bagPrice = bagPrice + 15;
+            bagPrice = 15;
         }
         return bagPrice;
     }
@@ -151,7 +147,7 @@ public class Passenger {
         double bagPrice = 0.0;
 
         if(isBaggageSelected() == true) {
-            bagPrice = bagPrice + 30;
+            bagPrice = 30;
         }
         return bagPrice;
     }
@@ -184,6 +180,7 @@ public class Passenger {
         if(this.getDateOfBirth().isBefore(LocalDate.now().minusYears(18))) {
             isAdult = true;
         }
+
         return isAdult;
     }
 
