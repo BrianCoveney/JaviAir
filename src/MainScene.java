@@ -41,7 +41,7 @@ public class MainScene extends Application {
     private Label labelOrigin, labelDestination, labelDateDeparture, labelDateReturn;
     private ListView listView;
     private RadioButton radioButtonReturn, radioButtonOneWay, radioButtonDeptTime1, radioButtonDeptTime2, radioButtonReturnTime1, radioButtonReturnTime2;
-    public String dptFlight, rtnFlight;
+    public String dptFlight, rtnFlight, flightTime_1, flightTime_2;
     private double dateDepartPrice;
     private double dateReturnPrice;
     private double flightPrice;
@@ -74,6 +74,7 @@ public class MainScene extends Application {
     private Passenger passenger1, passenger2, passenger3, passenger4, passenger5, passenger6, passenger7, passenger8;
     private Flight flight, flightForChild, flightForBaby;
     private CreditCard mCreditCard;
+    private FlightTimes flightTimes;
 
 
 
@@ -259,6 +260,7 @@ public class MainScene extends Application {
             datePickerReturn.setValue(null);
 
 
+
             if (comboOrigin.getItems().contains(comboOrigin.getValue())) {
                 disableFlights();
                 getSelectedFlightPrice();
@@ -278,7 +280,8 @@ public class MainScene extends Application {
             datePickerReturn.getEditor().clear();
             datePickerDeparture.setValue(null);
             datePickerReturn.setValue(null);
-
+            toggleGroupFlightTimes_1.selectToggle(null);
+            toggleGroupFlightTimes_2.selectToggle(null);
 
             if (comboDestination.getItems().contains(comboDestination.getValue())) {
                 getSelectedFlightPrice();
@@ -359,53 +362,36 @@ public class MainScene extends Application {
     }
 
     private void disableFlights() {
-        String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
+        String dptFlight = comboOrigin.getSelectionModel().getSelectedItem();
 
 
         try {
-            if (flightDepart.equals(Consts.CORK)) {
+            if (dptFlight.equals(Consts.CORK)) {
                 comboDestination.getItems().clear();
                 comboDestination.getItems().addAll(Consts.MADRID, Consts.ST_BRIEUC, Consts.JERSEY, Consts.PARIS, Consts.STANSTED, Consts.MALAGA);
-            } else if (flightDepart.equals(Consts.MADRID)) {
+            } else if (dptFlight.equals(Consts.MADRID)) {
                 comboDestination.getItems().clear();
                 comboDestination.getItems().addAll(Consts.CORK, Consts.ST_BRIEUC, Consts.JERSEY, Consts.PARIS, Consts.STANSTED, Consts.MALAGA);
-            } else if (flightDepart.equals(Consts.PARIS)) {
+            } else if (dptFlight.equals(Consts.PARIS)) {
                 comboDestination.getItems().clear();
                 comboDestination.getItems().addAll(Consts.CORK, Consts.MADRID, Consts.ST_BRIEUC, Consts.JERSEY, Consts.STANSTED, Consts.MALAGA);
-            } else if (flightDepart.equals(Consts.STANSTED)) {
+            } else if (dptFlight.equals(Consts.STANSTED)) {
                 comboDestination.getItems().clear();
                 comboDestination.getItems().addAll(Consts.CORK, Consts.MADRID, Consts.ST_BRIEUC, Consts.JERSEY, Consts.PARIS, Consts.MALAGA);
-            } else if (flightDepart.equals(Consts.MALAGA)) {
+            } else if (dptFlight.equals(Consts.MALAGA)) {
                 comboDestination.getItems().clear();
                 comboDestination.getItems().addAll(Consts.CORK, Consts.MADRID, Consts.ST_BRIEUC, Consts.JERSEY, Consts.PARIS, Consts.STANSTED);
-            } else if (flightDepart.equals(Consts.ST_BRIEUC) || flightDepart.equals(Consts.JERSEY)) {
+            } else if (dptFlight.equals(Consts.ST_BRIEUC) || dptFlight.equals(Consts.JERSEY)) {
                 comboDestination.getItems().clear();
                 comboDestination.getItems().addAll(Consts.CORK, Consts.MADRID, Consts.PARIS, Consts.STANSTED, Consts.MALAGA);
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.getMessage();
         }
 
     }
 
-    private Double getSelectedFlightPrice() {
-        dptFlight = comboOrigin.getSelectionModel().getSelectedItem();
-        rtnFlight = comboDestination.getSelectionModel().getSelectedItem();
 
-
-        Flight f = new Flight();
-        flightPrice = f.getFlightPrice(dptFlight, rtnFlight);
-
-
-        // Disable March and/or April in the DatePicker.
-        // Also disable date before current time and after 6 months from now.
-        // JavaFX DatePicker Tutorial website: http://o7planning.org/en/11085/javafx-datepicker-tutorial#a3667895
-        Callback<DatePicker, DateCell> monthCellFactory = this.getMonthCellFactory();
-        datePickerDeparture.setDayCellFactory(monthCellFactory);
-        datePickerReturn.setDayCellFactory(monthCellFactory);
-
-        return this.flightPrice;
-    }
 
     // Disable March and/or April in the DatePicker
     // JavaFX DatePicker Tutorial website: http://o7planning.org/en/11085/javafx-datepicker-tutorial#a3667895g
@@ -474,7 +460,7 @@ public class MainScene extends Application {
             }
             currentPrice = dateDepartPrice + dateReturnPrice;
         } catch (NullPointerException e) {
-            System.out.println(e.getMessage());
+            e.getMessage();
         }
 
         return currentPrice;
@@ -492,15 +478,39 @@ public class MainScene extends Application {
         }
     }
 
-    private void displaySelectedFlights() {
-        String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
-        String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
+
+    private Double getSelectedFlightPrice() {
+        dptFlight = comboOrigin.getSelectionModel().getSelectedItem();
+        rtnFlight = comboDestination.getSelectionModel().getSelectedItem();
+
+
+        Flight f = new Flight();
+        flightPrice = f.getFlightPrice(dptFlight, rtnFlight);
+
+
+        // Disable March and/or April in the DatePicker.
+        // Also disable date before current time and after 6 months from now.
+        // JavaFX DatePicker Tutorial website: http://o7planning.org/en/11085/javafx-datepicker-tutorial#a3667895
+        Callback<DatePicker, DateCell> monthCellFactory = this.getMonthCellFactory();
+        datePickerDeparture.setDayCellFactory(monthCellFactory);
+        datePickerReturn.setDayCellFactory(monthCellFactory);
+
+        return this.flightPrice;
+    }
+
+
+
+    private FlightTimes displaySelectedFlights() {
+
         LocalDate dateDept = datePickerDeparture.getValue();
         LocalDate dateReturn = datePickerReturn.getValue();
 
+        dptFlight = comboOrigin.getSelectionModel().getSelectedItem();
+        rtnFlight = comboDestination.getSelectionModel().getSelectedItem();
+
         try {
 
-            if (flightDepart == null) {
+            if (dptFlight == null) {
                 UtilityClass.errorMessageFlight();
 
             } else if (dateDept == null || dateReturn == null && radioButtonReturn.isSelected()) {
@@ -511,149 +521,30 @@ public class MainScene extends Application {
                 setFlightPriceAdult();
 
 
-                if (flightDepart.equals(Consts.CORK) && flightReturn.equals(Consts.MADRID)) {
-                    flightTime1 = Consts.ORK_MAD_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.CORK) && flightReturn.equals(Consts.ST_BRIEUC)) {
-                    flightTime1 = Consts.ORK_SBK_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.CORK) && flightReturn.equals(Consts.JERSEY)) {
-                    flightTime1 = Consts.ORK_JER_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.CORK) && flightReturn.equals(Consts.PARIS)) {
-                    flightTime1 = Consts.ORK_CDG_1;
-                    flightTime2 = Consts.ORK_CDG_2;
-                } else if (flightDepart.equals(Consts.CORK) && flightReturn.equals(Consts.STANSTED)) {
-                    flightTime1 = Consts.ORK_STN_1;
-                    flightTime2 = Consts.ORK_STN_2;
-                } else if (flightDepart.equals(Consts.CORK) && flightReturn.equals(Consts.MALAGA)) {
-                    flightTime1 = Consts.ORK_AGP_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.MADRID) && flightReturn.equals(Consts.CORK)) {
-                    flightTime1 = Consts.MAD_ORK_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.MADRID) && flightReturn.equals(Consts.ST_BRIEUC)) {
-                    flightTime1 = Consts.MAD_SBK_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.MADRID) && flightReturn.equals(Consts.JERSEY)) {
-                    flightTime1 = Consts.MAD_JER_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.MADRID) && flightReturn.equals(Consts.PARIS)) {
-                    flightTime1 = Consts.MAD_CDG_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.MADRID) && flightReturn.equals(Consts.STANSTED)) {
-                    flightTime1 = Consts.MAD_STN_1;
-                    flightTime2 = Consts.MAD_STN_2;
-                } else if (flightDepart.equals(Consts.MADRID) && flightReturn.equals(Consts.MALAGA)) {
-                    flightTime1 = Consts.MAD_AGP_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.ST_BRIEUC) && flightReturn.equals(Consts.CORK)) {
-                    flightTime1 = Consts.SBK_ORK_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.ST_BRIEUC) && flightReturn.equals(Consts.MADRID)) {
-                    flightTime1 = Consts.SBK_MAD_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.ST_BRIEUC) && flightReturn.equals(Consts.JERSEY)) {
-                    flightTime1 = Consts.SBK_JER_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.ST_BRIEUC) && flightReturn.equals(Consts.PARIS)) {
-                    flightTime1 = Consts.SBK_CDG_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.ST_BRIEUC) && flightReturn.equals(Consts.STANSTED)) {
-                    flightTime1 = Consts.SBK_STN_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.ST_BRIEUC) && flightReturn.equals(Consts.MALAGA)) {
-                    flightTime1 = Consts.SBK_AGP_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.JERSEY) && flightReturn.equals(Consts.CORK)) {
-                    flightTime1 = Consts.JER_ORK_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.JERSEY) && flightReturn.equals(Consts.MADRID)) {
-                    flightTime1 = Consts.JER_MAD_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.JERSEY) && flightReturn.equals(Consts.PARIS)) {
-                    flightTime1 = Consts.JER_CDG_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.JERSEY) && flightReturn.equals(Consts.STANSTED)) {
-                    flightTime1 = Consts.JER_STN_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.JERSEY) && flightReturn.equals(Consts.MALAGA)) {
-                    flightTime1 = Consts.JER_AGP_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.PARIS) && flightReturn.equals(Consts.CORK)) {
-                    flightTime1 = Consts.CDG_ORK_1;
-                    flightTime2 = Consts.CDG_ORK_2;
-                } else if (flightDepart.equals(Consts.PARIS) && flightReturn.equals(Consts.MADRID)) {
-                    flightTime1 = Consts.CDG_MAD_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.PARIS) && flightReturn.equals(Consts.ST_BRIEUC)) {
-                    flightTime1 = Consts.CDG_SBK_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.PARIS) && flightReturn.equals(Consts.JERSEY)) {
-                    flightTime1 = Consts.CDG_JER_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.PARIS) && flightReturn.equals(Consts.STANSTED)) {
-                    flightTime1 = Consts.CDG_STN_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.PARIS) && flightReturn.equals(Consts.MALAGA)) {
-                    flightTime1 = Consts.CDG_AGP_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.STANSTED) && flightReturn.equals(Consts.CORK)) {
-                    flightTime1 = Consts.STN_ORK_1;
-                    flightTime2 = Consts.STN_ORK_2;
-                } else if (flightDepart.equals(Consts.STANSTED) && flightReturn.equals(Consts.MADRID)) {
-                    flightTime1 = Consts.STN_MAD_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.STANSTED) && flightReturn.equals(Consts.ST_BRIEUC)) {
-                    flightTime1 = Consts.STN_SBK_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.STANSTED) && flightReturn.equals(Consts.JERSEY)) {
-                    flightTime1 = Consts.STN_JER_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.STANSTED) && flightReturn.equals(Consts.PARIS)) {
-                    flightTime1 = Consts.STN_CDG_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.STANSTED) && flightReturn.equals(Consts.MALAGA)) {
-                    flightTime1 = Consts.STN_AGP_1;
-                    flightTime2 = Consts.STN_AGP_2;
-                } else if (flightDepart.equals(Consts.MALAGA) && flightReturn.equals(Consts.CORK)) {
-                    flightTime1 = Consts.AGP_ORK_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.MALAGA) && flightReturn.equals(Consts.MADRID)) {
-                    flightTime1 = Consts.AGP_MAD_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.MALAGA) && flightReturn.equals(Consts.ST_BRIEUC)) {
-                    flightTime1 = Consts.AGP_SBK_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.MALAGA) && flightReturn.equals(Consts.JERSEY)) {
-                    flightTime1 = Consts.AGP_JER_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.MALAGA) && flightReturn.equals(Consts.PARIS)) {
-                    flightTime1 = Consts.AGP_CDG_1;
-                    flightTime2 = null;
-                } else if (flightDepart.equals(Consts.MALAGA) && flightReturn.equals(Consts.STANSTED)) {
-                    flightTime1 = Consts.AGP_STN_1;
-                    flightTime2 = Consts.AGP_STN_2;
-
-                    mFlightTimes = Consts.AGP_STN_1 + "\n" + Consts.AGP_STN_2;
-                }
+                Flight f = new Flight();
+                flightTimes = f.getFlightTimes(dptFlight, rtnFlight);
 
 
                 displayFlightDetails();
 
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.getMessage();
         }
 
+        return new FlightTimes(flightTime1, flightTime2);
     }
 
 
     private void displayFlightDetails() {
 
+        flightTime_1 = flightTimes.getFlightTime1();
+        flightTime_2 = flightTimes.getFlightTime2();
+
+
         // setting times for Departure radio buttons
-        radioButtonDeptTime1.setText(flight.displayDeptDetails() + "\n" + flightTime1);
-        radioButtonReturnTime1.setText(flight.displayReturnDetails() + "\n" + flightTime1);
+        radioButtonDeptTime1.setText(flight.displayDeptDetails() + "\n" + flightTime_1);
+        radioButtonReturnTime1.setText(flight.displayReturnDetails() + "\n" + flightTime_1);
 
         radioButtonDeptTime1.setToggleGroup(toggleGroupFlightTimes_1);
         radioButtonDeptTime2.setToggleGroup(toggleGroupFlightTimes_1);
@@ -661,22 +552,22 @@ public class MainScene extends Application {
         toggleGroupFlightTimes_1.selectedToggleProperty().addListener(observable -> {
 
             if (toggleGroupFlightTimes_1.getSelectedToggle() == radioButtonDeptTime1) {
-                selectedDeptTime = flightTime1;
+                selectedDeptTime = flightTime_1;
 
             } else if (toggleGroupFlightTimes_1.getSelectedToggle() == radioButtonDeptTime2) {
-                selectedDeptTime = flightTime2;
+                selectedDeptTime = flightTime_2;
             }
 
         });
 
         // Flight has two time slots
-        if (flightTime2 != null) {
+        if (flightTime_2 != null) {
 
             // setting times for Return radio buttons
-            radioButtonDeptTime2.setText(flight.displayDeptDetails() + "\n" + flightTime2);
+            radioButtonDeptTime2.setText(flight.displayDeptDetails() + "\n" + flightTime_2);
 
 
-            radioButtonReturnTime2.setText(flight.displayReturnDetails() + "\n" + flightTime2);
+            radioButtonReturnTime2.setText(flight.displayReturnDetails() + "\n" + flightTime_2);
 
             radioButtonDeptTime2.setVisible(true);
 
@@ -691,9 +582,9 @@ public class MainScene extends Application {
             toggleGroupFlightTimes_2.selectedToggleProperty().addListener(observable -> {
 
                 if (toggleGroupFlightTimes_2.getSelectedToggle() == radioButtonReturnTime1) {
-                    selectedReturnTime = flightTime1;
+                    selectedReturnTime = flightTime_1;
                 } else if (toggleGroupFlightTimes_2.getSelectedToggle() == radioButtonReturnTime2) {
-                    selectedReturnTime = flightTime2;
+                    selectedReturnTime = flightTime_2;
                 }
 
             });
@@ -1079,15 +970,16 @@ public class MainScene extends Application {
 
 
     private void setFlightPriceAdult() {
-        String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
-        String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
+        String dptFlight = comboOrigin.getSelectionModel().getSelectedItem();
+        String rtnFlight = comboDestination.getSelectionModel().getSelectedItem();
+
 
 
 
         // constructor
         flight = new Flight(
-                flightDepart,       // setOrigin() from variable in this method
-                flightReturn,       // setDestination() from variable in this method
+                dptFlight,       // setOrigin() from variable in this method
+                rtnFlight,       // setDestination() from variable in this method
                 dateDepartPrice,    // setDepartPrice() from the return of getSelectDate()
                 dateReturnPrice,    // setReturnPrice() from the return of getSelectDate()
                 currentPrice,       // setPrice() from the return of getSelectedFlightPrice()
@@ -1096,25 +988,31 @@ public class MainScene extends Application {
     }
 
     private void setFlightPriceChild() {
-        String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
-        String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
+        String dptFlight = comboOrigin.getSelectionModel().getSelectedItem();
+        String rtnFlight = comboDestination.getSelectionModel().getSelectedItem();
         double childPrice = Consts.CHILD_PRICE;
         double childPriceTotal = childPrice * 2;
 
 
         // constructor
-        flightForChild = new ChildFlight(flightDepart, flightReturn, childPrice, childPrice, childPriceTotal, selectedDeptTime, selectedReturnTime);
+        flightForChild = new ChildFlight(dptFlight,
+                rtnFlight,
+                childPrice,
+                childPrice,
+                childPriceTotal,
+                selectedDeptTime,
+                selectedReturnTime);
 
 
     }
 
     private void setFlightPriceInfants() {
-        String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
-        String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
+        String dptFlight = comboOrigin.getSelectionModel().getSelectedItem();
+        String rtnFlight = comboDestination.getSelectionModel().getSelectedItem();
         double infantPrice = Consts.BABY_PRICE;
 
         // constructor
-        flightForBaby = new Flight(flightDepart, flightReturn, infantPrice, infantPrice, infantPrice, selectedDeptTime, selectedReturnTime);
+        flightForBaby = new Flight(dptFlight, rtnFlight, infantPrice, infantPrice, infantPrice, selectedDeptTime, selectedReturnTime);
     }
 
 
@@ -1154,8 +1052,8 @@ public class MainScene extends Application {
         double flightPrice;
         double adultPrice;
         double childPrice;
-        String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
-        String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
+        String dptFlight = comboOrigin.getSelectionModel().getSelectedItem();
+        String rtnFlight = comboDestination.getSelectionModel().getSelectedItem();
 
         for (int i = 0; i < Consts.MAX_PASSENGER_NO; i++) {
             mCounter++;
@@ -1175,7 +1073,7 @@ public class MainScene extends Application {
                     }
 
 
-                    if (flightDepart.equals(Consts.MADRID) && flightReturn.equals(Consts.MALAGA) || flightDepart.equals(Consts.MALAGA) && flightReturn.equals(Consts.MADRID) ) {
+                    if (dptFlight.equals(Consts.MADRID) && rtnFlight.equals(Consts.MALAGA) || dptFlight.equals(Consts.MALAGA) && rtnFlight.equals(Consts.MADRID) ) {
                         spaPrice = passengerList.get(mCounter -1).setSpanishRebate() * 2;
                     } else {
                         spaPrice = passengerList.get(mCounter - 1).setSpanishRebate();
