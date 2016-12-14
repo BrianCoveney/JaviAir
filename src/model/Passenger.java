@@ -1,3 +1,5 @@
+package model;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -37,7 +39,7 @@ public class Passenger {
 
     // referenced Colin Manning's code here:
     // http://mcom.cit.ie/staff/Computing/CManning/soft6008-2015/js09/js-09-dni.html
-    boolean validateDNINumber() {
+    public boolean validateDNINumber() {
 
         String dniCopy = this.numberDNI;
         String madString = "TRWAGMYFPDXBNJZSQVHLCKE";

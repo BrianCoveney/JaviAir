@@ -1,4 +1,5 @@
 import junit.framework.TestCase;
+import model.CreditCard;
 import org.junit.Test;
 
 public class CreditCardTest extends TestCase {

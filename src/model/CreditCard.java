@@ -1,3 +1,7 @@
+package model;
+
+import helpers.UtilityClass;
+
 import java.time.LocalDate;
 
 /**
@@ -142,7 +146,7 @@ public class CreditCard {
 
     @Override
     public String toString() {
-        return "CreditCard{" +
+        return "model.CreditCard{" +
                 "name='" + name + '\'' +
                 ", address1='" + address1 + '\'' +
                 ", address2='" + address2 + '\'' +

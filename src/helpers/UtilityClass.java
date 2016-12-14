@@ -1,3 +1,5 @@
+package helpers;
+
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -20,7 +22,7 @@ public final class UtilityClass {
 
     // insert the airplane icons between the flight destinations, and the flight times
     public static HBox insertIcon() {
-        Image image = new Image("airplane.png");
+        Image image = new Image("resources/airplane.png");
 
         ImageView imageView = new ImageView(image);
         imageView.setImage(image);
@@ -87,7 +89,7 @@ public final class UtilityClass {
     public static void errorMessageAddCustomer() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Input Error");
-        alert.setContentText("Passenger details cannot be empty");
+        alert.setContentText("model.Passenger details cannot be empty");
         alert.showAndWait();
     }
 

@@ -1,3 +1,7 @@
+package gui;
+
+import helpers.Consts;
+import helpers.UtilityClass;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import model.*;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -64,7 +69,7 @@ public class MainScene extends Application {
     protected TextField tfCCName,tfCCAddress1, tfCCAddress2, tfCCAddress3, tfCCType, tfCCNumber, tfCCVNumber;
     private DatePicker dateOfBirth1, dateOfBirth2, dateOfBirth3, dateOfBirth4, dateOfBirth5, dateOfBirth6, dateOfBirth7, dateOfBirth8, dpCCExpiryDate;
     private Spinner<Integer> spinnerPassengerNo;
-    // reference to the Passenger and FLight objects
+    // reference to the model.Passenger and FLight objects
     private List<Passenger> passengerList = FXCollections.observableArrayList();
 
     private List<LocalDate> dobList = FXCollections.observableArrayList();
@@ -101,7 +106,7 @@ public class MainScene extends Application {
         this.nextSceneVBox = new VBox();
         scene2 = new Scene(this.nextSceneVBox, 700, 700);
 
-        scene1.getStylesheets().add("/stylesheet.css");
+        scene1.getStylesheets().add("/cssStyles/stylesheet.css");
         primaryStage.setScene(scene1);
         primaryStage.setTitle("JaviAir App");
         primaryStage.show();
@@ -314,7 +319,7 @@ public class MainScene extends Application {
         });
 
 
-        Button btnFlightSelect = new Button("Select Flight");
+        Button btnFlightSelect = new Button("Flight");
         btnFlightSelect.setOnAction(event -> {
             if (comboDestination.getSelectionModel().isEmpty()) {
                 UtilityClass.errorMessageFlight();
@@ -560,7 +565,7 @@ public class MainScene extends Application {
 
         });
 
-        // Flight has two time slots
+        // model.Flight has two time slots
         if (flightTime_2 != null) {
 
             // setting times for Return radio buttons
@@ -591,7 +596,7 @@ public class MainScene extends Application {
 
         }
 
-        //  Flight has only one time slot
+        //  model.Flight has only one time slot
         else {
             radioButtonReturnTime2.setVisible(false);
             radioButtonDeptTime2.setVisible(false);
@@ -605,7 +610,7 @@ public class MainScene extends Application {
         gridPaneMiddle.getStyleClass().add("grid");
 
         imageViewDept = new ImageView();
-        Image imageDept = new Image("departures.png");
+        Image imageDept = new Image("resources/departures.png");
         imageViewDept.setImage(imageDept);
         imageViewDept.setFitWidth(100);
         imageViewDept.setFitHeight(100);
@@ -613,7 +618,7 @@ public class MainScene extends Application {
         imageViewDept.setCache(true);
 
         imageViewReturn = new ImageView();
-        Image imageReturn = new Image("arrivals.png");
+        Image imageReturn = new Image("resources/arrivals.png");
         imageViewReturn.setImage(imageReturn);
         imageViewReturn.setFitWidth(100);
         imageViewReturn.setFitHeight(100);
@@ -897,7 +902,7 @@ public class MainScene extends Application {
                     else {
                         try {
                             for (int k = 0; k <= Consts.MAX_PASSENGER_NO; k++) {
-                                if(checkboxListSpanish.get(k).isSelected() == false ) {
+                                if(!checkboxListSpanish.get(k).isSelected()) {
                                     numberDNIList.get(k).setDisable(true);
                                 }
                             }
@@ -995,7 +1000,8 @@ public class MainScene extends Application {
 
 
         // constructor
-        flightForChild = new ChildFlight(dptFlight,
+        flightForChild = new ChildFlight(
+                dptFlight,
                 rtnFlight,
                 childPrice,
                 childPrice,
@@ -1012,7 +1018,14 @@ public class MainScene extends Application {
         double infantPrice = Consts.BABY_PRICE;
 
         // constructor
-        flightForBaby = new Flight(dptFlight, rtnFlight, infantPrice, infantPrice, infantPrice, selectedDeptTime, selectedReturnTime);
+        flightForBaby = new Flight(
+                dptFlight,
+                rtnFlight,
+                infantPrice,
+                infantPrice,
+                infantPrice,
+                selectedDeptTime,
+                selectedReturnTime);
     }
 
 
@@ -1065,7 +1078,7 @@ public class MainScene extends Application {
                     window.setScene(scene2);
 
                     if(radioButtonReturn.isSelected()) {
-                        // setting variable equal to the current passenger, then getting returned value for the Flight object method
+                        // setting variable equal to the current passenger, then getting returned value for the model.Flight object method
                         bagPrice = passengerList.get(mCounter -1).setBaggagePriceReturn();
                     }
                     else if(radioButtonOneWay.isSelected()) {
@@ -1090,20 +1103,20 @@ public class MainScene extends Application {
                     childPrice = Consts.CHILD_PRICE * 2 + bagPrice - spaPrice;
 
 
-                    // add Passenger and Flight objects to the ListView displayed in the next scene (after Continue button is selected)
+                    // add model.Passenger and model.Flight objects to the ListView displayed in the next scene (after Continue button is selected)
                     if (passengerList.get(i).isPassengerInfant()) {
 
                         setFlightPriceInfants();
 
                         if(radioButtonReturn.isSelected()) {
-                            listView.getItems().addAll("\nPassenger " + mCounter +
+                            listView.getItems().addAll("\nmodel.Passenger " + mCounter +
                                             passengerList.get(mCounter - 1),
                                             flightForBaby.toString(),
                                              "\tTotal: \t\t\t\t\t\t = €" + Consts.BABY_PRICE + " (Babies fly free, but do not get a seat nor a checked bag)");
                         }
                         else if(radioButtonOneWay.isSelected()) {
 
-                            listView.getItems().addAll("\nPassenger " + mCounter +
+                            listView.getItems().addAll("\nmodel.Passenger " + mCounter +
                                             passengerList.get(mCounter - 1),
                                             flightForBaby.toStringSingleFlight(),
                                             "\tTotal: \t\t\t\t\t\t = €" + Consts.BABY_PRICE + " (Babies fly free, but do not get a seat nor a checked bag)");
@@ -1114,32 +1127,32 @@ public class MainScene extends Application {
                         setFlightPriceChild();
 
                         if(radioButtonReturn.isSelected()) {
-                            listView.getItems().addAll("\nPassenger " + mCounter +
+                            listView.getItems().addAll("\nmodel.Passenger " + mCounter +
                                             passengerList.get(mCounter - 1),
                                             flightForChild.toString(),
                                             "\tTotal: \t\t\t\t\t\t = €" + childPrice);
                         }
                         else if(radioButtonOneWay.isSelected()) {
 
-                            listView.getItems().addAll("\nPassenger " + mCounter +
+                            listView.getItems().addAll("\nmodel.Passenger " + mCounter +
                                             passengerList.get(mCounter - 1),
                                             flightForChild.toStringSingleFlight(),
                                             "\tTotal: \t\t\t\t\t\t = €" + childPrice);
                         }
 
 
-                    } else if (passengerList.get(i).getDateOfBirth().isBefore(nowMinus5yrs)) {
+                    } else if (passengerList.get(i).isPassengerOver5()) {
 
                         setFlightPriceAdult();
 
                         if(radioButtonReturn.isSelected()) {
-                            listView.getItems().addAll("\nPassenger " + mCounter +
+                            listView.getItems().addAll("\nmodel.Passenger " + mCounter +
                                             passengerList.get(mCounter - 1),
                                             flight.toString(),
                                             "\tTotal: \t\t\t\t\t\t = €" + adultPrice);
                         }
                         else if(radioButtonOneWay.isSelected()) {
-                            listView.getItems().addAll("\nPassenger " + mCounter
+                            listView.getItems().addAll("\nmodel.Passenger " + mCounter
                                             + passengerList.get(mCounter - 1),
                                             flight.toStringSingleFlight(),
                                             "\tTotal: \t\t\t\t\t\t = €" + adultPrice);

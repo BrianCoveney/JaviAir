@@ -1,5 +1,6 @@
 
 import junit.framework.TestCase;
+import model.Passenger;
 import org.junit.Test;
 
 /**

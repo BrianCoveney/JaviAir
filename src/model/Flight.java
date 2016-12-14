@@ -1,3 +1,7 @@
+package model;
+
+import helpers.Consts;
+
 /**
  * Created by brian on 22/10/16.
  */
