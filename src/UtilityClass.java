@@ -120,7 +120,7 @@ public final class UtilityClass {
     public static void errorMessageMaxTwoChildren() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Input Error");
-        alert.setContentText("Maximium of two children per booking.");
+        alert.setContentText("Maximum of two children per booking.");
         alert.showAndWait();
     }
 

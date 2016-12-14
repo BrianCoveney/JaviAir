@@ -20,89 +20,10 @@ import java.util.List;
 
 public class MainScene extends Application {
 
-    // constants - flight airports
-    private static final String CORK = "ORK";
-    private static final String MADRID = "MAD";
-    private static final String ST_BRIEUC = "SBK";
-    private static final String JERSEY = "JER";
-    private static final String PARIS = "CDG";
-    private static final String STANSTED = "STN";
-    private static final String MALAGA = "AGP";
-    private static final String FRI = "FRIDAY";
-    private static final String SAT = "SATURDAY";
-    private static final String SUN = "SUNDAY";
-    // constants - flight prices
-    private static final int TWO_HND_EIGHTY = 280;
-    private static final int TWO_HND_FIFTY = 250;
-    private static final int TWO_HND_FORTY = 240;
-    private static final int TWO_HND = 200;
-    private static final int ONE_HND_FIFTY = 150;
-    private static final int ONE_HND_FORTY = 140;
-    private static final int ONE_HND_TWENTY = 120;
-    private static final int ONE_HND = 100;
-    private static final int EIGHTY = 80;
-    private static final int SIXTY = 60;
-    private static final int FORTY = 40;
-    private static final int ZERO = 0;
-    private static final double BAGGAGE_PRICE = 15.0;
-    private static final Double CHILD_PRICE = 60.0;
-    private static final Double CHILD_TOTAL_PRICE = CHILD_PRICE * 2;
-    private static final Double BABY_PRICE = 0.0;
-    private static final int MAX_PASSENGER_NO = 8;
-    private static final ObservableList<Integer> baggageNumbers = FXCollections.observableArrayList();
+
     private static final ObservableList airportList = FXCollections.observableArrayList();
-    // constants  flight times
-    private static String ORK_MAD_1 = "0920-1300";
-    private static String ORK_SBK_1 = "1030-1400";
-    private static String ORK_JER_1 = "1400-1600";
-    private static String ORK_CDG_1 = "0900-1215";
-    private static String ORK_CDG_2 = "1820-2105";
-    private static String ORK_STN_1 = "0820-0950";
-    private static String ORK_STN_2 = "1120-1305";
-    private static String ORK_AGP_1 = "0800-1130";
-    private static String MAD_ORK_1 = "1800-2000";
-    private static String MAD_SBK_1 = "1200-1400";
-    private static String MAD_JER_1 = "0620-0800";
-    private static String MAD_CDG_1 = "0800-1000";
-    private static String MAD_STN_1 = "1400-1520";
-    private static String MAD_STN_2 = "1905-2120";
-    private static String MAD_AGP_1 = "0800-0905";
-    private static String SBK_ORK_1 = "1900-2020";
-    private static String SBK_MAD_1 = "1800-2020";
-    private static String SBK_JER_1 = "none";
-    private static String SBK_CDG_1 = "0620-0715";
-    private static String SBK_STN_1 = "0805-0830";
-    private static String SBK_AGP_1 = "1200-1530";
-    private static String JER_ORK_1 = "1000-1200";
-    private static String JER_MAD_1 = "1800-2120";
-    private static String JER_CDG_1 = "0800-1015";
-    private static String JER_STN_1 = "1700-1830";
-    private static String JER_AGP_1 = "0800-1130";
-    private static String CDG_ORK_1 = "1330-1500";
-    private static String CDG_ORK_2 = "2200-2350";
-    private static String CDG_MAD_1 = "1920-2105";
-    private static String CDG_SBK_1 = "1900-2005";
-    private static String CDG_JER_1 = "2000-2015";
-    private static String CDG_STN_1 = "1800-1830";
-    private static String CDG_AGP_1 = "1150-1330";
-    private static String STN_ORK_1 = "1100-1220";
-    private static String STN_ORK_2 = "1800-1920";
-    private static String STN_MAD_1 = "1020-1400";
-    private static String STN_SBK_1 = "1800-2000";
-    private static String STN_JER_1 = "0900-1030";
-    private static String STN_CDG_1 = "0900-1030";
-    private static String STN_AGP_1 = "0800-1100";
-    private static String STN_AGP_2 = "1330-1620";
-    private static String AGP_ORK_1 = "1300-1420";
-    private static String AGP_MAD_1 = "2000-2105";
-    private static String AGP_SBK_1 = "2000-2130";
-    private static String AGP_JER_1 = "1800-1930";
-    private static String AGP_CDG_1 = "1805-1230";
-    private static String AGP_STN_1 = "1500-1610";
-    private static String AGP_STN_2 = "2035-2105";
     private VBox vBoxRadioBtns1, vBoxRadioBtns2;
     private String mFlightTimes, flightTime1, flightTime2, selectedDeptTime, selectedReturnTime;
-    private int numberOfChildren, numberOfAdults;
     private final ToggleGroup toggleGroupFlights = new ToggleGroup();
     private final ToggleGroup toggleGroupFlightTimes_1 = new ToggleGroup();
     private final ToggleGroup toggleGroupFlightTimes_2 = new ToggleGroup();
@@ -120,12 +41,11 @@ public class MainScene extends Application {
     private Label labelOrigin, labelDestination, labelDateDeparture, labelDateReturn;
     private ListView listView;
     private RadioButton radioButtonReturn, radioButtonOneWay, radioButtonDeptTime1, radioButtonDeptTime2, radioButtonReturnTime1, radioButtonReturnTime2;
-    private String dptFlight, rtnFlight;
+    public String dptFlight, rtnFlight;
     private double dateDepartPrice;
     private double dateReturnPrice;
     private double flightPrice;
     private double currentPrice;
-    private double spanishResidentRebate;
     private LocalDate ldDepartDate, ldReturnDate;
     private GridPane gridPaneLeft;
     private Stage window;
@@ -168,7 +88,7 @@ public class MainScene extends Application {
         window = primaryStage;
 
         // add Constants to the ObservableList
-        airportList.addAll(CORK, MADRID, ST_BRIEUC, JERSEY, PARIS, STANSTED, MALAGA);
+        airportList.addAll(Consts.CORK, Consts.MADRID, Consts.ST_BRIEUC, Consts.JERSEY, Consts.PARIS, Consts.STANSTED, Consts.MALAGA);
 
         VBox vBox = new VBox();
         vBox.getChildren().addAll(
@@ -217,13 +137,11 @@ public class MainScene extends Application {
         tfCCVNumber = new TextField();
         tfCCVNumber.setPromptText("CCV Number");
 
-
         buttonPurchase = new Button("Purchase Now");
         buttonPurchase.setOnAction(event -> {
             createCreditCard();
 
         });
-
 
         gridPane.add(tfCCName, 0, 1);
         gridPane.add(tfCCAddress1, 0, 2);
@@ -239,11 +157,7 @@ public class MainScene extends Application {
         GridPane.setMargin(buttonPurchase, new Insets(0, 0, 0, 155));
 
 
-
-
-
         return gridPane;
-
     }
 
 
@@ -261,7 +175,9 @@ public class MainScene extends Application {
                 dpCCExpiryDate.getValue(),
                 tfCCVNumber.getText());
 
-        if(mCreditCard.validateCreditCardNumber(cardNum) == true) {
+
+
+        if(!cardNum.isEmpty() && mCreditCard.validateCreditCardNumber(cardNum)) {
             UtilityClass.orderReceived();
         } else {
             UtilityClass.errorMessageCreditCardNumber();
@@ -402,7 +318,7 @@ public class MainScene extends Application {
             }
 
             displaySelectedFlights();
-//            getDepartTime();
+
 
         });
 
@@ -447,24 +363,24 @@ public class MainScene extends Application {
 
 
         try {
-            if (flightDepart.equals(CORK)) {
+            if (flightDepart.equals(Consts.CORK)) {
                 comboDestination.getItems().clear();
-                comboDestination.getItems().addAll(MADRID, ST_BRIEUC, JERSEY, PARIS, STANSTED, MALAGA);
-            } else if (flightDepart.equals(MADRID)) {
+                comboDestination.getItems().addAll(Consts.MADRID, Consts.ST_BRIEUC, Consts.JERSEY, Consts.PARIS, Consts.STANSTED, Consts.MALAGA);
+            } else if (flightDepart.equals(Consts.MADRID)) {
                 comboDestination.getItems().clear();
-                comboDestination.getItems().addAll(CORK, ST_BRIEUC, JERSEY, PARIS, STANSTED, MALAGA);
-            } else if (flightDepart.equals(PARIS)) {
+                comboDestination.getItems().addAll(Consts.CORK, Consts.ST_BRIEUC, Consts.JERSEY, Consts.PARIS, Consts.STANSTED, Consts.MALAGA);
+            } else if (flightDepart.equals(Consts.PARIS)) {
                 comboDestination.getItems().clear();
-                comboDestination.getItems().addAll(CORK, MADRID, ST_BRIEUC, JERSEY, STANSTED, MALAGA);
-            } else if (flightDepart.equals(STANSTED)) {
+                comboDestination.getItems().addAll(Consts.CORK, Consts.MADRID, Consts.ST_BRIEUC, Consts.JERSEY, Consts.STANSTED, Consts.MALAGA);
+            } else if (flightDepart.equals(Consts.STANSTED)) {
                 comboDestination.getItems().clear();
-                comboDestination.getItems().addAll(CORK, MADRID, ST_BRIEUC, JERSEY, PARIS, MALAGA);
-            } else if (flightDepart.equals(MALAGA)) {
+                comboDestination.getItems().addAll(Consts.CORK, Consts.MADRID, Consts.ST_BRIEUC, Consts.JERSEY, Consts.PARIS, Consts.MALAGA);
+            } else if (flightDepart.equals(Consts.MALAGA)) {
                 comboDestination.getItems().clear();
-                comboDestination.getItems().addAll(CORK, MADRID, ST_BRIEUC, JERSEY, PARIS, STANSTED);
-            } else if (flightDepart.equals(ST_BRIEUC) || flightDepart.equals(JERSEY)) {
+                comboDestination.getItems().addAll(Consts.CORK, Consts.MADRID, Consts.ST_BRIEUC, Consts.JERSEY, Consts.PARIS, Consts.STANSTED);
+            } else if (flightDepart.equals(Consts.ST_BRIEUC) || flightDepart.equals(Consts.JERSEY)) {
                 comboDestination.getItems().clear();
-                comboDestination.getItems().addAll(CORK, MADRID, PARIS, STANSTED, MALAGA);
+                comboDestination.getItems().addAll(Consts.CORK, Consts.MADRID, Consts.PARIS, Consts.STANSTED, Consts.MALAGA);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -477,56 +393,8 @@ public class MainScene extends Application {
         rtnFlight = comboDestination.getSelectionModel().getSelectedItem();
 
 
-        try {
-
-            if (dptFlight != null && rtnFlight != null) {
-                if (dptFlight.equals(CORK) && rtnFlight.equals((MADRID)) || dptFlight.equals(MADRID) && rtnFlight.equals(CORK)) {
-                    flightPrice = ONE_HND;
-                } else if (dptFlight.equals(CORK) && rtnFlight.equals(ST_BRIEUC) || dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(CORK)) {
-                    flightPrice = ONE_HND;
-                } else if (dptFlight.equals(CORK) && rtnFlight.equals(JERSEY) || dptFlight.equals(JERSEY) && rtnFlight.equals(CORK)) {
-                    flightPrice = ONE_HND_TWENTY;
-                } else if (dptFlight.equals(CORK) && rtnFlight.equals(PARIS) || dptFlight.equals(PARIS) && rtnFlight.equals(CORK)) {
-                    flightPrice = EIGHTY;
-                } else if (dptFlight.equals(CORK) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(CORK)) {
-                    flightPrice = FORTY;
-                } else if (dptFlight.equals(CORK) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(CORK)) {
-                    flightPrice = TWO_HND_FORTY;
-                } else if (dptFlight.equals(MADRID) && rtnFlight.equals(ST_BRIEUC) || dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(MADRID)) {
-                    flightPrice = TWO_HND;
-                } else if (dptFlight.equals(MADRID) && rtnFlight.equals(JERSEY) || dptFlight.equals(JERSEY) && rtnFlight.equals(MADRID)) {
-                    flightPrice = TWO_HND;
-                } else if (dptFlight.equals(MADRID) && rtnFlight.equals(PARIS) || dptFlight.equals(PARIS) && rtnFlight.equals(MADRID)) {
-                    flightPrice = SIXTY;
-                } else if (dptFlight.equals(MADRID) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(MADRID)) {
-                    flightPrice = SIXTY;
-                } else if (dptFlight.equals(MADRID) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(MADRID)) {
-                    flightPrice = SIXTY;
-                } else if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(JERSEY)) {
-                    flightPrice = ZERO;
-                } else if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(PARIS) || dptFlight.equals(PARIS) && rtnFlight.equals(ST_BRIEUC)) {
-                    flightPrice = ONE_HND_FIFTY;
-                } else if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(ST_BRIEUC)) {
-                    flightPrice = ONE_HND_FORTY;
-                } else if (dptFlight.equals(JERSEY) && rtnFlight.equals(PARIS) || dptFlight.equals(PARIS) && rtnFlight.equals(JERSEY)) {
-                    flightPrice = TWO_HND_FIFTY;
-                } else if (dptFlight.equals(JERSEY) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(JERSEY)) {
-                    flightPrice = TWO_HND_FIFTY;
-                } else if (dptFlight.equals(JERSEY) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(JERSEY)) {
-                    flightPrice = TWO_HND_EIGHTY;
-                } else if (dptFlight.equals(PARIS) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(PARIS)) {
-                    flightPrice = ONE_HND;
-                } else if (dptFlight.equals(STANSTED) && rtnFlight.equals(MALAGA) || dptFlight.equals(MALAGA) && rtnFlight.equals(STANSTED)) {
-                    flightPrice = ONE_HND_TWENTY;
-                } else if (dptFlight.equals(PARIS) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(PARIS)) {
-                    flightPrice = SIXTY;
-                } else if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(ST_BRIEUC)) {
-                    flightPrice = EIGHTY;
-                }
-            }
-        } catch (NullPointerException e) {
-            System.out.println(e.getMessage());
-        }
+        Flight f = new Flight();
+        flightPrice = f.getFlightPrice(dptFlight, rtnFlight);
 
 
         // Disable March and/or April in the DatePicker.
@@ -536,7 +404,7 @@ public class MainScene extends Application {
         datePickerDeparture.setDayCellFactory(monthCellFactory);
         datePickerReturn.setDayCellFactory(monthCellFactory);
 
-        return flightPrice;
+        return this.flightPrice;
     }
 
     // Disable March and/or April in the DatePicker
@@ -561,13 +429,13 @@ public class MainScene extends Application {
                         }
 
 
-                        if (dptFlight.equals(ST_BRIEUC) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(ST_BRIEUC)) {
+                        if (dptFlight.equals(Consts.ST_BRIEUC) && rtnFlight.equals(Consts.STANSTED) || dptFlight.equals(Consts.STANSTED) && rtnFlight.equals(Consts.ST_BRIEUC)) {
                             // Disable March and April
                             if (item.getMonth().equals(Month.APRIL) || item.getMonth().equals(Month.MARCH)) {
                                 setDisable(true);
                                 setStyle("-fx-background-color: #ffc0cb;");
                             }
-                        } else if (dptFlight.equals(PARIS) && rtnFlight.equals(STANSTED) || dptFlight.equals(STANSTED) && rtnFlight.equals(PARIS)) {
+                        } else if (dptFlight.equals(Consts.PARIS) && rtnFlight.equals(Consts.STANSTED) || dptFlight.equals(Consts.STANSTED) && rtnFlight.equals(Consts.PARIS)) {
                             // Disable April
                             if (item.getMonth().equals(Month.APRIL)) {
                                 setDisable(true);
@@ -590,7 +458,7 @@ public class MainScene extends Application {
                 // set variable to the day of the week, from the selected date
                 String dayOfWeek = ldDepartDate.getDayOfWeek().name();
 
-                if (dayOfWeek.equals(FRI) || dayOfWeek.equals(SAT) || dayOfWeek.equals(SUN)) {
+                if (dayOfWeek.equals(Consts.FRI) || dayOfWeek.equals(Consts.SAT) || dayOfWeek.equals(Consts.SUN)) {
                     dateDepartPrice = flightPrice + flightPrice * 0.2;
                 } else {
                     dateDepartPrice = flightPrice;
@@ -598,7 +466,7 @@ public class MainScene extends Application {
             } else if (event.getSource().equals(datePickerReturn)) {
                 ldReturnDate = datePickerReturn.getValue();
                 String dayOfWeek = ldReturnDate.getDayOfWeek().name();
-                if (dayOfWeek.equals(FRI) || dayOfWeek.equals(SAT) || dayOfWeek.equals(SUN)) {
+                if (dayOfWeek.equals(Consts.FRI) || dayOfWeek.equals(Consts.SAT) || dayOfWeek.equals(Consts.SUN)) {
                     dateReturnPrice = flightPrice + flightPrice * 0.2;
                 } else {
                     dateReturnPrice = flightPrice;
@@ -643,131 +511,131 @@ public class MainScene extends Application {
                 setFlightPriceAdult();
 
 
-                if (flightDepart.equals(CORK) && flightReturn.equals(MADRID)) {
-                    flightTime1 = ORK_MAD_1;
+                if (flightDepart.equals(Consts.CORK) && flightReturn.equals(Consts.MADRID)) {
+                    flightTime1 = Consts.ORK_MAD_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(CORK) && flightReturn.equals(ST_BRIEUC)) {
-                    flightTime1 = ORK_SBK_1;
+                } else if (flightDepart.equals(Consts.CORK) && flightReturn.equals(Consts.ST_BRIEUC)) {
+                    flightTime1 = Consts.ORK_SBK_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(CORK) && flightReturn.equals(JERSEY)) {
-                    flightTime1 = ORK_JER_1;
+                } else if (flightDepart.equals(Consts.CORK) && flightReturn.equals(Consts.JERSEY)) {
+                    flightTime1 = Consts.ORK_JER_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(CORK) && flightReturn.equals(PARIS)) {
-                    flightTime1 = ORK_CDG_1;
-                    flightTime2 = ORK_CDG_2;
-                } else if (flightDepart.equals(CORK) && flightReturn.equals(STANSTED)) {
-                    flightTime1 = ORK_STN_1;
-                    flightTime2 = ORK_STN_2;
-                } else if (flightDepart.equals(CORK) && flightReturn.equals(MALAGA)) {
-                    flightTime1 = ORK_AGP_1;
+                } else if (flightDepart.equals(Consts.CORK) && flightReturn.equals(Consts.PARIS)) {
+                    flightTime1 = Consts.ORK_CDG_1;
+                    flightTime2 = Consts.ORK_CDG_2;
+                } else if (flightDepart.equals(Consts.CORK) && flightReturn.equals(Consts.STANSTED)) {
+                    flightTime1 = Consts.ORK_STN_1;
+                    flightTime2 = Consts.ORK_STN_2;
+                } else if (flightDepart.equals(Consts.CORK) && flightReturn.equals(Consts.MALAGA)) {
+                    flightTime1 = Consts.ORK_AGP_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(MADRID) && flightReturn.equals(CORK)) {
-                    flightTime1 = MAD_ORK_1;
+                } else if (flightDepart.equals(Consts.MADRID) && flightReturn.equals(Consts.CORK)) {
+                    flightTime1 = Consts.MAD_ORK_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(MADRID) && flightReturn.equals(ST_BRIEUC)) {
-                    flightTime1 = MAD_SBK_1;
+                } else if (flightDepart.equals(Consts.MADRID) && flightReturn.equals(Consts.ST_BRIEUC)) {
+                    flightTime1 = Consts.MAD_SBK_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(MADRID) && flightReturn.equals(JERSEY)) {
-                    flightTime1 = MAD_JER_1;
+                } else if (flightDepart.equals(Consts.MADRID) && flightReturn.equals(Consts.JERSEY)) {
+                    flightTime1 = Consts.MAD_JER_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(MADRID) && flightReturn.equals(PARIS)) {
-                    flightTime1 = MAD_CDG_1;
+                } else if (flightDepart.equals(Consts.MADRID) && flightReturn.equals(Consts.PARIS)) {
+                    flightTime1 = Consts.MAD_CDG_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(MADRID) && flightReturn.equals(STANSTED)) {
-                    flightTime1 = MAD_STN_1;
-                    flightTime2 = MAD_STN_2;
-                } else if (flightDepart.equals(MADRID) && flightReturn.equals(MALAGA)) {
-                    flightTime1 = MAD_AGP_1;
+                } else if (flightDepart.equals(Consts.MADRID) && flightReturn.equals(Consts.STANSTED)) {
+                    flightTime1 = Consts.MAD_STN_1;
+                    flightTime2 = Consts.MAD_STN_2;
+                } else if (flightDepart.equals(Consts.MADRID) && flightReturn.equals(Consts.MALAGA)) {
+                    flightTime1 = Consts.MAD_AGP_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(ST_BRIEUC) && flightReturn.equals(CORK)) {
-                    flightTime1 = SBK_ORK_1;
+                } else if (flightDepart.equals(Consts.ST_BRIEUC) && flightReturn.equals(Consts.CORK)) {
+                    flightTime1 = Consts.SBK_ORK_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(ST_BRIEUC) && flightReturn.equals(MADRID)) {
-                    flightTime1 = SBK_MAD_1;
+                } else if (flightDepart.equals(Consts.ST_BRIEUC) && flightReturn.equals(Consts.MADRID)) {
+                    flightTime1 = Consts.SBK_MAD_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(ST_BRIEUC) && flightReturn.equals(JERSEY)) {
-                    flightTime1 = SBK_JER_1;
+                } else if (flightDepart.equals(Consts.ST_BRIEUC) && flightReturn.equals(Consts.JERSEY)) {
+                    flightTime1 = Consts.SBK_JER_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(ST_BRIEUC) && flightReturn.equals(PARIS)) {
-                    flightTime1 = SBK_CDG_1;
+                } else if (flightDepart.equals(Consts.ST_BRIEUC) && flightReturn.equals(Consts.PARIS)) {
+                    flightTime1 = Consts.SBK_CDG_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(ST_BRIEUC) && flightReturn.equals(STANSTED)) {
-                    flightTime1 = SBK_STN_1;
+                } else if (flightDepart.equals(Consts.ST_BRIEUC) && flightReturn.equals(Consts.STANSTED)) {
+                    flightTime1 = Consts.SBK_STN_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(ST_BRIEUC) && flightReturn.equals(MALAGA)) {
-                    flightTime1 = SBK_AGP_1;
+                } else if (flightDepart.equals(Consts.ST_BRIEUC) && flightReturn.equals(Consts.MALAGA)) {
+                    flightTime1 = Consts.SBK_AGP_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(JERSEY) && flightReturn.equals(CORK)) {
-                    flightTime1 = JER_ORK_1;
+                } else if (flightDepart.equals(Consts.JERSEY) && flightReturn.equals(Consts.CORK)) {
+                    flightTime1 = Consts.JER_ORK_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(JERSEY) && flightReturn.equals(MADRID)) {
-                    flightTime1 = JER_MAD_1;
+                } else if (flightDepart.equals(Consts.JERSEY) && flightReturn.equals(Consts.MADRID)) {
+                    flightTime1 = Consts.JER_MAD_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(JERSEY) && flightReturn.equals(PARIS)) {
-                    flightTime1 = JER_CDG_1;
+                } else if (flightDepart.equals(Consts.JERSEY) && flightReturn.equals(Consts.PARIS)) {
+                    flightTime1 = Consts.JER_CDG_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(JERSEY) && flightReturn.equals(STANSTED)) {
-                    flightTime1 = JER_STN_1;
+                } else if (flightDepart.equals(Consts.JERSEY) && flightReturn.equals(Consts.STANSTED)) {
+                    flightTime1 = Consts.JER_STN_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(JERSEY) && flightReturn.equals(MALAGA)) {
-                    flightTime1 = JER_AGP_1;
+                } else if (flightDepart.equals(Consts.JERSEY) && flightReturn.equals(Consts.MALAGA)) {
+                    flightTime1 = Consts.JER_AGP_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(PARIS) && flightReturn.equals(CORK)) {
-                    flightTime1 = CDG_ORK_1;
-                    flightTime2 = CDG_ORK_2;
-                } else if (flightDepart.equals(PARIS) && flightReturn.equals(MADRID)) {
-                    flightTime1 = CDG_MAD_1;
+                } else if (flightDepart.equals(Consts.PARIS) && flightReturn.equals(Consts.CORK)) {
+                    flightTime1 = Consts.CDG_ORK_1;
+                    flightTime2 = Consts.CDG_ORK_2;
+                } else if (flightDepart.equals(Consts.PARIS) && flightReturn.equals(Consts.MADRID)) {
+                    flightTime1 = Consts.CDG_MAD_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(PARIS) && flightReturn.equals(ST_BRIEUC)) {
-                    flightTime1 = CDG_SBK_1;
+                } else if (flightDepart.equals(Consts.PARIS) && flightReturn.equals(Consts.ST_BRIEUC)) {
+                    flightTime1 = Consts.CDG_SBK_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(PARIS) && flightReturn.equals(JERSEY)) {
-                    flightTime1 = CDG_JER_1;
+                } else if (flightDepart.equals(Consts.PARIS) && flightReturn.equals(Consts.JERSEY)) {
+                    flightTime1 = Consts.CDG_JER_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(PARIS) && flightReturn.equals(STANSTED)) {
-                    flightTime1 = CDG_STN_1;
+                } else if (flightDepart.equals(Consts.PARIS) && flightReturn.equals(Consts.STANSTED)) {
+                    flightTime1 = Consts.CDG_STN_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(PARIS) && flightReturn.equals(MALAGA)) {
-                    flightTime1 = CDG_AGP_1;
+                } else if (flightDepart.equals(Consts.PARIS) && flightReturn.equals(Consts.MALAGA)) {
+                    flightTime1 = Consts.CDG_AGP_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(STANSTED) && flightReturn.equals(CORK)) {
-                    flightTime1 = STN_ORK_1;
-                    flightTime2 = STN_ORK_2;
-                } else if (flightDepart.equals(STANSTED) && flightReturn.equals(MADRID)) {
-                    flightTime1 = STN_MAD_1;
+                } else if (flightDepart.equals(Consts.STANSTED) && flightReturn.equals(Consts.CORK)) {
+                    flightTime1 = Consts.STN_ORK_1;
+                    flightTime2 = Consts.STN_ORK_2;
+                } else if (flightDepart.equals(Consts.STANSTED) && flightReturn.equals(Consts.MADRID)) {
+                    flightTime1 = Consts.STN_MAD_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(STANSTED) && flightReturn.equals(ST_BRIEUC)) {
-                    flightTime1 = STN_SBK_1;
+                } else if (flightDepart.equals(Consts.STANSTED) && flightReturn.equals(Consts.ST_BRIEUC)) {
+                    flightTime1 = Consts.STN_SBK_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(STANSTED) && flightReturn.equals(JERSEY)) {
-                    flightTime1 = STN_JER_1;
+                } else if (flightDepart.equals(Consts.STANSTED) && flightReturn.equals(Consts.JERSEY)) {
+                    flightTime1 = Consts.STN_JER_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(STANSTED) && flightReturn.equals(PARIS)) {
-                    flightTime1 = STN_CDG_1;
+                } else if (flightDepart.equals(Consts.STANSTED) && flightReturn.equals(Consts.PARIS)) {
+                    flightTime1 = Consts.STN_CDG_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(STANSTED) && flightReturn.equals(MALAGA)) {
-                    flightTime1 = STN_AGP_1;
-                    flightTime2 = STN_AGP_2;
-                } else if (flightDepart.equals(MALAGA) && flightReturn.equals(CORK)) {
-                    flightTime1 = AGP_ORK_1;
+                } else if (flightDepart.equals(Consts.STANSTED) && flightReturn.equals(Consts.MALAGA)) {
+                    flightTime1 = Consts.STN_AGP_1;
+                    flightTime2 = Consts.STN_AGP_2;
+                } else if (flightDepart.equals(Consts.MALAGA) && flightReturn.equals(Consts.CORK)) {
+                    flightTime1 = Consts.AGP_ORK_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(MALAGA) && flightReturn.equals(MADRID)) {
-                    flightTime1 = AGP_MAD_1;
+                } else if (flightDepart.equals(Consts.MALAGA) && flightReturn.equals(Consts.MADRID)) {
+                    flightTime1 = Consts.AGP_MAD_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(MALAGA) && flightReturn.equals(ST_BRIEUC)) {
-                    flightTime1 = AGP_SBK_1;
+                } else if (flightDepart.equals(Consts.MALAGA) && flightReturn.equals(Consts.ST_BRIEUC)) {
+                    flightTime1 = Consts.AGP_SBK_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(MALAGA) && flightReturn.equals(JERSEY)) {
-                    flightTime1 = AGP_JER_1;
+                } else if (flightDepart.equals(Consts.MALAGA) && flightReturn.equals(Consts.JERSEY)) {
+                    flightTime1 = Consts.AGP_JER_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(MALAGA) && flightReturn.equals(PARIS)) {
-                    flightTime1 = AGP_CDG_1;
+                } else if (flightDepart.equals(Consts.MALAGA) && flightReturn.equals(Consts.PARIS)) {
+                    flightTime1 = Consts.AGP_CDG_1;
                     flightTime2 = null;
-                } else if (flightDepart.equals(MALAGA) && flightReturn.equals(STANSTED)) {
-                    flightTime1 = AGP_STN_1;
-                    flightTime2 = AGP_STN_2;
+                } else if (flightDepart.equals(Consts.MALAGA) && flightReturn.equals(Consts.STANSTED)) {
+                    flightTime1 = Consts.AGP_STN_1;
+                    flightTime2 = Consts.AGP_STN_2;
 
-                    mFlightTimes = AGP_STN_1 + "\n" + AGP_STN_2;
+                    mFlightTimes = Consts.AGP_STN_1 + "\n" + Consts.AGP_STN_2;
                 }
 
 
@@ -862,7 +730,6 @@ public class MainScene extends Application {
         imageViewReturn.setCache(true);
 
         gridPaneMiddle.add(imageViewDept, 0, 2);
-//        gridPaneMiddle.add(buttonFlightSelect, 0, 3);
         gridPaneMiddle.add(imageViewReturn, 2, 2);
         gridPaneMiddle.add(vBoxRadioBtns1, 0, 3);
         gridPaneMiddle.add(vBoxRadioBtns2, 2, 3);
@@ -999,7 +866,7 @@ public class MainScene extends Application {
 
 
         try {
-            for (int i = 0; i <= MAX_PASSENGER_NO; i++) {
+            for (int i = 0; i <= Consts.MAX_PASSENGER_NO; i++) {
                 tfFirstNamesList.get(i).setDisable(true);
                 tfFirstNamesList.get(i).getStyleClass().addAll("sm-label");
                 tfLastNamesList.get(i).setDisable(true);
@@ -1010,8 +877,6 @@ public class MainScene extends Application {
                 dpDateOfBirthList.get(i).getStyleClass().add("myDatePicker");
                 radioBtnListBag.get(i).setDisable(true);
                 checkboxListSpanish.get(i).setDisable(true);
-
-
             }
         } catch (Exception ex) {
             ex.getMessage();
@@ -1093,14 +958,14 @@ public class MainScene extends Application {
     }
 
 
-
     private void disableBaggageOptionForInfants() {
-        for (int i = 0; i < MAX_PASSENGER_NO; i++) {
+        for (int i = 0; i < Consts.MAX_PASSENGER_NO; i++) {
 
             dpDateOfBirthList.get(i).valueProperty().addListener((observable, oldValue, newValue) -> {
 
                 try {
-                    for (int j = 0; j < MAX_PASSENGER_NO; j++) {
+
+                    for (int j = 0; j < Consts.MAX_PASSENGER_NO; j++) {
 
                         if (dpDateOfBirthList.get(j).getValue().isAfter(LocalDate.now().minusYears(1))) {
                             radioBtnListBag.get(j).setDisable(true);
@@ -1122,13 +987,13 @@ public class MainScene extends Application {
         addPassengers();
 
         try {
-            for (int i = 0; i <= MAX_PASSENGER_NO; i++) {
+            for (int i = 0; i <= Consts.MAX_PASSENGER_NO; i++) {
                 checkboxListSpanish.get(i).selectedProperty().addListener((observable, oldValue, newValue) -> {
 
                     // checked
                     if(newValue) {
                         try {
-                            for (int j = 0; j <= MAX_PASSENGER_NO; j++) {
+                            for (int j = 0; j <= Consts.MAX_PASSENGER_NO; j++) {
                                 if(checkboxListSpanish.get(j).isSelected()) {
                                     numberDNIList.get(j).setDisable(false);
                                 }
@@ -1140,7 +1005,7 @@ public class MainScene extends Application {
                     // un-checked
                     else {
                         try {
-                            for (int k = 0; k <= MAX_PASSENGER_NO; k++) {
+                            for (int k = 0; k <= Consts.MAX_PASSENGER_NO; k++) {
                                 if(checkboxListSpanish.get(k).isSelected() == false ) {
                                     numberDNIList.get(k).setDisable(true);
                                 }
@@ -1178,7 +1043,7 @@ public class MainScene extends Application {
         }
 
         try {
-            for (int i = 0; i <= MAX_PASSENGER_NO; i++) {
+            for (int i = 0; i <= Consts.MAX_PASSENGER_NO; i++) {
 
 
                 if (spinnerPassengerNo.getValue() == i) {
@@ -1233,9 +1098,12 @@ public class MainScene extends Application {
     private void setFlightPriceChild() {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
         String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
+        double childPrice = Consts.CHILD_PRICE;
+        double childPriceTotal = childPrice * 2;
+
 
         // constructor
-        flightForChild = new Flight(flightDepart, flightReturn, CHILD_PRICE, CHILD_PRICE, CHILD_TOTAL_PRICE, selectedDeptTime, selectedReturnTime);
+        flightForChild = new ChildFlight(flightDepart, flightReturn, childPrice, childPrice, childPriceTotal, selectedDeptTime, selectedReturnTime);
 
 
     }
@@ -1243,9 +1111,10 @@ public class MainScene extends Application {
     private void setFlightPriceInfants() {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
         String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
+        double infantPrice = Consts.BABY_PRICE;
 
         // constructor
-        flightForBaby = new Flight(flightDepart, flightReturn, BABY_PRICE, BABY_PRICE, BABY_PRICE, selectedDeptTime, selectedReturnTime);
+        flightForBaby = new Flight(flightDepart, flightReturn, infantPrice, infantPrice, infantPrice, selectedDeptTime, selectedReturnTime);
     }
 
 
@@ -1288,7 +1157,7 @@ public class MainScene extends Application {
         String flightDepart = comboOrigin.getSelectionModel().getSelectedItem();
         String flightReturn = comboDestination.getSelectionModel().getSelectedItem();
 
-        for (int i = 0; i < MAX_PASSENGER_NO; i++) {
+        for (int i = 0; i < Consts.MAX_PASSENGER_NO; i++) {
             mCounter++;
 
             try {
@@ -1306,13 +1175,11 @@ public class MainScene extends Application {
                     }
 
 
-                    if (flightDepart.equals(MADRID) && flightReturn.equals(MALAGA) || flightDepart.equals(MALAGA) && flightReturn.equals(MADRID) ) {
+                    if (flightDepart.equals(Consts.MADRID) && flightReturn.equals(Consts.MALAGA) || flightDepart.equals(Consts.MALAGA) && flightReturn.equals(Consts.MADRID) ) {
                         spaPrice = passengerList.get(mCounter -1).setSpanishRebate() * 2;
                     } else {
                         spaPrice = passengerList.get(mCounter - 1).setSpanishRebate();
                     }
-
-
 
 
                     // setting variable equal to the returned value from getSelectedFlightPrice() in this class
@@ -1322,11 +1189,11 @@ public class MainScene extends Application {
                     adultPrice = flightPrice + bagPrice - spaPrice;
 
                     // setting variable equal to bagPrice plus the constant - child price total
-                    childPrice = CHILD_TOTAL_PRICE + bagPrice - spaPrice;
+                    childPrice = Consts.CHILD_PRICE * 2 + bagPrice - spaPrice;
 
 
                     // add Passenger and Flight objects to the ListView displayed in the next scene (after Continue button is selected)
-                    if (passengerList.get(i).getDateOfBirth().isAfter(nowMinus1yr)) {
+                    if (passengerList.get(i).isPassengerInfant()) {
 
                         setFlightPriceInfants();
 
@@ -1334,17 +1201,17 @@ public class MainScene extends Application {
                             listView.getItems().addAll("\nPassenger " + mCounter +
                                             passengerList.get(mCounter - 1),
                                             flightForBaby.toString(),
-                                             "\tTotal: \t\t\t\t\t\t = €" + BABY_PRICE + " (Babies fly free, but do not get a seat nor a checked bag)");
+                                             "\tTotal: \t\t\t\t\t\t = €" + Consts.BABY_PRICE + " (Babies fly free, but do not get a seat nor a checked bag)");
                         }
                         else if(radioButtonOneWay.isSelected()) {
 
                             listView.getItems().addAll("\nPassenger " + mCounter +
                                             passengerList.get(mCounter - 1),
                                             flightForBaby.toStringSingleFlight(),
-                                            "\tTotal: \t\t\t\t\t\t = €" + BABY_PRICE + " (Babies fly free, but do not get a seat nor a checked bag)");
+                                            "\tTotal: \t\t\t\t\t\t = €" + Consts.BABY_PRICE + " (Babies fly free, but do not get a seat nor a checked bag)");
                         }
 
-                    } else if (passengerList.get(i).getDateOfBirth().isAfter(nowMinus5yrs) && passengerList.get(i).getDateOfBirth().isBefore(nowMinus1yr)) {
+                    } else if (passengerList.get(i).isPassengerAChild()) {
 
                         setFlightPriceChild();
 
@@ -1412,6 +1279,7 @@ public class MainScene extends Application {
 
         addPassengers();
 
+
         if (comboOrigin.getValue() != null || comboDestination.getValue() != null) {
             if (datePickerDeparture.getValue() != null || datePickerReturn.getValue() != null) {
 
@@ -1425,7 +1293,7 @@ public class MainScene extends Application {
                         i++;
 
 
-                        if (passengerList.get(i - 1).isPassengerUnder5()) {
+                        if (passengerList.get(i - 1).isPassengerAChild()) {
                             countChildren++;
                         }
 
@@ -1434,19 +1302,16 @@ public class MainScene extends Application {
                         }
 
 
+
+
                         if (spinnerPassengerNo.getValue() == i) {
 
-                            mPassenger.validateFirstName();
 
 
-                            // validation
-                            if(mPassenger.isSpanishSelected() == true && mPassenger.validateDNINumber() == false){
+                            if(mPassenger.isSpanishSelected() == true && !mPassenger.validateDNINumber()){
                                 UtilityClass.errorMessageDNINumber();
                             }
 
-                            else if (mPassenger.getFirstName().isEmpty() || mPassenger.getLastName().isEmpty() || mPassenger.getDateOfBirth() == null) {
-                                UtilityClass.errorMessageAddCustomer();
-                            }
 
                             else if(mPassenger.validateFirstName()) {
                                 UtilityClass.errorMessageFirstName();

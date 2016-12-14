@@ -14,10 +14,9 @@ public class Passenger {
     private boolean baggageSelected;
     private boolean spanishSelected;
     private double baggagePrice;
-    private double spanishResidentPrice;
     private String numberDNI;
-    private boolean isChild;
-    private boolean isAdult;
+    private boolean isInfant, isChild, isAdult, isOverFive;
+
 
     public Passenger(String numberDNI){
         this.numberDNI = numberDNI;
@@ -28,7 +27,7 @@ public class Passenger {
         this.firstName = firstName;
         this.lastName = lastName;
         setNumberDNI(numberDNI);
-        this.dateOfBirth = dateOfBirth;
+        setDateOfBirth(dateOfBirth);
         this.baggageSelected = baggageSelect;
         this.spanishSelected = spanishSelected;
 
@@ -38,8 +37,7 @@ public class Passenger {
 
     // referenced Colin Manning's code here:
     // http://mcom.cit.ie/staff/Computing/CManning/soft6008-2015/js09/js-09-dni.html
-
-    public boolean validateDNINumber() {
+    boolean validateDNINumber() {
 
         String dniCopy = this.numberDNI;
         String madString = "TRWAGMYFPDXBNJZSQVHLCKE";
@@ -50,7 +48,6 @@ public class Passenger {
 
         try {
             if (dniCopy != null) {
-
 
                 if (!((dniCopy.length() == 9) || dniCopy.length() == 10)) {
                     return false;
@@ -83,27 +80,20 @@ public class Passenger {
 
 
 
-
     public boolean validateFirstName() {
-
         String validText = "^[\\p{L} .'-]+$";
-
         if (getFirstName().matches(validText)) {
             return false;
         }
-
         return true;
     }
 
 
     public boolean validateLastName() {
-
         String validText = "^[\\p{L} .'-]+$";
-
         if (getLastName().matches(validText)) {
             return false;
         }
-
         return true;
     }
 
@@ -119,22 +109,17 @@ public class Passenger {
 
 
 
-
     public double setSpanishRebate() {
         double spaPrice = 0.0;
-
         if(isSpanishSelected()){
             spaPrice = 5;
         }
-
         return spaPrice;
     }
 
 
     public double setBaggagePriceSingle() {
-
         double bagPrice = 0.0;
-
         if(isBaggageSelected() == true) {
             bagPrice = 15;
         }
@@ -143,53 +128,56 @@ public class Passenger {
 
 
     public double setBaggagePriceReturn() {
-
         double bagPrice = 0.0;
-
         if(isBaggageSelected() == true) {
             bagPrice = 30;
         }
         return bagPrice;
     }
 
-    public double removeSpanishRebate() {
 
-        double rebate =  setSpanishRebate();
-
-        double removed = rebate - rebate;
-
-        return removed;
+    public boolean isPassengerInfant() {
+        isInfant = false;
+        if(this.getDateOfBirth().isAfter(LocalDate.now().minusYears(1))) {
+            isInfant = true;
+        }
+        return isInfant;
     }
 
-
-    public boolean isPassengerUnder5() {
-
+    public boolean isPassengerAChild() {
         isChild = false;
-
-        if(this.getDateOfBirth().isAfter(LocalDate.now().minusYears(5))){
+        if(this.getDateOfBirth().isAfter(LocalDate.now().minusYears(5)) &&
+                this.getDateOfBirth().isBefore(LocalDate.now().minusYears(1))){
             isChild = true;
         }
         return isChild;
     }
 
 
-
     public boolean isPassengerOver18() {
         isAdult = false;
-
         if(this.getDateOfBirth().isBefore(LocalDate.now().minusYears(18))) {
             isAdult = true;
         }
-
         return isAdult;
     }
 
+    public boolean isPassengerOver5() {
+        isOverFive = false;
+        if(this.getDateOfBirth().isBefore(LocalDate.now().minusYears(5))) {
+            isOverFive = true;
+        }
+        return isOverFive;
+    }
 
 
 
     public String getNumberDNI() {return numberDNI;}
 
-    public void setNumberDNI(String numberDNI) {this.numberDNI = numberDNI;}
+    public void setNumberDNI(String numberDNI) {
+        validateDNINumber();
+        this.numberDNI = numberDNI;
+    }
 
     public void setSpanishSelected(boolean spanishSelected) {
         this.spanishSelected = spanishSelected;
@@ -224,7 +212,10 @@ public class Passenger {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {this.dateOfBirth = dateOfBirth;}
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+
+    }
 
     public double getBaggagePrice() {
         return baggagePrice;
