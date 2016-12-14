@@ -106,6 +106,7 @@ public class MainScene extends Application {
         this.nextSceneVBox = new VBox();
         scene2 = new Scene(this.nextSceneVBox, 700, 700);
 
+
         scene1.getStylesheets().add("/cssStyles/stylesheet.css");
         primaryStage.setScene(scene1);
         primaryStage.setTitle("JaviAir App");
@@ -475,12 +476,12 @@ public class MainScene extends Application {
         LocalDate departDate = datePickerDeparture.getValue();
         LocalDate returnDate = datePickerReturn.getValue();
 
-        if (departDate != null && returnDate != null) {
-            if (departDate.isAfter(returnDate)) {
-                UtilityClass.errorMessageDatesNotPossible();
-                datePickerReturn.getEditor().setText(null);
-            }
+        Flight f = new Flight();
+
+        if(!f.checkInvalidDates(departDate, returnDate)) {
+            datePickerReturn.getEditor().setText(null);
         }
+
     }
 
 
@@ -880,7 +881,7 @@ public class MainScene extends Application {
 
 
     private void checkboxSpanishControlsDNINumberField() {
-        addPassengers();
+//        addPassengers();
 
         try {
             for (int i = 0; i <= Consts.MAX_PASSENGER_NO; i++) {
@@ -1055,9 +1056,6 @@ public class MainScene extends Application {
 
         addPassengers();
 
-        LocalDate now = LocalDate.now();
-        LocalDate nowMinus1yr = now.minusYears(1);
-        LocalDate nowMinus5yrs = now.minusYears(5);
 
         int mCounter = 0;
         double bagPrice = 0;
@@ -1110,14 +1108,14 @@ public class MainScene extends Application {
 
                         if(radioButtonReturn.isSelected()) {
                             listView.getItems().addAll("\nmodel.Passenger " + mCounter +
-                                            passengerList.get(mCounter - 1),
+                                            passengerList.get(mCounter - 1).toString(),
                                             flightForBaby.toString(),
                                              "\tTotal: \t\t\t\t\t\t = €" + Consts.BABY_PRICE + " (Babies fly free, but do not get a seat nor a checked bag)");
                         }
                         else if(radioButtonOneWay.isSelected()) {
 
                             listView.getItems().addAll("\nmodel.Passenger " + mCounter +
-                                            passengerList.get(mCounter - 1),
+                                            passengerList.get(mCounter - 1).toStringSingleFlight(),
                                             flightForBaby.toStringSingleFlight(),
                                             "\tTotal: \t\t\t\t\t\t = €" + Consts.BABY_PRICE + " (Babies fly free, but do not get a seat nor a checked bag)");
                         }
@@ -1128,14 +1126,14 @@ public class MainScene extends Application {
 
                         if(radioButtonReturn.isSelected()) {
                             listView.getItems().addAll("\nmodel.Passenger " + mCounter +
-                                            passengerList.get(mCounter - 1),
+                                            passengerList.get(mCounter - 1).toString(),
                                             flightForChild.toString(),
                                             "\tTotal: \t\t\t\t\t\t = €" + childPrice);
                         }
                         else if(radioButtonOneWay.isSelected()) {
 
                             listView.getItems().addAll("\nmodel.Passenger " + mCounter +
-                                            passengerList.get(mCounter - 1),
+                                            passengerList.get(mCounter - 1).toStringSingleFlight(),
                                             flightForChild.toStringSingleFlight(),
                                             "\tTotal: \t\t\t\t\t\t = €" + childPrice);
                         }
@@ -1147,13 +1145,13 @@ public class MainScene extends Application {
 
                         if(radioButtonReturn.isSelected()) {
                             listView.getItems().addAll("\nmodel.Passenger " + mCounter +
-                                            passengerList.get(mCounter - 1),
+                                            passengerList.get(mCounter - 1).toString(),
                                             flight.toString(),
                                             "\tTotal: \t\t\t\t\t\t = €" + adultPrice);
                         }
                         else if(radioButtonOneWay.isSelected()) {
                             listView.getItems().addAll("\nmodel.Passenger " + mCounter
-                                            + passengerList.get(mCounter - 1),
+                                            + passengerList.get(mCounter - 1).toStringSingleFlight(),
                                             flight.toStringSingleFlight(),
                                             "\tTotal: \t\t\t\t\t\t = €" + adultPrice);
                         }

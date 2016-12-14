@@ -239,6 +239,7 @@ public class Passenger {
     }
 
 
+
     @Override
     public String toString() {
 
@@ -253,7 +254,26 @@ public class Passenger {
                 "\n" +
                 "\tDate of birth:\t\t " + formattedDob +
                 "\n\t" + "Spanish Repate: \t " + spanishSelectedString() +
+                "\n\t" + "Baggage: \t\t €" + setBaggagePriceReturn();
+    }
+
+
+
+    public String toStringSingleFlight() {
+
+        LocalDate date = this.dateOfBirth;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String formattedDob = date.format(formatter);
+
+        return  " Details:"+
+                "\n\n\tFirst name:\t\t " + this.firstName +
+                "\n" +
+                "\tLast name:\t\t " + this.lastName +
+                "\n" +
+                "\tDate of birth:\t\t " + formattedDob +
+                "\n\t" + "Spanish Repate: \t " + spanishSelectedString() +
                 "\n\t" + "Baggage: \t\t €" + setBaggagePriceSingle();
     }
+
 
 }

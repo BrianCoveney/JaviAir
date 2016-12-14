@@ -1,6 +1,9 @@
 package model;
 
 import helpers.Consts;
+import helpers.UtilityClass;
+
+import java.time.LocalDate;
 
 /**
  * Created by brian on 22/10/16.
@@ -14,7 +17,6 @@ public class Flight{
     private Double price;
     private String departTime;
     private String returnTime;
-    private static final int MAX_PASSENGER_NO = 8;
     private double flightPrice;
     private String flightTime1, flightTime2;
 
@@ -226,6 +228,20 @@ public class Flight{
         return flightPrice;
     }
 
+
+    public boolean checkInvalidDates(LocalDate departDate, LocalDate returnDate) {
+
+        boolean isValid = false;
+        if (departDate != null && returnDate != null) {
+            if (departDate.isAfter(returnDate)) {
+                isValid = false;
+                UtilityClass.errorMessageDatesNotPossible();
+            } else {
+                isValid = true;
+            }
+        }
+        return isValid;
+    }
 
 
 

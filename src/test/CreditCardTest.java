@@ -1,5 +1,6 @@
 import junit.framework.TestCase;
 import model.CreditCard;
+import org.junit.Before;
 import org.junit.Test;
 
 public class CreditCardTest extends TestCase {
@@ -8,6 +9,7 @@ public class CreditCardTest extends TestCase {
     private String testInvalidNumber = "3556737586899855";
     private CreditCard creditCard;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         this.creditCard = new CreditCard();
